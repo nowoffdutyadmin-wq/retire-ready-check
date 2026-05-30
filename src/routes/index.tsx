@@ -191,7 +191,12 @@ function QuizApp() {
   }
 
   function handleScored(qid: string, raw: number) {
-    setAnswers((a) => ({ ...a, [qid]: raw }));
+    setAnswers((a) => {
+      const next = { ...a };
+      if (raw <= 0) delete next[qid];
+      else next[qid] = raw;
+      return next;
+    });
     analytics("question_answered", { id: qid, value: raw });
   }
 
