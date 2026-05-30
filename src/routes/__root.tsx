@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Now Off Duty" },
+      { name: "description", content: "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Now Off Duty" },
+      { property: "og:description", content: "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Now Off Duty" },
+      { name: "twitter:description", content: "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/59a83b51-1b7f-42a3-a7c8-873879fd1eee/id-preview-64ae0f7d--7f7b7be5-9523-4b03-ac8c-928b7c68bd1f.lovable.app-1780108442051.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/59a83b51-1b7f-42a3-a7c8-873879fd1eee/id-preview-64ae0f7d--7f7b7be5-9523-4b03-ac8c-928b7c68bd1f.lovable.app-1780108442051.png" },
     ],
     links: [
       {
