@@ -1,21 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Off-Duty Reset — Now Off Duty" },
+      { title: "The Retirement Reality Check — Now Off Duty" },
       {
         name: "description",
         content:
-          "A four-minute self-assessment for people who built a good retirement on paper but have not quite felt it yet in practice.",
+          "A four-minute self-assessment for people who planned the financial side of retirement well but have not quite felt it yet in practice.",
       },
-      { property: "og:title", content: "The Off-Duty Reset — Now Off Duty" },
+      { property: "og:title", content: "The Retirement Reality Check — Now Off Duty" },
       {
         property: "og:description",
         content:
-          "You have enough money. So why does spending it still feel wrong? Take the four-minute self-assessment.",
+          "You have enough. So why can't you bring yourself to touch it? A four-minute self-assessment.",
       },
     ],
   }),
@@ -26,136 +26,195 @@ export const Route = createFileRoute("/")({
 
 type ScoredQuestion = {
   id: string;
-  index: number;
+  category: string;
   text: string;
   low: string;
   high: string;
+  reversed?: boolean;
+  partnerOnly?: boolean;
 };
 
 type OpenQuestion = {
   id: string;
-  index: number;
-  label: string;
   text: string;
+  subtext?: string;
   placeholder: string;
 };
 
-const SCORED: ScoredQuestion[] = [
+const SCORED_ALL: ScoredQuestion[] = [
   {
     id: "q1",
-    index: 1,
-    text: "When you spend money on yourself — a trip, a restaurant, something you want but do not strictly need — how safe does that feel?",
-    low: "It usually feels wrong or risky",
-    high: "Easy, I have earned it",
+    category: "FINANCIAL",
+    text: "I find it hard to spend on myself, even on things I can clearly afford.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q2",
-    index: 2,
-    text: "When someone asks what you do these days, how comfortable are you with your answer?",
-    low: "I still stumble or feel uncertain",
-    high: "I have a clear answer I feel good about",
+    category: "FINANCIAL",
+    text: "I check my accounts more often than I really need to. I know I do. I check anyway.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q3",
-    index: 3,
-    text: "How well are you sleeping most nights?",
-    low: "Poorly, often awake or worrying",
-    high: "Well, consistently and without anxiety",
+    category: "FINANCIAL",
+    text: "I sleep through the night without money worries pulling me awake.",
+    low: "Rarely",
+    high: "Almost always",
+    reversed: true,
   },
   {
     id: "q4",
-    index: 4,
-    text: "When you have a completely free day with nothing urgent on the list, how easy is it to genuinely enjoy it?",
-    low: "Hard. I feel restless or like I should be doing something",
-    high: "Easy. I know how to be present in it",
+    category: "WELLBEING",
+    text: "I sometimes feel guilty about relaxing, like I haven't quite earned the right yet.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q5",
-    index: 5,
-    text: "How connected do you feel to other people in a typical week since work ended?",
-    low: "Quite isolated, more than I expected",
-    high: "Well connected and genuinely engaged",
+    category: "WELLBEING",
+    text: "My body feels settled and at ease on most days.",
+    low: "Not really",
+    high: "Yes, mostly",
+    reversed: true,
   },
   {
     id: "q6",
-    index: 6,
-    text: "How clear and motivating does your sense of purpose feel right now?",
-    low: "Vague or hollow",
-    high: "Clear and genuinely pulling me forward",
+    category: "IDENTITY",
+    text: "If I'm honest, most of my identity was tied up in the job.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q7",
-    index: 7,
-    text: "How free from financial worry is your mind on a typical day, even when you know your situation is stable?",
-    low: "There is usually a low hum of worry in the background",
-    high: "I trust the situation and rarely think about it",
+    category: "IDENTITY",
+    text: "There are days when retirement feels more like unemployment than freedom.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q8",
-    index: 8,
-    text: "How free from guilt do you feel when you rest, spend on yourself, or do something purely for your own enjoyment?",
-    low: "Guilty most of the time",
-    high: "No guilt. I know I have earned this",
+    category: "IDENTITY",
+    text: "I sometimes wonder what I'm working toward, now that work itself is behind me.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q9",
-    index: 9,
-    text: "How settled does your body feel on a typical day — free from unexplained tension, low-grade restlessness, or a background sense that something needs your attention?",
-    low: "Usually tense or on edge",
-    high: "Calm and genuinely at ease",
+    category: "IDENTITY",
+    text: "I miss the structure more than I expected. The rhythm, the routine, knowing what day it is.",
+    low: "Very true for me",
+    high: "Rarely true for me",
   },
   {
     id: "q10",
-    index: 10,
-    text: "How strongly do you believe the most rewarding years of your life are still ahead of you?",
-    low: "Honestly, I am not sure they are",
-    high: "Strongly. I am looking forward to what comes next",
+    category: "RELATIONSHIPS",
+    text: "I miss the people. The easy daily contact that used to just happen.",
+    low: "I miss it a lot",
+    high: "I have found new connection",
   },
-];
-
-const OPEN: OpenQuestion[] = [
   {
     id: "q11",
-    index: 11,
-    label: "This does not affect your score. It helps us understand you better.",
-    text: "What keeps coming back to you most? The thought you cannot quite shake about this chapter of life.",
-    placeholder:
-      "Running out of money, losing my health, not sleeping well, feeling restless, not knowing who I am without the job…",
+    category: "RELATIONSHIPS",
+    text: "My partner and I see eye to eye on how we want to live in retirement.",
+    low: "Not really",
+    high: "Yes, mostly",
+    reversed: true,
+    partnerOnly: true,
   },
   {
     id: "q12",
-    index: 12,
-    label: "One last question. Optional.",
-    text: "If retirement felt the way you imagined it would, what would be different about your daily life right now?",
-    placeholder:
-      "I would feel more relaxed, more clear about what comes next, less guilty about resting…",
+    category: "WELLBEING",
+    text: "I genuinely believe the best of this life is still ahead.",
+    low: "I am not sure",
+    high: "Yes, strongly",
+    reversed: true,
   },
 ];
 
-const PATTERNS = {
-  saving: {
-    name: "Saving Mode",
-    desc: "Your plan is solid. The discomfort comes when spending that money on yourself actually feels wrong. Decades of building financial protection leaves a mark. Your brain learned to treat spending as a threat, and it has not been told the situation has changed.",
-    ids: ["q1", "q7", "q8"],
+const OPEN_QUESTIONS: OpenQuestion[] = [
+  {
+    id: "openAnswer1",
+    text: "In your own words, what is the thing you don't usually say out loud about this chapter?",
+    subtext:
+      "Your answer is private. It helps us understand what is actually going on for people like you.",
+    placeholder: "Type anything. There is no right answer here.",
   },
-  oncall: {
-    name: "Still On Call",
-    desc: "Work gave you a role, a rhythm, and a reason. When that ended, a large part of your daily sense of self went with it. The days feel less defined. The question of what comes next does not have a clean answer yet.",
-    ids: ["q2", "q6"],
+  {
+    id: "openAnswer2",
+    text: "In one sentence, how would you describe retirement to a close friend right now?",
+    placeholder: "Just one sentence is fine.",
   },
-  guilty: {
-    name: "Guilty Rester",
-    desc: "You have earned the right to rest, but rest rarely feels earned in practice. There is a pull toward doing something useful even when there is nothing urgent. Relaxation triggers guilt rather than relief.",
-    ids: ["q4", "q8"],
-  },
-  empty: {
-    name: "Running on Empty",
-    desc: "Sleep, social connection, and physical calm have all shifted since retirement ended. The body is still carrying something the calendar no longer justifies. The tension does not have an obvious cause, which makes it harder to address.",
-    ids: ["q3", "q5", "q9"],
-  },
-} as const;
+];
 
-type PatternKey = keyof typeof PATTERNS;
+// ---------- Onboarding ----------
+
+const STAGES = [
+  { value: "planning_5plus", label: "Still planning, more than 5 years out" },
+  { value: "close_1_5", label: "Getting close, 1 to 5 years out" },
+  { value: "just_retired", label: "Just retired, less than a year in" },
+  { value: "early_1_3", label: "Early retirement, 1 to 3 years in" },
+  { value: "well_in_3plus", label: "Well into it, more than 3 years in" },
+];
+
+const PARTNER_OPTIONS = [
+  { value: "partner", label: "With a partner or spouse" },
+  { value: "solo", label: "On my own" },
+];
+
+// ---------- Scoring ----------
+
+function adjustedScore(q: ScoredQuestion, raw: number) {
+  return q.reversed ? 10 - raw : raw;
+}
+
+function tagOpenAnswer(text: string): "financial" | "social" | "identity" | "health" | "general" {
+  const t = text.toLowerCase();
+  const match = (words: string[]) => words.some((w) => t.includes(w));
+  if (
+    match([
+      "money",
+      "spend",
+      "savings",
+      "afford",
+      "financial",
+      "account",
+      "run out",
+      "portfolio",
+    ])
+  )
+    return "financial";
+  if (
+    match([
+      "alone",
+      "lonely",
+      "social",
+      "friends",
+      "people",
+      "isolated",
+      "connection",
+    ])
+  )
+    return "social";
+  if (
+    match([
+      "purpose",
+      "meaning",
+      "point",
+      "bored",
+      "boring",
+      "direction",
+      "lost",
+      "identity",
+      "who am i",
+    ])
+  )
+    return "identity";
+  if (match(["health", "sick", "ill", "body", "die", "death", "aging"]))
+    return "health";
+  return "general";
+}
 
 function scoreRangeLabel(score: number) {
   if (score <= 39) return "Retirement Does Not Feel Safe Yet";
@@ -164,41 +223,146 @@ function scoreRangeLabel(score: number) {
   return "Mostly Ready, With One Pattern Worth Watching";
 }
 
-function determinePattern(scores: Record<string, number>): PatternKey {
-  let bestKey: PatternKey = "saving";
+type ResultKey = "restless" | "anxious" | "identity" | "grounded";
+
+const CLUSTERS: Record<Exclude<ResultKey, "grounded">, string[]> & {
+  grounded: string[];
+} = {
+  anxious: ["q1", "q2", "q3"],
+  restless: ["q4", "q5"],
+  identity: ["q6", "q7", "q8", "q9"],
+  grounded: ["q10", "q12"], // q11 added when partner
+};
+
+function determineResultType(
+  scores: Record<string, number>,
+  questions: ScoredQuestion[],
+  overallScore: number,
+  partnerStatus: string,
+): ResultKey {
+  if (overallScore >= 75) return "grounded";
+
+  const byId = new Map(questions.map((q) => [q.id, q]));
+  const groundedIds = partnerStatus === "partner" ? [...CLUSTERS.grounded, "q11"] : CLUSTERS.grounded;
+  const clusters: Record<ResultKey, string[]> = {
+    anxious: CLUSTERS.anxious,
+    restless: CLUSTERS.restless,
+    identity: CLUSTERS.identity,
+    grounded: groundedIds,
+  };
+
+  let bestKey: ResultKey = "anxious";
   let bestAvg = Infinity;
-  let bestMin = Infinity;
-  (Object.keys(PATTERNS) as PatternKey[]).forEach((key) => {
-    const ids = PATTERNS[key].ids;
-    const vals = ids.map((id) => scores[id] ?? 5);
+  (Object.keys(clusters) as ResultKey[]).forEach((key) => {
+    const ids = clusters[key].filter((id) => byId.has(id));
+    const vals = ids.map((id) => adjustedScore(byId.get(id)!, scores[id] ?? 5));
     const avg = vals.reduce((s, v) => s + v, 0) / vals.length;
-    const min = Math.min(...vals);
-    if (avg < bestAvg || (avg === bestAvg && min < bestMin)) {
+    if (avg < bestAvg) {
       bestAvg = avg;
-      bestMin = min;
       bestKey = key;
     }
   });
   return bestKey;
 }
 
-// ---------- Screens ----------
+const RESULT_COPY: Record<
+  ResultKey,
+  { heading: string; body: string[]; note: string; share: string }
+> = {
+  restless: {
+    heading: "Your body retired. Your nervous system did not get the memo.",
+    body: [
+      "You are the person who knows the numbers are fine and checks them anyway. Who wakes up at 3am running scenarios that do not need running. Who still introduces themselves by what they used to do, because retired does not feel like a complete answer yet.",
+      "You are carrying a 40-year pattern that nobody told you how to unwind. The brain that spent decades running on structure, purpose, and forward momentum is still scanning for all three. The money is the surface. Something else has been running underneath it the whole time.",
+      "You are still on duty. And there is a way to clock out.",
+    ],
+    note: "People who spent long careers in high-responsibility roles, managers, business owners, healthcare workers, teachers, land here most often. The bigger the job, the louder the quiet tends to get.",
+    share:
+      "I just took The Retirement Reality Check and got The Restless Operator. Retired on paper. Nervous system has not gotten the memo yet. Uncomfortably accurate. Which type are you?",
+  },
+  anxious: {
+    heading: "You have the money. You just cannot feel safe spending it.",
+    body: [
+      "You have done everything right. The plan is solid. The advisor has signed off. And yet every time you open the account, or think about booking something expensive, or watch the balance tick down even slightly, something in you tightens.",
+      "Decades of conditioning built this response. You spent forty years in accumulation mode, saving and protecting and building a buffer against uncertainty. That system served you incredibly well. The catch is it has no off switch. The brain that built the nest egg is now guarding it as if there is still something to be afraid of.",
+      "The spreadsheet is fine. What needs to change is what is running underneath it.",
+    ],
+    note: "Careful planners, savers, and people who grew up without financial security carry this pattern longer than they expect. It is far more common than it looks from the outside, and more fixable than it feels.",
+    share:
+      "Got The Anxious Protector on the Retirement Reality Check. Have the money. Cannot feel safe spending it. This quiz put words to it better than I could. What type are you?",
+  },
+  identity: {
+    heading: "You did everything right. That is almost the problem.",
+    body: [
+      "You planned carefully, looked forward to this, told people you were excited. And you were. But now that you are here, there is something underneath the freedom that feels more like waiting. Waiting for it to click. Waiting to feel like yourself again.",
+      "Here is what nobody said on the way out. The job was doing far more than paying the bills. It was the place where your brain collected its daily proof that you mattered, that what you did made a difference. When that structure disappeared, it left a gap that three holidays and a garden project have not quite filled.",
+      "The best days are ahead of you. This transition has a name, and you are inside it. Most people who sit where you are sitting come out the other side with something they could not have found any other way.",
+    ],
+    note: "Former professionals, teachers, and anyone who found deep meaning in their work tend to land here. You are not alone, you are just earlier in the journey than you thought.",
+    share:
+      "Turns out I am The Identity-Loss Retiree. Did everything right and still feel like something is off. This quiz put words to it better than I could. What type are you?",
+  },
+  grounded: {
+    heading: "You have figured something out that most people spend years circling.",
+    body: [
+      "You are not without worries. But you have found a way to hold them without being held by them. You have a sense of who you are that does not need a job title to back it up. Your days have texture, real things to look forward to, real people to look forward to them with.",
+      "You built this, deliberately or through experience, and either way it counts. You are in the group researchers would call intentional retirees: people who carried meaning, structure, and connection forward into this chapter rather than leaving them at the office door.",
+      "If something in this quiz surprised you, that is worth sitting with. Even grounded people have rooms worth opening.",
+    ],
+    note: "People who took the emotional side of retirement as seriously as the financial side tend to land here, as do people who had a harder start and came through it deliberately.",
+    share:
+      "Got The Grounded Explorer on the Retirement Reality Check. Four minutes, surprisingly honest. What type does it give you?",
+  },
+};
+
+const RESULT_TITLES: Record<ResultKey, string> = {
+  restless: "The Restless Operator",
+  anxious: "The Anxious Protector",
+  identity: "The Identity-Loss Retiree",
+  grounded: "The Grounded Explorer",
+};
+
+const PERSONALIZED: Record<
+  "financial" | "social" | "identity" | "health" | "general",
+  string
+> = {
+  financial:
+    "You mentioned money specifically. That is the most common answer we get, and the most misunderstood one. The worry lives in the nervous system. Your body spent decades in accumulation mode. The account changed. The wiring did not.",
+  social:
+    "You mentioned connection, or the lack of it. Most people do not see this coming. The job was delivering most of their daily human contact, quietly, without anyone flagging it. When it ended, so did the infrastructure. That is a real loss. Most retirement planning does not name it.",
+  identity:
+    "You mentioned purpose or direction. The job was doing more than paying the bills. It was delivering daily proof that you mattered, that what you did made a difference. Without that structure, the question of who you are in this chapter can feel surprisingly loud.",
+  health:
+    "You mentioned health. That fear tends to sit underneath financial and identity concerns and amplify everything else. The nervous system reads uncertainty about health the same way it reads any other threat. Which is part of why the body keeps score long after the mind has moved on.",
+  general:
+    "Whatever you wrote, the fact that you wrote something suggests this quiz landed somewhere real. Most people carry this quietly. Few of them name it, even to themselves.",
+};
+
+// ---------- Screen types ----------
 
 type Screen =
   | { kind: "landing" }
-  | { kind: "scored"; i: number } // 0..9
+  | { kind: "onboard"; i: 0 | 1 }
+  | { kind: "scored"; i: number }
   | { kind: "halfway" }
-  | { kind: "open"; i: number } // 0..1
+  | { kind: "open"; i: 0 | 1 }
   | { kind: "insight" }
-  | { kind: "result" }
-  | { kind: "permission" }
-  | { kind: "offer" };
+  | { kind: "result" };
 
 function OffDutyAssessment() {
   const [screen, setScreen] = useState<Screen>({ kind: "landing" });
+  const [retirementStage, setRetirementStage] = useState<string>("");
+  const [partnerStatus, setPartnerStatus] = useState<string>("");
   const [scores, setScores] = useState<Record<string, number>>({});
-  const [open, setOpen] = useState<Record<string, string>>({});
+  const [openAnswers, setOpenAnswers] = useState<Record<string, string>>({});
   const history = useRef<Screen[]>([]);
+
+  const questions = useMemo(
+    () =>
+      SCORED_ALL.filter((q) => !q.partnerOnly || partnerStatus === "partner"),
+    [partnerStatus],
+  );
+  const totalQuestions = questions.length + OPEN_QUESTIONS.length;
 
   const go = (next: Screen) => {
     history.current.push(screen);
@@ -213,20 +377,43 @@ function OffDutyAssessment() {
     }
   };
 
-  const totalScore = useMemo(
-    () => SCORED.reduce((sum, q) => sum + (scores[q.id] ?? 0), 0),
-    [scores],
-  );
-  const patternKey = useMemo(() => determinePattern(scores), [scores]);
+  // Overall score 0-100
+  const { totalScore, scoredCount } = useMemo(() => {
+    let sum = 0;
+    let max = 0;
+    questions.forEach((q) => {
+      const raw = scores[q.id];
+      if (raw === undefined) return;
+      sum += adjustedScore(q, raw);
+      max += 10;
+    });
+    // Use full possible max so partial states don't inflate
+    const fullMax = questions.length * 10;
+    const score = fullMax ? Math.round((sum / fullMax) * 100) : 0;
+    return { totalScore: score, scoredCount: max / 10 };
+  }, [scores, questions]);
 
-  // Quiz progress (for top bar)
+  const resultKey = useMemo(
+    () => determineResultType(scores, questions, totalScore, partnerStatus),
+    [scores, questions, totalScore, partnerStatus],
+  );
+  const openAnswer1Tag = useMemo(
+    () => tagOpenAnswer(openAnswers.openAnswer1 ?? ""),
+    [openAnswers.openAnswer1],
+  );
+
+  // Progress for top bar
   const progress = (() => {
-    if (screen.kind === "scored") return ((screen.i + 1) / 12) * 100;
-    if (screen.kind === "halfway") return (5 / 12) * 100;
-    if (screen.kind === "open") return ((10 + screen.i + 1) / 12) * 100;
+    if (screen.kind === "scored")
+      return ((screen.i + 1) / totalQuestions) * 100;
+    if (screen.kind === "halfway")
+      return (7 / totalQuestions) * 100;
+    if (screen.kind === "open")
+      return ((questions.length + screen.i + 1) / totalQuestions) * 100;
     if (screen.kind === "insight") return 100;
     return 0;
   })();
+
   const showProgress =
     screen.kind === "scored" ||
     screen.kind === "halfway" ||
@@ -234,17 +421,30 @@ function OffDutyAssessment() {
     screen.kind === "insight";
 
   const currentLabel = (() => {
-    if (screen.kind === "scored") return `Question ${screen.i + 1} of 12`;
+    if (screen.kind === "scored")
+      return `Question ${screen.i + 1} of ${totalQuestions}`;
     if (screen.kind === "halfway") return "Halfway";
-    if (screen.kind === "open") return `Question ${10 + screen.i + 1} of 12`;
+    if (screen.kind === "open")
+      return `Question ${questions.length + screen.i + 1} of ${totalQuestions}`;
     if (screen.kind === "insight") return "Almost done";
     return "";
   })();
 
+  const advanceFromScored = (i: number) => {
+    // Halfway shows after scored question 7 (index 6)
+    if (i === 6) go({ kind: "halfway" });
+    else if (i === questions.length - 1) go({ kind: "open", i: 0 });
+    else go({ kind: "scored", i: i + 1 });
+  };
+
   return (
     <main className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)]">
       {showProgress && (
-        <ProgressBar value={progress} label={currentLabel} onBack={history.current.length ? back : undefined} />
+        <ProgressBar
+          value={progress}
+          label={currentLabel}
+          onBack={history.current.length ? back : undefined}
+        />
       )}
 
       <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-24 pb-20">
@@ -257,42 +457,75 @@ function OffDutyAssessment() {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             {screen.kind === "landing" && (
-              <Landing onStart={() => go({ kind: "scored", i: 0 })} />
+              <Landing onStart={() => go({ kind: "onboard", i: 0 })} />
             )}
 
-            {screen.kind === "scored" && (
-              <ScoredScreen
-                q={SCORED[screen.i]}
-                value={scores[SCORED[screen.i].id]}
+            {screen.kind === "onboard" && screen.i === 0 && (
+              <OnboardingChoice
+                label="BEFORE WE START"
+                question="Where are you right now in this chapter of life?"
+                subtext="This adjusts a few of the questions that follow."
+                options={STAGES}
+                value={retirementStage}
                 onSelect={(v) => {
-                  setScores((s) => ({ ...s, [SCORED[screen.i].id]: v }));
-                  // small delay so the user sees the selection register
-                  window.setTimeout(() => {
-                    if (screen.i === 4) go({ kind: "halfway" });
-                    else if (screen.i === 9) go({ kind: "open", i: 0 });
-                    else go({ kind: "scored", i: screen.i + 1 });
-                  }, 280);
+                  setRetirementStage(v);
+                  window.setTimeout(() => go({ kind: "onboard", i: 1 }), 220);
+                }}
+              />
+            )}
+
+            {screen.kind === "onboard" && screen.i === 1 && (
+              <OnboardingChoice
+                label="ONE MORE THING"
+                question="Are you navigating this chapter on your own, or with a partner?"
+                options={PARTNER_OPTIONS}
+                value={partnerStatus}
+                onSelect={(v) => {
+                  setPartnerStatus(v);
+                  window.setTimeout(() => go({ kind: "scored", i: 0 }), 220);
+                }}
+              />
+            )}
+
+            {screen.kind === "scored" && questions[screen.i] && (
+              <ScoredScreen
+                q={questions[screen.i]}
+                index={screen.i + 1}
+                total={totalQuestions}
+                value={scores[questions[screen.i].id]}
+                onSelect={(v) => {
+                  const id = questions[screen.i].id;
+                  setScores((s) => ({ ...s, [id]: v }));
+                  const i = screen.i;
+                  window.setTimeout(() => advanceFromScored(i), 280);
                 }}
               />
             )}
 
             {screen.kind === "halfway" && (
-              <Halfway onNext={() => go({ kind: "scored", i: 5 })} />
+              <Halfway onNext={() => go({ kind: "scored", i: 7 })} />
             )}
 
             {screen.kind === "open" && (
               <OpenScreen
-                q={OPEN[screen.i]}
-                value={open[OPEN[screen.i].id] ?? ""}
-                onChange={(v) => setOpen((o) => ({ ...o, [OPEN[screen.i].id]: v }))}
+                q={OPEN_QUESTIONS[screen.i]}
+                index={questions.length + screen.i + 1}
+                total={totalQuestions}
+                value={openAnswers[OPEN_QUESTIONS[screen.i].id] ?? ""}
+                onChange={(v) =>
+                  setOpenAnswers((o) => ({
+                    ...o,
+                    [OPEN_QUESTIONS[screen.i].id]: v,
+                  }))
+                }
                 onContinue={() => {
                   if (screen.i === 0) go({ kind: "open", i: 1 });
                   else go({ kind: "insight" });
                 }}
                 onSkip={() => {
-                  setOpen((o) => {
+                  setOpenAnswers((o) => {
                     const n = { ...o };
-                    delete n[OPEN[screen.i].id];
+                    delete n[OPEN_QUESTIONS[screen.i].id];
                     return n;
                   });
                   if (screen.i === 0) go({ kind: "open", i: 1 });
@@ -308,18 +541,14 @@ function OffDutyAssessment() {
             {screen.kind === "result" && (
               <Result
                 score={totalScore}
-                patternKey={patternKey}
-                onNext={() => go({ kind: "permission" })}
+                resultKey={resultKey}
+                openAnswer1Tag={openAnswer1Tag}
               />
             )}
-
-            {screen.kind === "permission" && (
-              <Permission onNext={() => go({ kind: "offer" })} />
-            )}
-
-            {screen.kind === "offer" && <Offer />}
           </motion.div>
         </AnimatePresence>
+        {/* Hide the unused scoredCount lint */}
+        <span className="hidden">{scoredCount}</span>
       </div>
 
       <Footer />
@@ -414,20 +643,24 @@ function Landing({ onStart }: { onStart: () => void }) {
       <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-8">
         Now Off Duty
       </div>
-      <h1 className="font-serif text-[44px] leading-[1.05] sm:text-[64px] sm:leading-[1.02] tracking-tight text-[var(--color-ink)]">
-        You have enough money.
+      <h1 className="font-serif text-[40px] leading-[1.08] sm:text-[60px] sm:leading-[1.02] tracking-tight text-[var(--color-ink)]">
+        You have enough.
         <br />
-        <em className="italic text-[var(--color-accent)]">So why does spending it still feel wrong?</em>
+        <em className="italic text-[var(--color-accent)]">
+          So why can't you bring yourself to touch it?
+        </em>
       </h1>
       <p className="mt-8 text-[18px] sm:text-[19px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        A four-minute self-assessment for people who built a good retirement on paper
-        but have not quite felt it yet in practice.
+        A four-minute self-assessment for people who planned the financial side
+        of retirement well but have not quite felt it yet in practice.
       </p>
       <p className="mt-4 text-[15px] text-[var(--color-muted-ink)]">
         Ten questions. Two open ones. Your answers stay private.
       </p>
       <div className="mt-10">
-        <PrimaryButton onClick={onStart}>Find out where you stand →</PrimaryButton>
+        <PrimaryButton onClick={onStart}>
+          Find out where you stand →
+        </PrimaryButton>
       </div>
       <div className="mt-12 mx-auto h-px w-16 bg-[var(--color-rule)]" />
       <p className="mt-6 font-serif italic text-[var(--color-muted-ink)] text-[17px]">
@@ -437,19 +670,79 @@ function Landing({ onStart }: { onStart: () => void }) {
   );
 }
 
+function OnboardingChoice({
+  label,
+  question,
+  subtext,
+  options,
+  value,
+  onSelect,
+}: {
+  label: string;
+  question: string;
+  subtext?: string;
+  options: { value: string; label: string }[];
+  value: string;
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <section className="pt-6">
+      <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-5">
+        {label}
+      </div>
+      <h2 className="font-serif text-[30px] leading-[1.2] sm:text-[40px] sm:leading-[1.15] text-[var(--color-ink)]">
+        {question}
+      </h2>
+      {subtext && (
+        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">
+          {subtext}
+        </p>
+      )}
+      <div className="mt-8 flex flex-col gap-3">
+        {options.map((opt) => {
+          const selected = value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onSelect(opt.value)}
+              aria-pressed={selected}
+              className={`min-h-[60px] text-left px-6 py-4 rounded-xl border text-[17px] leading-snug transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ${
+                selected
+                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-[var(--color-accent)]"
+                  : "bg-[var(--color-card)] text-[var(--color-ink)] border-[var(--color-rule)] hover:border-[var(--color-accent)]"
+              }`}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function ScoredScreen({
   q,
+  index,
+  total,
   value,
   onSelect,
 }: {
   q: ScoredQuestion;
+  index: number;
+  total: number;
   value: number | undefined;
   onSelect: (v: number) => void;
 }) {
   return (
     <section className="pt-2">
-      <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-5">
-        Question {q.index} of 12
+      <div className="flex items-center gap-3 text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-5">
+        <span>
+          Question {index} of {total}
+        </span>
+        <span className="h-1 w-1 rounded-full bg-[var(--color-rule)]" />
+        <span className="text-[var(--color-accent)]">{q.category}</span>
       </div>
       <h2 className="font-serif text-[28px] leading-[1.2] sm:text-[36px] sm:leading-[1.15] text-[var(--color-ink)]">
         {q.text}
@@ -493,12 +786,13 @@ function Halfway({ onNext }: { onNext: () => void }) {
         A brief pause
       </div>
       <h2 className="font-serif text-[40px] leading-[1.1] sm:text-[52px] text-[var(--color-ink)]">
-        You are <em className="italic text-[var(--color-accent)]">halfway</em> through.
+        You are <em className="italic text-[var(--color-accent)]">halfway</em>{" "}
+        through.
       </h2>
       <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        Most people spend years planning the financial side of retirement. Almost
-        nobody plans for what retirement actually feels like once it arrives. Your
-        answers so far are already telling us something.
+        Most people spend years planning the financial side of retirement.
+        Almost nobody plans for what retirement actually feels like once it
+        arrives. Your answers so far are already telling us something.
       </p>
       <div className="mt-10">
         <PrimaryButton onClick={onNext}>Keep going</PrimaryButton>
@@ -509,12 +803,16 @@ function Halfway({ onNext }: { onNext: () => void }) {
 
 function OpenScreen({
   q,
+  index,
+  total,
   value,
   onChange,
   onContinue,
   onSkip,
 }: {
   q: OpenQuestion;
+  index: number;
+  total: number;
   value: string;
   onChange: (v: string) => void;
   onContinue: () => void;
@@ -522,13 +820,22 @@ function OpenScreen({
 }) {
   return (
     <section className="pt-2">
-      <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-5">
-        Question {q.index} of 12
+      <div className="flex items-center gap-3 mb-5">
+        <span className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
+          Question {index} of {total}
+        </span>
+        <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] text-[11px] tracking-[0.18em] uppercase font-medium">
+          Open Question
+        </span>
       </div>
-      <p className="text-[14px] text-[var(--color-muted-ink)] italic mb-3">{q.label}</p>
       <h2 className="font-serif text-[26px] leading-[1.25] sm:text-[34px] sm:leading-[1.2] text-[var(--color-ink)]">
         {q.text}
       </h2>
+      {q.subtext && (
+        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">
+          {q.subtext}
+        </p>
+      )}
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -551,13 +858,15 @@ function Insight({ onNext }: { onNext: () => void }) {
         One moment
       </div>
       <h2 className="font-serif text-[40px] leading-[1.1] sm:text-[52px] text-[var(--color-ink)]">
-        Your results are <em className="italic text-[var(--color-accent)]">ready</em>.
+        Your results are{" "}
+        <em className="italic text-[var(--color-accent)]">ready</em>.
       </h2>
       <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        More than four in ten retirees say they lose sleep over money worries, even
-        when their own financial advisor says they are doing fine. If your score is
-        lower than you expected, you are not alone. The gap between the numbers and
-        how retirement actually feels is real, and it can be closed.
+        More than four in ten retirees say they lose sleep over money worries,
+        even when their own financial advisor says they are doing fine. If your
+        score is lower than expected, you are not alone. The gap between the
+        numbers and how retirement actually feels is real, and it can be
+        closed.
       </p>
       <div className="mt-10">
         <PrimaryButton onClick={onNext}>Show me my score</PrimaryButton>
@@ -568,17 +877,31 @@ function Insight({ onNext }: { onNext: () => void }) {
 
 function Result({
   score,
-  patternKey,
-  onNext,
+  resultKey,
+  openAnswer1Tag,
 }: {
   score: number;
-  patternKey: PatternKey;
-  onNext: () => void;
+  resultKey: ResultKey;
+  openAnswer1Tag: "financial" | "social" | "identity" | "health" | "general";
 }) {
-  const pattern = PATTERNS[patternKey];
+  const copy = RESULT_COPY[resultKey];
+  const title = RESULT_TITLES[resultKey];
   const range = scoreRangeLabel(score);
+  const showFastPath = score <= 32;
+  const personalized = PERSONALIZED[openAnswer1Tag];
+
+  const handleShare = () => {
+    const text = copy.share + " " + (typeof window !== "undefined" ? window.location.href : "");
+    if (typeof navigator !== "undefined" && navigator.share) {
+      navigator.share({ text }).catch(() => {});
+    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+  };
+
   return (
     <section className="pt-6">
+      {/* Score header */}
       <div className="text-center">
         <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
           Your Off-Duty Score
@@ -594,123 +917,136 @@ function Result({
         </div>
       </div>
 
-      <div className="mt-12 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-9">
+      {/* Result type */}
+      <div className="mt-12 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-10">
         <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-          Primary Pattern
+          {title}
         </div>
-        <h3 className="mt-3 font-serif text-[32px] sm:text-[40px] leading-[1.1] text-[var(--color-ink)]">
-          {pattern.name}
+        <h3 className="mt-3 font-serif text-[30px] sm:text-[40px] leading-[1.1] text-[var(--color-ink)]">
+          {copy.heading}
         </h3>
-        <p className="mt-5 text-[18px] leading-[1.75] text-[var(--color-ink-soft)]">
-          {pattern.desc}
-        </p>
-      </div>
-
-      <p className="mt-10 text-center text-[15px] text-[var(--color-muted-ink)] italic max-w-md mx-auto">
-        This is not a judgment. It shows where retirement may still feel heavier than
-        expected. Most people never look at it this clearly.
-      </p>
-
-      <div className="mt-10 flex justify-center">
-        <PrimaryButton onClick={onNext}>Continue</PrimaryButton>
-      </div>
-    </section>
-  );
-}
-
-function Permission({ onNext }: { onNext: () => void }) {
-  return (
-    <section className="text-center pt-10">
-      <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-8">
-        A next step
-      </div>
-      <h2 className="font-serif text-[36px] leading-[1.1] sm:text-[48px] text-[var(--color-ink)]">
-        Want to do something about your score?
-      </h2>
-      <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        There is a short explanation of what is actually driving this, and a
-        practical first step you can take this week.
-      </p>
-      <div className="mt-10">
-        <PrimaryButton onClick={onNext}>Show me the next step →</PrimaryButton>
-      </div>
-    </section>
-  );
-}
-
-function Offer() {
-  const [playing, setPlaying] = useState(false);
-  return (
-    <section className="pt-4">
-      {/* Section A: Video */}
-      <div className="text-center">
-        <h2 className="font-serif text-[34px] leading-[1.15] sm:text-[44px] text-[var(--color-ink)]">
-          There is <em className="italic text-[var(--color-accent)]">one thing</em> at
-          the core of all of this.
-        </h2>
-        <p className="mt-4 text-[16px] text-[var(--color-muted-ink)]">
-          Watch this first. About three minutes.
-        </p>
-      </div>
-
-      <div className="mt-10 mx-auto max-w-sm">
-        <div className="relative w-full overflow-hidden rounded-2xl bg-[var(--color-ink)] aspect-[9/16] shadow-[0_20px_60px_-20px_rgba(26,26,26,0.35)]">
-          {!playing ? (
-            <button
-              type="button"
-              onClick={() => setPlaying(true)}
-              className="absolute inset-0 flex flex-col items-center justify-center text-[var(--color-paper)] bg-gradient-to-b from-[#1a1a1a] via-[#2C3E5D]/40 to-[#1a1a1a] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-paper)]"
-              aria-label="Play video"
+        <div className="mt-6 space-y-5">
+          {copy.body.map((p, i) => (
+            <p
+              key={i}
+              className="text-[18px] leading-[1.75] text-[var(--color-ink-soft)]"
             >
-              <span className="flex items-center justify-center w-20 h-20 rounded-full bg-[var(--color-paper)]/95 text-[var(--color-accent)] transition-transform group-hover:scale-105">
-                <svg viewBox="0 0 24 24" className="w-8 h-8 ml-1" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-              <span className="mt-5 font-serif italic text-[20px]">A message from Chris</span>
-              <span className="mt-1 text-[13px] tracking-[0.18em] uppercase opacity-70">
-                3 minutes
-              </span>
-            </button>
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-[var(--color-paper)] text-[14px] opacity-70">
-              Video player placeholder
-            </div>
-          )}
+              {p}
+            </p>
+          ))}
         </div>
+        <p className="mt-8 pt-6 border-t border-[var(--color-rule)] text-[14px] leading-[1.65] text-[var(--color-muted-ink)] italic">
+          {copy.note}
+        </p>
       </div>
 
-      {/* Divider */}
-      <div className="mt-16 mx-auto h-px w-24 bg-[var(--color-rule)]" />
+      {/* Personalized paragraph */}
+      <div className="mt-10 rounded-xl bg-[var(--color-accent-soft)] p-6 sm:p-8 border border-[var(--color-accent)]/15">
+        <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-accent)] mb-3">
+          From your own words
+        </div>
+        <p className="text-[17px] leading-[1.7] text-[var(--color-ink)]">
+          {personalized}
+        </p>
+      </div>
 
-      {/* Section B: Offer */}
-      <div className="mt-16 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-10">
+      {/* Insight cards */}
+      <div className="mt-10 grid gap-5 sm:grid-cols-2">
+        <article className="rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-6 sm:p-7">
+          <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
+            The Body Keeping Score
+          </div>
+          <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
+            More than four in ten retirees say financial anxiety disrupts their
+            sleep, even people whose own advisors have told them they are
+            completely fine. Your nervous system did not read the financial
+            plan. That gap between the numbers and the feeling has a name. And
+            it can be closed.
+          </p>
+        </article>
+        <article className="rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-6 sm:p-7">
+          <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
+            Purpose and the Years Ahead
+          </div>
+          <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
+            Retirees with a strong sense of purpose live, on average, about
+            seven years longer, with significantly less depression, memory
+            loss, and serious illness. For your nervous system, purpose
+            functions closer to oxygen than inspiration. And it can be built
+            deliberately, at any stage of this chapter.
+          </p>
+        </article>
+      </div>
+
+      {/* Fast path */}
+      {showFastPath && (
+        <div className="mt-10 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-card)] p-7 sm:p-9">
+          <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-accent)]">
+            A Faster Path
+          </div>
+          <p className="mt-4 text-[17px] leading-[1.7] text-[var(--color-ink-soft)]">
+            Your result puts you in the group where a conversation tends to be
+            more useful than a guide. If you would like to talk through what
+            your score means for your specific situation, book a call below. We
+            will bring context. You bring questions.
+          </p>
+          <div className="mt-6">
+            <PrimaryButton onClick={() => {}}>
+              Book a free 20-minute call
+            </PrimaryButton>
+          </div>
+        </div>
+      )}
+
+      {/* Product offer */}
+      <div className="mt-10 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-10">
         <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
           The Off-Duty Reset
         </div>
-        <h3 className="mt-3 font-serif text-[36px] sm:text-[44px] leading-[1.08] text-[var(--color-ink)]">
-          A short, practical reset for the part of you that is still on call.
+        <h3 className="mt-3 font-serif text-[30px] sm:text-[40px] leading-[1.1] text-[var(--color-ink)]">
+          A short bingeable guide to the things this quiz just surfaced.
         </h3>
-        <p className="mt-6 text-[18px] leading-[1.75] text-[var(--color-ink-soft)]">
-          A short bingeable video series that explains exactly what is keeping
-          retirement from feeling the way you planned it. Concise, practical, and
-          grounded in how people actually work. Includes a nighttime audio and a
-          daytime reset practice.
-        </p>
+        <div className="mt-6 space-y-5 text-[17px] leading-[1.75] text-[var(--color-ink-soft)]">
+          <p>
+            Five short videos. Each one covers a specific pattern that gets in
+            the way of actually enjoying this chapter: financial anxiety, the
+            identity gap, sleep, the dopamine drop from leaving work, and the
+            social world that quietly disappeared.
+          </p>
+          <p>
+            Each video follows the same structure. Here is the problem. Here is
+            how it is affecting your day-to-day. Here is what to do about it.
+            Here is why it works. The why is what most retirement content never
+            reaches.
+          </p>
+          <p>
+            Also included: a guided wind-down protocol for before bed, built
+            around how the nervous system actually works. People tend to
+            describe the first night differently from anything they have tried
+            before.
+          </p>
+        </div>
 
         <div className="mt-8 flex items-baseline gap-3">
           <span className="font-serif text-[56px] leading-none text-[var(--color-ink)]">
             $27
           </span>
-          <span className="text-[14px] text-[var(--color-muted-ink)]">one-time</span>
+          <span className="text-[14px] text-[var(--color-muted-ink)]">
+            One-time. Instant access. No subscription.
+          </span>
         </div>
 
         <div className="mt-8">
-          <PrimaryButton onClick={() => {}}>Get the Off-Duty Reset</PrimaryButton>
+          <PrimaryButton onClick={() => {}}>Get instant access</PrimaryButton>
         </div>
-        <p className="mt-4 text-[14px] text-[var(--color-muted-ink)]">
-          Instant access. No subscription.
+        <p className="mt-4 text-[13px] text-[var(--color-muted-ink)]">
+          Secure checkout. Instant delivery.
         </p>
+      </div>
+
+      {/* Share */}
+      <div className="mt-10 text-center">
+        <GhostButton onClick={handleShare}>Share your result</GhostButton>
       </div>
     </section>
   );
