@@ -655,7 +655,7 @@ function Landing({ onStart }: { onStart: () => void }) {
         of retirement well but have not quite felt it yet in practice.
       </p>
       <p className="mt-4 text-[15px] text-[var(--color-muted-ink)]">
-        Ten questions. Two open ones. Your answers stay private.
+        Twelve questions. Two open ones. Your answers stay private.
       </p>
       <div className="mt-10">
         <PrimaryButton onClick={onStart}>
