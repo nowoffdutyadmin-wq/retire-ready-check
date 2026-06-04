@@ -584,7 +584,10 @@ function OffDutyAssessment() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)]">
+    <main
+      className="min-h-screen text-[var(--color-ink)]"
+      style={{ backgroundColor: isSagePage ? "#F0F5F4" : "var(--color-paper)" }}
+    >
       {showProgress && (
         <ProgressBar
           value={progress}
@@ -593,101 +596,110 @@ function OffDutyAssessment() {
         />
       )}
 
-      <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-24 pb-20">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={JSON.stringify(screen)}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {screen.kind === "landing" && <Landing onStart={() => go({ kind: "onboard", i: 0 })} />}
+      {screen.kind === "result" ? (
+        <Result
+          score={totalScore}
+          resultKey={resultKey}
+          openAnswer1Tag={openAnswer1Tag}
+          retirementStage={retirementStage}
+          partnerStatus={partnerStatus}
+        />
+      ) : screen.kind === "insight" ? (
+        <Calculating onDone={() => go({ kind: "result" })} />
+      ) : (
+        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-24 pb-20">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={JSON.stringify(screen)}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {screen.kind === "landing" && (
+                <Landing onStart={() => go({ kind: "onboard", i: 0 })} />
+              )}
 
-            {screen.kind === "onboard" && screen.i === 0 && (
-              <OnboardingChoice
-                label="BEFORE WE START"
-                question="Where are you right now in this chapter of life?"
-                subtext="This adjusts a few of the questions that follow."
-                options={STAGES}
-                value={retirementStage}
-                onSelect={(v) => {
-                  setRetirementStage(v);
-                  window.setTimeout(() => go({ kind: "onboard", i: 1 }), 220);
-                }}
-              />
-            )}
+              {screen.kind === "onboard" && screen.i === 0 && (
+                <OnboardingChoice
+                  label="BEFORE WE START"
+                  question="Where are you right now in this chapter of life?"
+                  subtext="This adjusts a few of the questions that follow."
+                  options={STAGES}
+                  value={retirementStage}
+                  onSelect={(v) => {
+                    setRetirementStage(v);
+                    window.setTimeout(() => go({ kind: "onboard", i: 1 }), 220);
+                  }}
+                />
+              )}
 
-            {screen.kind === "onboard" && screen.i === 1 && (
-              <OnboardingChoice
-                label="ONE MORE THING"
-                question="Are you navigating this chapter on your own, or with a partner?"
-                options={PARTNER_OPTIONS}
-                value={partnerStatus}
-                onSelect={(v) => {
-                  setPartnerStatus(v);
-                  window.setTimeout(() => go({ kind: "scored", i: 0 }), 220);
-                }}
-              />
-            )}
+              {screen.kind === "onboard" && screen.i === 1 && (
+                <OnboardingChoice
+                  label="ONE MORE THING"
+                  question="Are you navigating this chapter on your own, or with a partner?"
+                  options={PARTNER_OPTIONS}
+                  value={partnerStatus}
+                  onSelect={(v) => {
+                    setPartnerStatus(v);
+                    window.setTimeout(() => go({ kind: "scored", i: 0 }), 220);
+                  }}
+                />
+              )}
 
-            {screen.kind === "scored" && questions[screen.i] && (
-              <ScoredScreen
-                q={questions[screen.i]}
-                index={screen.i + 1}
-                total={totalQuestions}
-                value={scores[questions[screen.i].id]}
-                onSelect={(v) => {
-                  const id = questions[screen.i].id;
-                  setScores((s) => ({ ...s, [id]: v }));
-                  const i = screen.i;
-                  window.setTimeout(() => advanceFromScored(i), 280);
-                }}
-              />
-            )}
+              {screen.kind === "scored" && questions[screen.i] && (
+                <ScoredScreen
+                  q={questions[screen.i]}
+                  index={screen.i + 1}
+                  total={totalQuestions}
+                  value={scores[questions[screen.i].id]}
+                  onSelect={(v) => {
+                    const id = questions[screen.i].id;
+                    setScores((s) => ({ ...s, [id]: v }));
+                    const i = screen.i;
+                    window.setTimeout(() => advanceFromScored(i), 280);
+                  }}
+                />
+              )}
 
-            {screen.kind === "halfway" && <Halfway onNext={() => go({ kind: "scored", i: 7 })} />}
+              {screen.kind === "halfway" && (
+                <Halfway onNext={() => go({ kind: "scored", i: 7 })} />
+              )}
 
-            {screen.kind === "open" && (
-              <OpenScreen
-                q={OPEN_QUESTIONS[screen.i]}
-                index={questions.length + screen.i + 1}
-                total={totalQuestions}
-                value={openAnswers[OPEN_QUESTIONS[screen.i].id] ?? ""}
-                onChange={(v) =>
-                  setOpenAnswers((o) => ({
-                    ...o,
-                    [OPEN_QUESTIONS[screen.i].id]: v,
-                  }))
-                }
-                onContinue={() => {
-                  if (screen.i === 0) go({ kind: "open", i: 1 });
-                  else go({ kind: "insight" });
-                }}
-                onSkip={() => {
-                  setOpenAnswers((o) => {
-                    const n = { ...o };
-                    delete n[OPEN_QUESTIONS[screen.i].id];
-                    return n;
-                  });
-                  if (screen.i === 0) go({ kind: "open", i: 1 });
-                  else go({ kind: "insight" });
-                }}
-              />
-            )}
+              {screen.kind === "open" && (
+                <OpenScreen
+                  q={OPEN_QUESTIONS[screen.i]}
+                  index={questions.length + screen.i + 1}
+                  total={totalQuestions}
+                  value={openAnswers[OPEN_QUESTIONS[screen.i].id] ?? ""}
+                  onChange={(v) =>
+                    setOpenAnswers((o) => ({
+                      ...o,
+                      [OPEN_QUESTIONS[screen.i].id]: v,
+                    }))
+                  }
+                  onContinue={() => {
+                    if (screen.i === 0) go({ kind: "open", i: 1 });
+                    else go({ kind: "insight" });
+                  }}
+                  onSkip={() => {
+                    setOpenAnswers((o) => {
+                      const n = { ...o };
+                      delete n[OPEN_QUESTIONS[screen.i].id];
+                      return n;
+                    });
+                    if (screen.i === 0) go({ kind: "open", i: 1 });
+                    else go({ kind: "insight" });
+                  }}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+          <span className="hidden">{scoredCount}</span>
+        </div>
+      )}
 
-            {screen.kind === "insight" && <Insight onNext={() => go({ kind: "result" })} />}
-
-            {screen.kind === "result" && (
-              <Result score={totalScore} resultKey={resultKey} openAnswer1Tag={openAnswer1Tag} />
-            )}
-          </motion.div>
-        </AnimatePresence>
-        {/* Hide the unused scoredCount lint */}
-        <span className="hidden">{scoredCount}</span>
-      </div>
-
-      <Footer />
+      {!hideFooter && screen.kind !== "result" && <Footer />}
     </main>
   );
 }
