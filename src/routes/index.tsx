@@ -563,8 +563,9 @@ function OffDutyAssessment() {
   const showProgress =
     screen.kind === "scored" ||
     screen.kind === "halfway" ||
-    screen.kind === "open" ||
-    screen.kind === "insight";
+    screen.kind === "open";
+  const isSagePage = screen.kind === "insight" || screen.kind === "result";
+  const hideFooter = screen.kind === "insight";
 
   const currentLabel = (() => {
     if (screen.kind === "scored") return `Question ${screen.i + 1} of ${totalQuestions}`;
