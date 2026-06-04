@@ -303,7 +303,9 @@ const RESULT_TITLES: Record<ResultKey, string> = {
   grounded: "The Grounded Explorer",
 };
 
-const PERSONALIZED: Record<"financial" | "social" | "identity" | "health" | "general", string> = {
+type TagKey = "financial" | "social" | "identity" | "health" | "general";
+
+const PERSONALIZED: Record<TagKey, string> = {
   financial:
     "You mentioned money specifically. That is the most common answer we get, and the most misunderstood one. The worry lives in the nervous system. Your body spent decades in accumulation mode. The account changed. The wiring did not.",
   social:
@@ -314,6 +316,176 @@ const PERSONALIZED: Record<"financial" | "social" | "identity" | "health" | "gen
     "You mentioned health. That fear tends to sit underneath financial and identity concerns and amplify everything else. The nervous system reads uncertainty about health the same way it reads any other threat. Which is part of why the body keeps score long after the mind has moved on.",
   general:
     "Whatever you wrote, the fact that you wrote something suggests this quiz landed somewhere real. Most people carry this quietly. Few of them name it, even to themselves.",
+};
+
+type ResultLong = {
+  scoreContext: string;
+  oldFrame: string[];
+  patternInterrupt: string[];
+  reframe: string[];
+  identityShiftLead: string;
+  identityShiftBody: string;
+  futurePacingLead: string;
+  futurePacingBody: string[];
+  ctaContext: string;
+  share: string;
+  testimonial: { name: string; role: string; quote: string; initials: string };
+};
+
+const RESULT_LONG: Record<ResultKey, ResultLong> = {
+  restless: {
+    scoreContext:
+      "Your score puts you in the group carrying the heaviest invisible load in retirement. Here's what that means.",
+    oldFrame: [
+      "There's a story most people in your position carry quietly.",
+      "It goes something like this: I've always been like this. I was the responsible one, the one who stayed on top of everything, the one who didn't let things slip. That's not going to change at 65. Some people are just wired this way.",
+      "You've probably said something close to that, at least to yourself.",
+    ],
+    patternInterrupt: [
+      "Here's what that story misses.",
+      "The vigilance was never who you are. It was a tool your nervous system learned. A tool your career specifically required across four decades of real professional pressure. The same system that learned to stay on duty in response to demand can learn something else in response to different conditions. You didn't choose to be wired this way. You were trained into it. And training moves in both directions.",
+    ],
+    reframe: [
+      "The restlessness you're carrying is a conditioned physiological response that has outlasted the conditions that created it. Your body is still protecting a career that ended. Still scanning for threats that are no longer there. Still on the clock for a job that has been done.",
+      "That's something to address at the level where it actually lives, not with willpower or gratitude journals.",
+    ],
+    identityShiftLead:
+      "Underneath the vigilance is someone who knows how to operate at a very high level. That person never went anywhere.",
+    identityShiftBody:
+      "They just got stuck in one mode. The version of you that books the trip and feels the anticipation. That sits across from your partner in the evening with your chest actually settled. That wakes up on a Thursday with nowhere to be and feels, for the first time in a long time, like that's exactly right. That person is the same person who built everything you have. They just need the system to stand down.",
+    futurePacingLead: "Take a moment with this.",
+    futurePacingBody: [
+      "Six weeks from now. Thursday morning. No schedule. Coffee ready. Your partner still asleep. And you notice: the first thought is not about the account, not about what you should be doing, not about what happens if something goes sideways.",
+      "The first thought is about what you actually want to do with the morning.",
+      "You're just there. Present. Off duty for the first time in forty years. That person is not a different version of you. It's you, with the right conditions finally in place.",
+    ],
+    ctaContext:
+      "You spent forty years building this life. This is how you finally get to live inside it.",
+    share:
+      "I just took The Retirement Reality Check and got The Restless Operator. Retired on paper. Nervous system hasn't gotten the memo yet 😅 Uncomfortably accurate. Which type are you?",
+    testimonial: {
+      name: "David R.",
+      role: "Former regional director, 4 years retired",
+      initials: "DR",
+      quote:
+        "I thought I was just an anxious person. The first video explained exactly what had been running underneath everything for three years. The nighttime audio changed my sleep within the first week. My wife noticed before I did.",
+    },
+  },
+  anxious: {
+    scoreContext:
+      "Your score tells us something specific about where the discomfort is actually coming from. It's worth understanding.",
+    oldFrame: [
+      "Most people in your position hold a version of this belief without quite examining it.",
+      "I'm just careful with money. That's a virtue. My parents raised me to save, and that's not wrong. Being thoughtful about spending is the responsible thing at this stage. I'd rather have it and not need it.",
+      "There's real wisdom in that. And something else is happening alongside it.",
+    ],
+    patternInterrupt: [
+      "Careful people can book the trip and enjoy it.",
+      "What you're describing is different. Opening the account after the advisor already told you it was fine. The tightening when the balance moves, even slightly, in the expected direction. The calculation that starts before you've consciously decided to think about money.",
+      "That's a nervous system still running protection protocols after the threat has been gone for years. Those are different conditions. They have different solutions.",
+    ],
+    reframe: [
+      "The behavior you've been calling responsibility is a conditioned physiological response. Your body spent four decades in accumulation mode, treating every outgoing dollar as one fewer standing between you and vulnerability. That system was brilliant for building what you have. It was built for a different era of your life, and it never got the memo that the era changed.",
+      "The money is fine. Something else is running the anxiety, and that something else has a name.",
+    ],
+    identityShiftLead:
+      "There is a version of you who built everything you have and knows, in their body, that it's there to be used.",
+    identityShiftBody:
+      "Not reckless. Not indifferent to the future. But settled. The person who looks at a trip your partner has been mentioning for three years and feels anticipation before calculation. Who spends money on something and experiences, somewhere physical, the knowledge that they earned it. That person built the same nest egg you have. They just have a different relationship with the permission to use it.",
+    futurePacingLead: "Picture this specifically.",
+    futurePacingBody: [
+      "You and your partner are sitting with a plan for something you've talked about for years. And the first thing that moves in you is not the math. The protection mode doesn't engage. The quiet voice asking whether this is really responsible stays quiet.",
+      "What you feel is the anticipation. Just that. You book it. And it feels like it was always yours to book.",
+      "Because it was.",
+    ],
+    ctaContext: "You built this for a reason. This is how it starts to feel like yours.",
+    share:
+      "Got The Anxious Protector on the Retirement Reality Check. Have the money. Can't feel safe spending it 😂 This quiz put words to it better than I could. What type are you?",
+    testimonial: {
+      name: "Margaret S.",
+      role: "Former practice manager, 2 years retired",
+      initials: "MS",
+      quote:
+        "My advisor kept telling me I was fine. I knew the number was fine. This was the first thing that explained why fine didn't feel fine. I booked the trip we'd been talking about for six years. Felt different than I expected.",
+    },
+  },
+  identity: {
+    scoreContext:
+      "Your score sits in the range where the gap between expected and actual is widest. That gap has a name, and it closes.",
+    oldFrame: [
+      "Here's the story most people in your position tell themselves, usually quietly.",
+      "My work was my purpose. That chapter is over. I need to find a hobby or something to fill the time. Maybe this is just what retirement feels like for people who were serious about their careers. Maybe this is just what happens.",
+      "It's an understandable story. And it's the wrong diagnosis.",
+    ],
+    patternInterrupt: [
+      "Your identity was never actually your job title.",
+      "The job title was an address. A place you agreed to let your sense of self live for forty years because the arrangement worked and nobody questioned it. The person who showed up and did that work every day was always more than the role. The role just got all the credit.",
+      "What you're grieving is the container you'd been using to store who you are. The container ended. You didn't.",
+    ],
+    reframe: [
+      "The loss you're feeling points somewhere specific. The job was running identity functions it was never designed to run permanently: daily proof that you mattered, that your presence made a difference, that there was a reason to bring your full self to the morning. Those functions are real. They don't go away. They need a different structure to live inside.",
+      "The feeling of waiting, of something not clicking, is the gap between those needs and the new structure that hasn't been built yet. That's a construction problem. Not a character problem.",
+    ],
+    identityShiftLead:
+      "The person you were at your best in that career, the one with the judgment, the experience, the ability to walk into a room and read what was actually happening, that person didn't retire.",
+    identityShiftBody:
+      "They're just unattached at the moment. Looking for somewhere worth landing. The version of you on the other side of this has a sense of themselves that belongs to them. Fully. Not borrowed from a payroll, not contingent on a title, not dependent on a room of people who needed them. That version already exists. It's closer than it feels.",
+    futurePacingLead:
+      "Imagine being introduced to someone new. A dinner, a conversation, somewhere you didn't expect.",
+    futurePacingBody: [
+      "They ask who you are.",
+      "And what comes to mind first is not the role you held for thirty-five years. Something else surfaces. Something that's yours, that doesn't require a context to make sense, that the person across from you leans toward because it's genuinely interesting.",
+      "You answer. And you mean it.",
+      "That moment is available. It's not far from where you are right now.",
+    ],
+    ctaContext: "The next chapter is yours. This is how it starts to feel that way.",
+    share:
+      "Turns out I'm The Identity-Loss Retiree. Did everything right and still feel like something's off. This quiz put words to it better than I could. What type are you?",
+    testimonial: {
+      name: "Robert K.",
+      role: "Former school principal, 18 months retired",
+      initials: "RK",
+      quote:
+        "I kept waiting for it to click. The identity video was the first thing that put language to it without making me feel broken. My daughter said I seem more like myself. That was the moment I knew something had actually shifted.",
+    },
+  },
+  grounded: {
+    scoreContext:
+      "Your score puts you in a group that most people take years to reach. Here's what that tells us, and what's still worth exploring.",
+    oldFrame: [
+      "People who land where you landed often carry a version of this.",
+      "I've done the work. I've figured out the main things. I'm in a good place. There's probably not much left to examine here.",
+      "That's mostly accurate. And it has one blind spot.",
+    ],
+    patternInterrupt: [
+      "The retirees who stay grounded over time are not the ones who arrived and stopped. They're the ones who kept examining, kept refining, kept finding the smaller things worth addressing before they became larger ones.",
+      "The ones who thought they'd arrived tend to drift, quietly, across the following years. The settling that looks like peace slowly becomes complacency. Your score earned you something real. It didn't earn you a full stop.",
+    ],
+    reframe: [
+      "What your result actually tells us is that you've done the hardest part. The foundational work is there. What remains is refinement, and refinement at this stage compounds. A slightly better night's sleep. One conversation with your partner that's been waiting. One corner of the week that still feels different from the rest.",
+      "There's also something else worth sitting with.",
+    ],
+    identityShiftLead: "Someone close to you didn't get your result today.",
+    identityShiftBody:
+      "A partner working through something they're not fully naming. A sibling a few years behind you in this chapter, carrying the restlessness or the identity confusion or the spending anxiety that you navigated. A close friend who says they're fine in a way that sounds exactly like not fine. You've figured something out that has real value to the people around you. The Grounded Explorer who passes the right thing to the right person at the right time is doing something that matters.",
+    futurePacingLead:
+      "Picture a conversation six months from now with someone you care about who's struggling with this transition.",
+    futurePacingBody: [
+      "You're not just listening. You have something concrete to give them. A framework that names what they're going through, language that makes them feel seen, and something they can do about it tonight.",
+      "That's a different kind of conversation than telling them it'll get easier.",
+    ],
+    ctaContext:
+      "Go deeper on what's already working. Or give someone close to you the thing you wish you'd had earlier.",
+    share:
+      "Got The Grounded Explorer on the Retirement Reality Check. 4 minutes, surprisingly honest. What type does it give you?",
+    testimonial: {
+      name: "Carol M.",
+      role: "Retired, 5 years in",
+      initials: "CM",
+      quote:
+        "I expected to get nothing from it since I thought I'd worked through most of this already. One video surprised me. I sent it to my husband the same day. He watched the whole series.",
+    },
+  },
 };
 
 // ---------- Screen types ----------
