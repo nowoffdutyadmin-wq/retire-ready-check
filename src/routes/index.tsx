@@ -173,29 +173,10 @@ function tagOpenAnswer(text: string): "financial" | "social" | "identity" | "hea
   const t = text.toLowerCase();
   const match = (words: string[]) => words.some((w) => t.includes(w));
   if (
-    match([
-      "money",
-      "spend",
-      "savings",
-      "afford",
-      "financial",
-      "account",
-      "run out",
-      "portfolio",
-    ])
+    match(["money", "spend", "savings", "afford", "financial", "account", "run out", "portfolio"])
   )
     return "financial";
-  if (
-    match([
-      "alone",
-      "lonely",
-      "social",
-      "friends",
-      "people",
-      "isolated",
-      "connection",
-    ])
-  )
+  if (match(["alone", "lonely", "social", "friends", "people", "isolated", "connection"]))
     return "social";
   if (
     match([
@@ -211,8 +192,7 @@ function tagOpenAnswer(text: string): "financial" | "social" | "identity" | "hea
     ])
   )
     return "identity";
-  if (match(["health", "sick", "ill", "body", "die", "death", "aging"]))
-    return "health";
+  if (match(["health", "sick", "ill", "body", "die", "death", "aging"])) return "health";
   return "general";
 }
 
@@ -243,7 +223,8 @@ function determineResultType(
   if (overallScore >= 75) return "grounded";
 
   const byId = new Map(questions.map((q) => [q.id, q]));
-  const groundedIds = partnerStatus === "partner" ? [...CLUSTERS.grounded, "q11"] : CLUSTERS.grounded;
+  const groundedIds =
+    partnerStatus === "partner" ? [...CLUSTERS.grounded, "q11"] : CLUSTERS.grounded;
   const clusters: Record<ResultKey, string[]> = {
     anxious: CLUSTERS.anxious,
     restless: CLUSTERS.restless,
@@ -322,10 +303,7 @@ const RESULT_TITLES: Record<ResultKey, string> = {
   grounded: "The Grounded Explorer",
 };
 
-const PERSONALIZED: Record<
-  "financial" | "social" | "identity" | "health" | "general",
-  string
-> = {
+const PERSONALIZED: Record<"financial" | "social" | "identity" | "health" | "general", string> = {
   financial:
     "You mentioned money specifically. That is the most common answer we get, and the most misunderstood one. The worry lives in the nervous system. Your body spent decades in accumulation mode. The account changed. The wiring did not.",
   social:
@@ -358,8 +336,7 @@ function OffDutyAssessment() {
   const history = useRef<Screen[]>([]);
 
   const questions = useMemo(
-    () =>
-      SCORED_ALL.filter((q) => !q.partnerOnly || partnerStatus === "partner"),
+    () => SCORED_ALL.filter((q) => !q.partnerOnly || partnerStatus === "partner"),
     [partnerStatus],
   );
   const totalQuestions = questions.length + OPEN_QUESTIONS.length;
@@ -404,12 +381,9 @@ function OffDutyAssessment() {
 
   // Progress for top bar
   const progress = (() => {
-    if (screen.kind === "scored")
-      return ((screen.i + 1) / totalQuestions) * 100;
-    if (screen.kind === "halfway")
-      return (7 / totalQuestions) * 100;
-    if (screen.kind === "open")
-      return ((questions.length + screen.i + 1) / totalQuestions) * 100;
+    if (screen.kind === "scored") return ((screen.i + 1) / totalQuestions) * 100;
+    if (screen.kind === "halfway") return (7 / totalQuestions) * 100;
+    if (screen.kind === "open") return ((questions.length + screen.i + 1) / totalQuestions) * 100;
     if (screen.kind === "insight") return 100;
     return 0;
   })();
@@ -421,8 +395,7 @@ function OffDutyAssessment() {
     screen.kind === "insight";
 
   const currentLabel = (() => {
-    if (screen.kind === "scored")
-      return `Question ${screen.i + 1} of ${totalQuestions}`;
+    if (screen.kind === "scored") return `Question ${screen.i + 1} of ${totalQuestions}`;
     if (screen.kind === "halfway") return "Halfway";
     if (screen.kind === "open")
       return `Question ${questions.length + screen.i + 1} of ${totalQuestions}`;
@@ -456,9 +429,7 @@ function OffDutyAssessment() {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            {screen.kind === "landing" && (
-              <Landing onStart={() => go({ kind: "onboard", i: 0 })} />
-            )}
+            {screen.kind === "landing" && <Landing onStart={() => go({ kind: "onboard", i: 0 })} />}
 
             {screen.kind === "onboard" && screen.i === 0 && (
               <OnboardingChoice
@@ -502,9 +473,7 @@ function OffDutyAssessment() {
               />
             )}
 
-            {screen.kind === "halfway" && (
-              <Halfway onNext={() => go({ kind: "scored", i: 7 })} />
-            )}
+            {screen.kind === "halfway" && <Halfway onNext={() => go({ kind: "scored", i: 7 })} />}
 
             {screen.kind === "open" && (
               <OpenScreen
@@ -534,16 +503,10 @@ function OffDutyAssessment() {
               />
             )}
 
-            {screen.kind === "insight" && (
-              <Insight onNext={() => go({ kind: "result" })} />
-            )}
+            {screen.kind === "insight" && <Insight onNext={() => go({ kind: "result" })} />}
 
             {screen.kind === "result" && (
-              <Result
-                score={totalScore}
-                resultKey={resultKey}
-                openAnswer1Tag={openAnswer1Tag}
-              />
+              <Result score={totalScore} resultKey={resultKey} openAnswer1Tag={openAnswer1Tag} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -619,13 +582,7 @@ function PrimaryButton({
   );
 }
 
-function GhostButton({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-}) {
+function GhostButton({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) {
   return (
     <button
       type="button"
@@ -651,16 +608,14 @@ function Landing({ onStart }: { onStart: () => void }) {
         </em>
       </h1>
       <p className="mt-8 text-[18px] sm:text-[19px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        A four-minute self-assessment for people who planned the financial side
-        of retirement well but have not quite felt it yet in practice.
+        A four-minute self-assessment for people who planned the financial side of retirement well
+        but have not quite felt it yet in practice.
       </p>
       <p className="mt-4 text-[15px] text-[var(--color-muted-ink)]">
         Twelve questions. Two open ones. Your answers stay private.
       </p>
       <div className="mt-10">
-        <PrimaryButton onClick={onStart}>
-          Find out where you stand →
-        </PrimaryButton>
+        <PrimaryButton onClick={onStart}>Find out where you stand →</PrimaryButton>
       </div>
       <div className="mt-12 mx-auto h-px w-16 bg-[var(--color-rule)]" />
       <p className="mt-6 font-serif italic text-[var(--color-muted-ink)] text-[17px]">
@@ -694,9 +649,7 @@ function OnboardingChoice({
         {question}
       </h2>
       {subtext && (
-        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">
-          {subtext}
-        </p>
+        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">{subtext}</p>
       )}
       <div className="mt-8 flex flex-col gap-3">
         {options.map((opt) => {
@@ -786,13 +739,12 @@ function Halfway({ onNext }: { onNext: () => void }) {
         A brief pause
       </div>
       <h2 className="font-serif text-[40px] leading-[1.1] sm:text-[52px] text-[var(--color-ink)]">
-        You are <em className="italic text-[var(--color-accent)]">halfway</em>{" "}
-        through.
+        You are <em className="italic text-[var(--color-accent)]">halfway</em> through.
       </h2>
       <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        Most people spend years planning the financial side of retirement.
-        Almost nobody plans for what retirement actually feels like once it
-        arrives. Your answers so far are already telling us something.
+        Most people spend years planning the financial side of retirement. Almost nobody plans for
+        what retirement actually feels like once it arrives. Your answers so far are already telling
+        us something.
       </p>
       <div className="mt-10">
         <PrimaryButton onClick={onNext}>Keep going</PrimaryButton>
@@ -832,9 +784,7 @@ function OpenScreen({
         {q.text}
       </h2>
       {q.subtext && (
-        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">
-          {q.subtext}
-        </p>
+        <p className="mt-4 text-[15px] text-[var(--color-muted-ink)] italic">{q.subtext}</p>
       )}
       <textarea
         value={value}
@@ -858,15 +808,13 @@ function Insight({ onNext }: { onNext: () => void }) {
         One moment
       </div>
       <h2 className="font-serif text-[40px] leading-[1.1] sm:text-[52px] text-[var(--color-ink)]">
-        Your results are{" "}
-        <em className="italic text-[var(--color-accent)]">ready</em>.
+        Your results are <em className="italic text-[var(--color-accent)]">ready</em>.
       </h2>
       <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        More than four in ten retirees say they lose sleep over money worries,
-        even when their own financial advisor says they are doing fine. If your
-        score is lower than expected, you are not alone. The gap between the
-        numbers and how retirement actually feels is real, and it can be
-        closed.
+        More than four in ten retirees say they lose sleep over money worries, even when their own
+        financial advisor says they are doing fine. If your score is lower than expected, you are
+        not alone. The gap between the numbers and how retirement actually feels is real, and it can
+        be closed.
       </p>
       <div className="mt-10">
         <PrimaryButton onClick={onNext}>Show me my score</PrimaryButton>
@@ -927,10 +875,7 @@ function Result({
         </h3>
         <div className="mt-6 space-y-5">
           {copy.body.map((p, i) => (
-            <p
-              key={i}
-              className="text-[18px] leading-[1.75] text-[var(--color-ink-soft)]"
-            >
+            <p key={i} className="text-[18px] leading-[1.75] text-[var(--color-ink-soft)]">
               {p}
             </p>
           ))}
@@ -945,9 +890,7 @@ function Result({
         <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-accent)] mb-3">
           From your own words
         </div>
-        <p className="text-[17px] leading-[1.7] text-[var(--color-ink)]">
-          {personalized}
-        </p>
+        <p className="text-[17px] leading-[1.7] text-[var(--color-ink)]">{personalized}</p>
       </div>
 
       {/* Insight cards */}
@@ -957,11 +900,10 @@ function Result({
             The Body Keeping Score
           </div>
           <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
-            More than four in ten retirees say financial anxiety disrupts their
-            sleep, even people whose own advisors have told them they are
-            completely fine. Your nervous system did not read the financial
-            plan. That gap between the numbers and the feeling has a name. And
-            it can be closed.
+            More than four in ten retirees say financial anxiety disrupts their sleep, even people
+            whose own advisors have told them they are completely fine. Your nervous system did not
+            read the financial plan. That gap between the numbers and the feeling has a name. And it
+            can be closed.
           </p>
         </article>
         <article className="rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-6 sm:p-7">
@@ -969,10 +911,9 @@ function Result({
             Purpose and the Years Ahead
           </div>
           <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
-            Retirees with a strong sense of purpose live, on average, about
-            seven years longer, with significantly less depression, memory
-            loss, and serious illness. For your nervous system, purpose
-            functions closer to oxygen than inspiration. And it can be built
+            Retirees with a strong sense of purpose live, on average, about seven years longer, with
+            significantly less depression, memory loss, and serious illness. For your nervous
+            system, purpose functions closer to oxygen than inspiration. And it can be built
             deliberately, at any stage of this chapter.
           </p>
         </article>
@@ -985,15 +926,12 @@ function Result({
             A Faster Path
           </div>
           <p className="mt-4 text-[17px] leading-[1.7] text-[var(--color-ink-soft)]">
-            Your result puts you in the group where a conversation tends to be
-            more useful than a guide. If you would like to talk through what
-            your score means for your specific situation, book a call below. We
-            will bring context. You bring questions.
+            Your result puts you in the group where a conversation tends to be more useful than a
+            guide. If you would like to talk through what your score means for your specific
+            situation, book a call below. We will bring context. You bring questions.
           </p>
           <div className="mt-6">
-            <PrimaryButton onClick={() => {}}>
-              Book a free 20-minute call
-            </PrimaryButton>
+            <PrimaryButton onClick={() => {}}>Book a free 20-minute call</PrimaryButton>
           </div>
         </div>
       )}
@@ -1008,29 +946,24 @@ function Result({
         </h3>
         <div className="mt-6 space-y-5 text-[17px] leading-[1.75] text-[var(--color-ink-soft)]">
           <p>
-            Five short videos. Each one covers a specific pattern that gets in
-            the way of actually enjoying this chapter: financial anxiety, the
-            identity gap, sleep, the dopamine drop from leaving work, and the
-            social world that quietly disappeared.
+            Five short videos. Each one covers a specific pattern that gets in the way of actually
+            enjoying this chapter: financial anxiety, the identity gap, sleep, the dopamine drop
+            from leaving work, and the social world that quietly disappeared.
           </p>
           <p>
-            Each video follows the same structure. Here is the problem. Here is
-            how it is affecting your day-to-day. Here is what to do about it.
-            Here is why it works. The why is what most retirement content never
-            reaches.
+            Each video follows the same structure. Here is the problem. Here is how it is affecting
+            your day-to-day. Here is what to do about it. Here is why it works. The why is what most
+            retirement content never reaches.
           </p>
           <p>
-            Also included: a guided wind-down protocol for before bed, built
-            around how the nervous system actually works. People tend to
-            describe the first night differently from anything they have tried
-            before.
+            Also included: a guided wind-down protocol for before bed, built around how the nervous
+            system actually works. People tend to describe the first night differently from anything
+            they have tried before.
           </p>
         </div>
 
         <div className="mt-8 flex items-baseline gap-3">
-          <span className="font-serif text-[56px] leading-none text-[var(--color-ink)]">
-            $27
-          </span>
+          <span className="font-serif text-[56px] leading-none text-[var(--color-ink)]">$27</span>
           <span className="text-[14px] text-[var(--color-muted-ink)]">
             One-time. Instant access. No subscription.
           </span>
@@ -1055,9 +988,7 @@ function Result({
 function Footer() {
   return (
     <footer className="border-t border-[var(--color-rule)] py-10 text-center">
-      <div className="font-serif italic text-[18px] text-[var(--color-ink)]">
-        Now Off Duty
-      </div>
+      <div className="font-serif italic text-[18px] text-[var(--color-ink)]">Now Off Duty</div>
       <div className="mt-1 text-[13px] tracking-[0.18em] uppercase text-[var(--color-muted-ink)]">
         nowoffduty.com
       </div>

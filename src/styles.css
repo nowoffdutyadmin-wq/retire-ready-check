@@ -1,7 +1,6 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -10,15 +9,15 @@
   --font-sans: "Inter", system-ui, sans-serif;
 
   /* Brand tokens — Now Off Duty */
-  --color-paper: #FAF8F3;
-  --color-paper-deep: #F2EEE4;
-  --color-ink: #1A1A1A;
-  --color-ink-soft: #3A3A38;
-  --color-muted-ink: #6B6862;
-  --color-rule: #D9D3C5;
-  --color-accent: #2C3E5D;      /* deep warm navy */
-  --color-accent-deep: #1F2D45;
-  --color-accent-soft: #E8ECF2;
+  --color-paper: #faf8f3;
+  --color-paper-deep: #f2eee4;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #3a3a38;
+  --color-muted-ink: #6b6862;
+  --color-rule: #d9d3c5;
+  --color-accent: #2c3e5d; /* deep warm navy */
+  --color-accent-deep: #1f2d45;
+  --color-accent-soft: #e8ecf2;
 }
 
 @theme inline {
@@ -49,25 +48,25 @@
 
 :root {
   --radius: 0.75rem;
-  --background: #FAF8F3;
-  --foreground: #1A1A1A;
-  --card: #FFFDF8;
-  --card-foreground: #1A1A1A;
-  --popover: #FFFDF8;
-  --popover-foreground: #1A1A1A;
-  --primary: #2C3E5D;
-  --primary-foreground: #FAF8F3;
-  --secondary: #F2EEE4;
-  --secondary-foreground: #1A1A1A;
-  --muted: #F2EEE4;
-  --muted-foreground: #6B6862;
-  --accent: #E8ECF2;
-  --accent-foreground: #2C3E5D;
-  --destructive: #B14A3A;
-  --destructive-foreground: #FAF8F3;
-  --border: #D9D3C5;
-  --input: #D9D3C5;
-  --ring: #2C3E5D;
+  --background: #faf8f3;
+  --foreground: #1a1a1a;
+  --card: #fffdf8;
+  --card-foreground: #1a1a1a;
+  --popover: #fffdf8;
+  --popover-foreground: #1a1a1a;
+  --primary: #2c3e5d;
+  --primary-foreground: #faf8f3;
+  --secondary: #f2eee4;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f2eee4;
+  --muted-foreground: #6b6862;
+  --accent: #e8ecf2;
+  --accent-foreground: #2c3e5d;
+  --destructive: #b14a3a;
+  --destructive-foreground: #faf8f3;
+  --border: #d9d3c5;
+  --input: #d9d3c5;
+  --ring: #2c3e5d;
 }
 
 @layer base {
@@ -88,7 +87,10 @@
     line-height: 1.7;
   }
 
-  h1, h2, h3, .font-serif {
+  h1,
+  h2,
+  h3,
+  .font-serif {
     font-family: var(--font-serif);
     font-weight: 400;
     letter-spacing: -0.01em;
