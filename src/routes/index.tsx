@@ -986,25 +986,120 @@ function OpenScreen({
   );
 }
 
-function Insight({ onNext }: { onNext: () => void }) {
+function Calculating({ onDone }: { onDone: () => void }) {
+  const [showStep, setShowStep] = useState(0); // 0,1,2
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const t1 = window.setTimeout(() => setShowStep(1), 1500);
+    const t2 = window.setTimeout(() => setShowStep(2), 3000);
+    const t3 = window.setTimeout(() => setFadeOut(true), 3700);
+    const t4 = window.setTimeout(() => onDone(), 4000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, [onDone]);
+
   return (
-    <section className="text-center pt-10">
-      <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)] mb-8">
-        One moment
+    <div
+      className="fixed inset-0 flex flex-col items-center justify-center px-6"
+      style={{
+        backgroundColor: "#F0F5F4",
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        opacity: fadeOut ? 0 : 1,
+        transition: "opacity 0.3s ease-out",
+      }}
+    >
+      <div
+        style={{
+          width: 240,
+          height: 6,
+          borderRadius: 999,
+          backgroundColor: "#D4E2E0",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            backgroundColor: "#5B8F85",
+            borderRadius: 999,
+            width: "100%",
+            transformOrigin: "left center",
+            animation: "calcBarFill 3.5s ease-out forwards",
+          }}
+        />
       </div>
-      <h2 className="font-serif text-[40px] leading-[1.1] sm:text-[52px] text-[var(--color-ink)]">
-        Your results are <em className="italic text-[var(--color-accent)]">ready</em>.
-      </h2>
-      <p className="mt-8 text-[18px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        More than four in ten retirees say they lose sleep over money worries, even when their own
-        financial advisor says they are doing fine. If your score is lower than expected, you are
-        not alone. The gap between the numbers and how retirement actually feels is real, and it can
-        be closed.
-      </p>
-      <div className="mt-10">
-        <PrimaryButton onClick={onNext}>Show me my score</PrimaryButton>
+      <style>{`@keyframes calcBarFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @keyframes calcFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+
+      <div className="mt-8 flex flex-col items-center gap-3 text-center" style={{ minHeight: 110 }}>
+        <div
+          style={{
+            fontSize: 15,
+            color: "#5C6B6A",
+            opacity: showStep >= 0 ? 1 : 0,
+            animation: "calcFadeIn 0.5s ease-out",
+          }}
+        >
+          Reading your answers…
+        </div>
+        {showStep >= 1 && (
+          <div style={{ fontSize: 15, color: "#5C6B6A", animation: "calcFadeIn 0.5s ease-out" }}>
+            Matching your pattern…
+          </div>
+        )}
+        {showStep >= 2 && (
+          <div
+            style={{
+              fontSize: 16,
+              color: "#1C1917",
+              fontWeight: 500,
+              animation: "calcFadeIn 0.5s ease-out",
+            }}
+          >
+            Your result is ready.
+          </div>
+        )}
       </div>
-    </section>
+    </div>
+  );
+}
+
+// ---------- Results page tokens ----------
+const R = {
+  bg: "#F0F5F4",
+  card: "#FFFFFF",
+  cardAlt: "#E8EEF0",
+  barFill: "#5B8F85",
+  barTrack: "#D4E2E0",
+  ink: "#1C1917",
+  muted: "#5C6B6A",
+  rule: "#D4E2E0",
+  cta: "#C2440E",
+  body: "#44403C",
+  sage: "#5B8F85",
+};
+const SANS = "'DM Sans', system-ui, sans-serif";
+const SERIF = "'Playfair Display', Georgia, serif";
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        fontFamily: SANS,
+        fontSize: 11,
+        letterSpacing: "1.5px",
+        textTransform: "uppercase",
+        color: R.muted,
+        fontWeight: 500,
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -1012,163 +1107,876 @@ function Result({
   score,
   resultKey,
   openAnswer1Tag,
+  retirementStage,
+  partnerStatus,
 }: {
   score: number;
   resultKey: ResultKey;
-  openAnswer1Tag: "financial" | "social" | "identity" | "health" | "general";
+  openAnswer1Tag: TagKey;
+  retirementStage: string;
+  partnerStatus: string;
 }) {
-  const copy = RESULT_COPY[resultKey];
   const title = RESULT_TITLES[resultKey];
-  const range = scoreRangeLabel(score);
+  const long = RESULT_LONG[resultKey];
   const showFastPath = score <= 32;
-  const personalized = PERSONALIZED[openAnswer1Tag];
+  const showPersonalized = openAnswer1Tag !== "general";
 
-  const handleShare = () => {
-    const text = copy.share + " " + (typeof window !== "undefined" ? window.location.href : "");
-    if (typeof navigator !== "undefined" && navigator.share) {
-      navigator.share({ text }).catch(() => {});
-    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(text).catch(() => {});
+  const [displayScore, setDisplayScore] = useState(0);
+  const [barWidth, setBarWidth] = useState(0);
+  const [buyerEntered, setBuyerEntered] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    const start = performance.now();
+    const dur = 1200;
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setDisplayScore(Math.round(eased * score));
+      setBarWidth(eased * score);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [score]);
+
+  const onBuyClick = () => {
+    setBuyerEntered(true);
+    // CTA placeholder
+  };
+
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const onFacebook = () => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(long.share)}`;
+    if (typeof window !== "undefined") window.open(url, "_blank", "noopener");
+  };
+  const onCopyLink = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).catch(() => {});
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  return (
-    <section className="pt-6">
-      {/* Score header */}
-      <div className="text-center">
-        <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-          Your Off-Duty Score
-        </div>
-        <div className="mt-6 font-serif text-[96px] sm:text-[128px] leading-none text-[var(--color-ink)]">
-          {score}
-          <span className="text-[var(--color-muted-ink)] text-[40px] sm:text-[52px] align-top ml-1">
-            /100
-          </span>
-        </div>
-        <div className="mt-3 font-serif italic text-[22px] sm:text-[26px] text-[var(--color-accent)]">
-          {range}
-        </div>
-      </div>
+  const onEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    // analytics: email_capture_submitted; payload includes email, score, type, tag, stage, partner
+    void { email, score, resultKey, openAnswer1Tag, retirementStage, partnerStatus };
+    setEmailSubmitted(true);
+  };
 
-      {/* Result type */}
-      <div className="mt-12 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-10">
-        <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-          {title}
+  return (
+    <div
+      style={{ backgroundColor: R.bg, color: R.ink, fontFamily: SANS, paddingBottom: 96 }}
+      className="min-h-screen"
+    >
+      <div
+        className="mx-auto"
+        style={{ maxWidth: 560, padding: "24px 20px 28px" }}
+      >
+        {/* Brand label */}
+        <div
+          style={{
+            fontFamily: SANS,
+            fontSize: 11,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: R.muted,
+            fontWeight: 500,
+          }}
+        >
+          NEW HORIZONS
         </div>
-        <h3 className="mt-3 font-serif text-[30px] sm:text-[40px] leading-[1.1] text-[var(--color-ink)]">
-          {copy.heading}
-        </h3>
-        <div className="mt-6 space-y-5">
-          {copy.body.map((p, i) => (
-            <p key={i} className="text-[18px] leading-[1.75] text-[var(--color-ink-soft)]">
+
+        {/* Type name */}
+        <h1
+          style={{
+            fontFamily: SERIF,
+            fontSize: 34,
+            lineHeight: 1.1,
+            color: R.ink,
+            marginTop: 12,
+            fontWeight: 400,
+          }}
+          className="sm:!text-[44px]"
+        >
+          {title}
+        </h1>
+
+        {/* Score section */}
+        <div style={{ marginTop: 20 }}>
+          <div className="flex items-center justify-between">
+            <Label>YOUR READINESS SCORE</Label>
+            <div
+              style={{
+                fontFamily: SERIF,
+                fontSize: 28,
+                color: R.ink,
+                lineHeight: 1,
+                fontWeight: 400,
+              }}
+            >
+              {displayScore}
+              <span style={{ color: R.muted, fontSize: 18 }}>/100</span>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: 10,
+              width: "100%",
+              height: 10,
+              backgroundColor: R.barTrack,
+              borderRadius: 5,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${barWidth}%`,
+                height: "100%",
+                backgroundColor: R.barFill,
+                borderRadius: 5,
+                transition: "background-color 0.3s",
+              }}
+            />
+          </div>
+          <p
+            style={{
+              marginTop: 12,
+              fontFamily: SANS,
+              fontSize: 15,
+              lineHeight: 1.55,
+              color: R.muted,
+            }}
+          >
+            {long.scoreContext}
+          </p>
+        </div>
+
+        {/* Video thumbnail */}
+        <div style={{ marginTop: 20 }}>
+          <button
+            type="button"
+            onClick={() => setVideoPlaying(true)}
+            aria-label="Play video"
+            style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "16 / 9",
+              borderRadius: 10,
+              overflow: "hidden",
+              backgroundColor: "#2a3a3a",
+              backgroundImage:
+                "linear-gradient(135deg, #4a5e5b 0%, #6b8480 40%, #8aa39e 100%)",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              display: "block",
+            }}
+          >
+            {!videoPlaying ? (
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: 72,
+                    height: 72,
+                    borderRadius: "50%",
+                    backgroundColor: "#FFFFFF",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="22" height="26" viewBox="0 0 22 26" fill={R.ink}>
+                    <path d="M2 2 L20 13 L2 24 Z" />
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#fff",
+                  fontFamily: SANS,
+                  fontSize: 14,
+                }}
+              >
+                Video would play here
+              </div>
+            )}
+          </button>
+          <div
+            style={{
+              marginTop: 8,
+              textAlign: "center",
+              fontFamily: SANS,
+              fontSize: 13,
+              color: R.muted,
+            }}
+          >
+            3 min · No signup required
+          </div>
+        </div>
+
+        {/* Section A — Old Frame + Section B — Pattern Interrupt + Reframe */}
+        <div style={{ marginTop: 32 }}>
+          {long.oldFrame.map((p, i) => (
+            <p key={`of${i}`} style={paraStyle()}>
+              {p}
+            </p>
+          ))}
+          {long.patternInterrupt.map((p, i) => (
+            <p key={`pi${i}`} style={paraStyle()}>
+              {p}
+            </p>
+          ))}
+          {long.reframe.map((p, i) => (
+            <p key={`rf${i}`} style={paraStyle()}>
               {p}
             </p>
           ))}
         </div>
-        <p className="mt-8 pt-6 border-t border-[var(--color-rule)] text-[14px] leading-[1.65] text-[var(--color-muted-ink)] italic">
-          {copy.note}
-        </p>
-      </div>
 
-      {/* Personalized paragraph */}
-      <div className="mt-10 rounded-xl bg-[var(--color-accent-soft)] p-6 sm:p-8 border border-[var(--color-accent)]/15">
-        <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-accent)] mb-3">
-          From your own words
-        </div>
-        <p className="text-[17px] leading-[1.7] text-[var(--color-ink)]">{personalized}</p>
-      </div>
-
-      {/* Insight cards */}
-      <div className="mt-10 grid gap-5 sm:grid-cols-2">
-        <article className="rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-6 sm:p-7">
-          <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-            The Body Keeping Score
-          </div>
-          <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
-            More than four in ten retirees say financial anxiety disrupts their sleep, even people
-            whose own advisors have told them they are completely fine. Your nervous system did not
-            read the financial plan. That gap between the numbers and the feeling has a name. And it
-            can be closed.
+        {/* Section C — Identity Shift */}
+        <div style={{ marginTop: 28 }}>
+          <p
+            style={{
+              fontFamily: SERIF,
+              fontStyle: "italic",
+              fontSize: 18,
+              lineHeight: 1.45,
+              color: R.ink,
+              margin: 0,
+            }}
+          >
+            {long.identityShiftLead}
           </p>
-        </article>
-        <article className="rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-6 sm:p-7">
-          <div className="text-[11px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-            Purpose and the Years Ahead
-          </div>
-          <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-ink-soft)]">
-            Retirees with a strong sense of purpose live, on average, about seven years longer, with
-            significantly less depression, memory loss, and serious illness. For your nervous
-            system, purpose functions closer to oxygen than inspiration. And it can be built
-            deliberately, at any stage of this chapter.
-          </p>
-        </article>
-      </div>
-
-      {/* Fast path */}
-      {showFastPath && (
-        <div className="mt-10 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-card)] p-7 sm:p-9">
-          <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-accent)]">
-            A Faster Path
-          </div>
-          <p className="mt-4 text-[17px] leading-[1.7] text-[var(--color-ink-soft)]">
-            Your result puts you in the group where a conversation tends to be more useful than a
-            guide. If you would like to talk through what your score means for your specific
-            situation, book a call below. We will bring context. You bring questions.
-          </p>
-          <div className="mt-6">
-            <PrimaryButton onClick={() => {}}>Book a free 20-minute call</PrimaryButton>
-          </div>
-        </div>
-      )}
-
-      {/* Product offer */}
-      <div className="mt-10 rounded-2xl border border-[var(--color-rule)] bg-[var(--color-card)] p-7 sm:p-10">
-        <div className="text-[12px] tracking-[0.22em] uppercase text-[var(--color-muted-ink)]">
-          The Off-Duty Reset
-        </div>
-        <h3 className="mt-3 font-serif text-[30px] sm:text-[40px] leading-[1.1] text-[var(--color-ink)]">
-          A short bingeable guide to the things this quiz just surfaced.
-        </h3>
-        <div className="mt-6 space-y-5 text-[17px] leading-[1.75] text-[var(--color-ink-soft)]">
-          <p>
-            Five short videos. Each one covers a specific pattern that gets in the way of actually
-            enjoying this chapter: financial anxiety, the identity gap, sleep, the dopamine drop
-            from leaving work, and the social world that quietly disappeared.
-          </p>
-          <p>
-            Each video follows the same structure. Here is the problem. Here is how it is affecting
-            your day-to-day. Here is what to do about it. Here is why it works. The why is what most
-            retirement content never reaches.
-          </p>
-          <p>
-            Also included: a guided wind-down protocol for before bed, built around how the nervous
-            system actually works. People tend to describe the first night differently from anything
-            they have tried before.
-          </p>
+          <p style={{ ...paraStyle(), marginTop: 14 }}>{long.identityShiftBody}</p>
         </div>
 
-        <div className="mt-8 flex items-baseline gap-3">
-          <span className="font-serif text-[56px] leading-none text-[var(--color-ink)]">$27</span>
-          <span className="text-[14px] text-[var(--color-muted-ink)]">
+        {/* Section D — Personalised */}
+        {showPersonalized && (
+          <div
+            style={{
+              marginTop: 28,
+              backgroundColor: R.card,
+              border: `1px solid ${R.rule}`,
+              borderRadius: 12,
+              padding: 20,
+            }}
+          >
+            <Label>BASED ON WHAT YOU SHARED</Label>
+            <p
+              style={{
+                marginTop: 10,
+                fontFamily: SANS,
+                fontStyle: "italic",
+                fontSize: 16,
+                lineHeight: 1.55,
+                color: R.body,
+              }}
+            >
+              {PERSONALIZED[openAnswer1Tag]}
+            </p>
+          </div>
+        )}
+
+        {/* Section E — Future Pacing */}
+        <div
+          style={{
+            marginTop: 28,
+            backgroundColor: R.card,
+            borderRadius: 12,
+            padding: "24px 20px",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: SERIF,
+              fontStyle: "italic",
+              fontSize: 18,
+              lineHeight: 1.45,
+              color: R.ink,
+              margin: 0,
+            }}
+          >
+            {long.futurePacingLead}
+          </p>
+          {long.futurePacingBody.map((p, i) => (
+            <p
+              key={`fp${i}`}
+              style={{
+                marginTop: 14,
+                marginBottom: 0,
+                fontFamily: SANS,
+                fontSize: 16,
+                lineHeight: 1.65,
+                color: R.ink,
+              }}
+            >
+              {p}
+            </p>
+          ))}
+        </div>
+
+        {/* Section F — Insight cards */}
+        <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 14 }}>
+          {[
+            {
+              h: "The body keeping score",
+              b: "More than 4 in 10 retirees say financial anxiety disrupts their sleep, even people whose own advisors have told them they're completely fine. Your nervous system didn't read the financial plan. That gap between the numbers and the feeling has a name. And it can be closed.",
+            },
+            {
+              h: "Purpose and the years ahead",
+              b: "Retirees with a strong sense of purpose live, on average, about seven years longer, with significantly less depression, memory loss, and serious illness. For your nervous system, purpose functions closer to oxygen than inspiration. And it can be built deliberately, at any stage of this chapter.",
+            },
+          ].map((c, i) => (
+            <div
+              key={i}
+              style={{
+                backgroundColor: R.cardAlt,
+                borderRadius: 12,
+                padding: 20,
+              }}
+            >
+              <Label>WHAT THE RESEARCH SHOWS</Label>
+              <h3
+                style={{
+                  marginTop: 8,
+                  fontFamily: SERIF,
+                  fontSize: 18,
+                  lineHeight: 1.25,
+                  color: R.ink,
+                  fontWeight: 400,
+                }}
+              >
+                {c.h}
+              </h3>
+              <p
+                style={{
+                  marginTop: 10,
+                  fontFamily: SANS,
+                  fontSize: 16,
+                  lineHeight: 1.65,
+                  color: R.body,
+                }}
+              >
+                {c.b}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Section G — Product offer */}
+        <div
+          style={{
+            marginTop: 28,
+            paddingTop: 28,
+            borderTop: `1px solid ${R.rule}`,
+          }}
+        >
+          <Label>THE NEXT STEP</Label>
+          <h2
+            style={{
+              marginTop: 8,
+              fontFamily: SERIF,
+              fontSize: 26,
+              lineHeight: 1.2,
+              color: R.ink,
+              fontWeight: 400,
+            }}
+          >
+            The Off-Duty Reset
+          </h2>
+          <p
+            style={{
+              marginTop: 6,
+              fontFamily: SANS,
+              fontStyle: "italic",
+              fontSize: 16,
+              color: R.muted,
+              lineHeight: 1.5,
+            }}
+          >
+            A short bingeable guide to the things this quiz just surfaced
+          </p>
+          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 14 }}>
+            <p style={offerParaStyle()}>
+              Five short videos. Each one covers a specific pattern that gets in the way of actually
+              enjoying this chapter: financial anxiety, the identity gap, sleep, the dopamine drop
+              from leaving work, and the social world that quietly disappeared.
+            </p>
+            <p style={offerParaStyle()}>
+              Each video follows the same structure. Here is the problem. Here is how it is
+              affecting your day-to-day. Here is what to do about it. Here is why it works. The why
+              is what most retirement content never reaches.
+            </p>
+            <p style={offerParaStyle()}>
+              Also included: a guided wind-down protocol for before bed, built around nervous system
+              science. People tend to describe the first night differently from anything they have
+              tried before.
+            </p>
+          </div>
+
+          <div
+            style={{
+              marginTop: 24,
+              fontFamily: SERIF,
+              fontSize: 38,
+              color: R.cta,
+              lineHeight: 1,
+              fontWeight: 500,
+            }}
+          >
+            $27
+          </div>
+          <div style={{ marginTop: 6, fontFamily: SANS, fontSize: 14, color: R.muted }}>
             One-time. Instant access. No subscription.
-          </span>
+          </div>
+
+          {/* Guarantee badge */}
+          <div
+            style={{
+              marginTop: 16,
+              backgroundColor: R.card,
+              border: `1px solid ${R.sage}`,
+              borderRadius: 8,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path
+                d="M12 2 L20 5 V11 C20 16 16 20 12 22 C8 20 4 16 4 11 V5 Z"
+                stroke={R.sage}
+                strokeWidth="1.8"
+                fill="none"
+              />
+              <path d="M8.5 12 L11 14.5 L16 9.5" stroke={R.sage} strokeWidth="1.8" fill="none" />
+            </svg>
+            <div style={{ fontFamily: SANS, fontSize: 14, color: R.ink, lineHeight: 1.45 }}>
+              <div style={{ fontWeight: 500 }}>30-Day Money-Back Guarantee</div>
+              <div style={{ color: R.muted, fontWeight: 400 }}>
+                If it doesn't help, email us. Full refund, no questions.
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial */}
+          <div
+            style={{
+              marginTop: 20,
+              backgroundColor: R.card,
+              border: `1px solid ${R.rule}`,
+              borderRadius: 12,
+              padding: 20,
+            }}
+          >
+            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  backgroundColor: R.cardAlt,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: SERIF,
+                  fontSize: 20,
+                  color: R.ink,
+                  flexShrink: 0,
+                }}
+              >
+                {long.testimonial.initials}
+              </div>
+              <div>
+                <div style={{ fontFamily: SANS, fontSize: 14, color: R.ink, fontWeight: 500 }}>
+                  {long.testimonial.name}
+                </div>
+                <div style={{ fontFamily: SANS, fontSize: 13, color: R.muted }}>
+                  {long.testimonial.role}
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: 14, display: "flex", gap: 2 }}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={R.cta}>
+                  <path d="M12 2 L14.6 9 L22 9.5 L16.2 14.2 L18 21.5 L12 17.5 L6 21.5 L7.8 14.2 L2 9.5 L9.4 9 Z" />
+                </svg>
+              ))}
+            </div>
+            <p
+              style={{
+                marginTop: 10,
+                fontFamily: SANS,
+                fontStyle: "italic",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: R.body,
+              }}
+            >
+              "{long.testimonial.quote}"
+            </p>
+          </div>
+
+          <p
+            style={{
+              marginTop: 16,
+              fontFamily: SANS,
+              fontSize: 15,
+              lineHeight: 1.55,
+              color: R.muted,
+            }}
+          >
+            {long.ctaContext}
+          </p>
+
+          {/* Inline CTA */}
+          <button
+            type="button"
+            onClick={onBuyClick}
+            style={{
+              marginTop: 12,
+              width: "100%",
+              height: 56,
+              borderRadius: 10,
+              backgroundColor: R.cta,
+              color: "#FFFFFF",
+              fontFamily: SANS,
+              fontSize: 17,
+              fontWeight: 500,
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Get the Off-Duty Reset — $27 →
+          </button>
+          <div
+            style={{
+              marginTop: 10,
+              textAlign: "center",
+              fontFamily: SANS,
+              fontSize: 13,
+              color: R.muted,
+            }}
+          >
+            Secure checkout · Instant delivery · 30-day guarantee
+          </div>
         </div>
 
-        <div className="mt-8">
-          <PrimaryButton onClick={() => {}}>Get instant access</PrimaryButton>
+        {/* Section K — Email capture (lead magnet) */}
+        {!buyerEntered && (
+          <div
+            style={{
+              marginTop: 28,
+              backgroundColor: R.card,
+              border: `1px solid ${R.rule}`,
+              borderRadius: 12,
+              padding: 20,
+            }}
+          >
+            <Label>NOT READY YET?</Label>
+            <h3
+              style={{
+                marginTop: 8,
+                fontFamily: SERIF,
+                fontSize: 22,
+                lineHeight: 1.25,
+                color: R.ink,
+                fontWeight: 400,
+              }}
+            >
+              We'll send you the first video free.
+            </h3>
+            <p
+              style={{
+                marginTop: 10,
+                fontFamily: SANS,
+                fontSize: 16,
+                lineHeight: 1.65,
+                color: R.body,
+              }}
+            >
+              Tell us where to send it and we'll email you the video from the guide that matches
+              your result type. No payment. No catch. Just the part most relevant to where you are
+              right now.
+            </p>
+            {emailSubmitted ? (
+              <div
+                style={{
+                  marginTop: 16,
+                  textAlign: "center",
+                  fontFamily: SANS,
+                  fontSize: 15,
+                  color: R.sage,
+                }}
+              >
+                Done. Check your inbox — it'll be there in a few minutes.
+              </div>
+            ) : (
+              <form onSubmit={onEmailSubmit} style={{ marginTop: 16 }}>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  style={{
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 8,
+                    border: `1px solid ${R.rule}`,
+                    fontFamily: SANS,
+                    fontSize: 16,
+                    color: R.ink,
+                    padding: "0 14px",
+                    backgroundColor: "#fff",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    marginTop: 10,
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 8,
+                    backgroundColor: R.ink,
+                    color: "#fff",
+                    border: "none",
+                    fontFamily: SANS,
+                    fontSize: 16,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                  }}
+                >
+                  Send me the free video →
+                </button>
+              </form>
+            )}
+            <div
+              style={{
+                marginTop: 10,
+                textAlign: "center",
+                fontFamily: SANS,
+                fontSize: 12,
+                color: R.muted,
+              }}
+            >
+              No spam. Unsubscribe any time.
+            </div>
+          </div>
+        )}
+
+        {/* Section L — Share */}
+        <div
+          style={{
+            marginTop: 28,
+            backgroundColor: R.cardAlt,
+            borderRadius: 12,
+            padding: 20,
+          }}
+        >
+          <h3
+            style={{
+              fontFamily: SERIF,
+              fontSize: 18,
+              color: R.ink,
+              fontWeight: 400,
+              lineHeight: 1.3,
+              margin: 0,
+            }}
+          >
+            Know someone who should take this?
+          </h3>
+          <p
+            style={{
+              marginTop: 8,
+              fontFamily: SANS,
+              fontSize: 15,
+              color: R.muted,
+              lineHeight: 1.55,
+            }}
+          >
+            Share your result type and let them find out where they land.
+          </p>
+          <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+            <button
+              type="button"
+              onClick={onFacebook}
+              style={{
+                width: "100%",
+                height: 52,
+                borderRadius: 10,
+                backgroundColor: "#1877F2",
+                color: "#fff",
+                border: "none",
+                fontFamily: SANS,
+                fontSize: 15,
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
+            >
+              Share on Facebook
+            </button>
+            <button
+              type="button"
+              onClick={onCopyLink}
+              style={{
+                width: "100%",
+                height: 52,
+                borderRadius: 10,
+                backgroundColor: "#fff",
+                color: R.ink,
+                border: `1px solid ${R.rule}`,
+                fontFamily: SANS,
+                fontSize: 15,
+                cursor: "pointer",
+              }}
+            >
+              {copied ? "Copied ✓" : "Copy link"}
+            </button>
+          </div>
         </div>
-        <p className="mt-4 text-[13px] text-[var(--color-muted-ink)]">
-          Secure checkout. Instant delivery.
-        </p>
+
+        {/* Section M — Fast path */}
+        {showFastPath && (
+          <div
+            style={{
+              marginTop: 24,
+              backgroundColor: R.card,
+              borderLeft: `3px solid ${R.cta}`,
+              borderRadius: 8,
+              padding: "20px 20px 20px 24px",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: SANS,
+                fontSize: 16,
+                color: R.body,
+                lineHeight: 1.7,
+                margin: 0,
+              }}
+            >
+              Your result puts you in the group where a conversation tends to be more useful than a
+              guide. If you want to talk through what your score means for your specific situation,
+              you can book a call below. Bring your questions. We'll bring context.
+            </p>
+            <button
+              type="button"
+              style={{
+                marginTop: 16,
+                width: "100%",
+                height: 52,
+                borderRadius: 10,
+                backgroundColor: "#fff",
+                border: `1.5px solid ${R.cta}`,
+                color: R.cta,
+                fontFamily: SANS,
+                fontSize: 15,
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
+            >
+              Book a free 20-minute call →
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Share */}
-      <div className="mt-10 text-center">
-        <GhostButton onClick={handleShare}>Share your result</GhostButton>
+      {/* Sticky CTA bar — mobile only */}
+      <div
+        className="md:hidden"
+        style={{
+          position: "fixed",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: R.cta,
+          height: 64,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 16px calc(env(safe-area-inset-bottom, 0px)) 16px",
+          zIndex: 50,
+          fontFamily: SANS,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 12,
+            color: "rgba(255,255,255,0.85)",
+            lineHeight: 1.3,
+            flex: 1,
+            paddingRight: 12,
+          }}
+        >
+          {title} · {score}/100
+        </div>
+        <button
+          type="button"
+          onClick={onBuyClick}
+          style={{
+            backgroundColor: "#fff",
+            color: R.cta,
+            borderRadius: 6,
+            padding: "10px 18px",
+            border: "none",
+            fontFamily: SANS,
+            fontSize: 14,
+            fontWeight: 500,
+            cursor: "pointer",
+            minHeight: 44,
+          }}
+        >
+          Get the guide — $27 →
+        </button>
       </div>
-    </section>
+    </div>
   );
 }
+
+function paraStyle(): React.CSSProperties {
+  return {
+    fontFamily: SANS,
+    fontSize: 16,
+    lineHeight: 1.6,
+    color: R.ink,
+    marginTop: 14,
+    marginBottom: 0,
+  };
+}
+function offerParaStyle(): React.CSSProperties {
+  return {
+    fontFamily: SANS,
+    fontSize: 16,
+    lineHeight: 1.75,
+    color: R.body,
+    margin: 0,
+  };
+}
+
 
 function Footer() {
   return (
