@@ -238,16 +238,6 @@ function OffDutyAssessment() {
         @keyframes barFill { from { width: 0%; } }
         @keyframes fadeUp { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform: translateY(0);} }
         .focus-ring:focus-visible { outline: 3px solid ${T.sage}; outline-offset: 2px; }
-        input[type=range].likert::-webkit-slider-thumb {
-          -webkit-appearance: none; appearance: none;
-          height: 28px; width: 28px; border-radius: 999px;
-          background: ${T.sageDeep}; border: 3px solid ${T.paper};
-          box-shadow: 0 1px 4px rgba(0,0,0,.2); cursor: pointer;
-        }
-        input[type=range].likert::-moz-range-thumb {
-          height: 28px; width: 28px; border-radius: 999px;
-          background: ${T.sageDeep}; border: 3px solid ${T.paper}; cursor: pointer;
-        }
       `}</style>
 
       {/* Top progress (hidden on landing/calculating/email/results) */}
@@ -468,13 +458,28 @@ function ScoredQuestion({
   value: number | null;
   onAnswer: (v: number) => void;
 }) {
-  const [v, setV] = useState<number>(value ?? 5);
-  const [touched, setTouched] = useState<boolean>(value != null);
+  const [selected, setSelected] = useState<number | null>(value);
+  const advanceTimer = useRef<number | null>(null);
 
   useEffect(() => {
-    setV(value ?? 5);
-    setTouched(value != null);
+    setSelected(value);
+    if (advanceTimer.current != null) {
+      window.clearTimeout(advanceTimer.current);
+      advanceTimer.current = null;
+    }
   }, [q.id, value]);
+
+  useEffect(() => {
+    return () => {
+      if (advanceTimer.current != null) window.clearTimeout(advanceTimer.current);
+    };
+  }, []);
+
+  const pick = (next: number) => {
+    setSelected(next);
+    if (advanceTimer.current != null) window.clearTimeout(advanceTimer.current);
+    advanceTimer.current = window.setTimeout(() => onAnswer(next), 220);
+  };
 
   return (
     <section className="pt-4">
@@ -488,76 +493,36 @@ function ScoredQuestion({
         {q.text}
       </h2>
 
-      <div
-        className="mt-10 rounded-2xl p-6 sm:p-8"
-        style={{ backgroundColor: T.paper, border: `1px solid ${T.rule}` }}
-      >
-        {/* Number bubble preview */}
-        <div className="flex items-center justify-center mb-6">
-          <div
-            className="flex items-center justify-center rounded-full"
-            style={{
-              width: 64,
-              height: 64,
-              backgroundColor: touched ? T.sageSoft : T.bgDeep,
-              color: T.ink,
-              fontFamily: "'Instrument Serif', Georgia, serif",
-              fontSize: 32,
-              border: `1px solid ${T.rule}`,
-            }}
-            aria-live="polite"
-          >
-            {touched ? v : "·"}
-          </div>
+      <div className="mt-10">
+        <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
+            const isSelected = selected === n;
+            return (
+              <button
+                key={n}
+                type="button"
+                onClick={() => pick(n)}
+                aria-label={`Rate ${n} out of 10`}
+                aria-pressed={isSelected}
+                className="focus-ring aspect-square min-h-[48px] rounded-full border text-[16px] font-medium transition-all"
+                style={{
+                  backgroundColor: isSelected ? T.sageDeep : T.paper,
+                  borderColor: isSelected ? T.sageDeep : T.rule,
+                  color: isSelected ? T.paper : T.ink,
+                  boxShadow: isSelected ? "0 6px 16px -12px rgba(31,36,33,.55)" : "none",
+                  transform: isSelected ? "scale(1.05)" : "scale(1)",
+                }}
+              >
+                {n}
+              </button>
+            );
+          })}
         </div>
 
-        <input
-          type="range"
-          min={1}
-          max={10}
-          step={1}
-          value={v}
-          onChange={(e) => {
-            setV(parseInt(e.target.value, 10));
-            setTouched(true);
-          }}
-          className="likert focus-ring w-full"
-          style={{
-            WebkitAppearance: "none",
-            appearance: "none",
-            height: 6,
-            background: `linear-gradient(to right, ${T.sage} 0%, ${T.sage} ${
-              ((v - 1) / 9) * 100
-            }%, ${T.rule} ${((v - 1) / 9) * 100}%, ${T.rule} 100%)`,
-            borderRadius: 999,
-          }}
-          aria-label={q.text}
-        />
-
-        <div className="mt-4 flex justify-between text-[13px]" style={{ color: T.muted }}>
-          <span>1</span>
-          <span>5</span>
-          <span>10</span>
-        </div>
-        <div className="mt-1 flex justify-between text-[13px] sm:text-[14px]" style={{ color: T.inkSoft }}>
+        <div className="mt-4 flex justify-between text-[13px] sm:text-[14px]" style={{ color: T.inkSoft }}>
           <span>Strongly disagree</span>
-          <span className="hidden sm:inline">Neutral</span>
           <span>Strongly agree</span>
         </div>
-
-        <button
-          onClick={() => onAnswer(v)}
-          disabled={!touched}
-          className="focus-ring mt-8 w-full rounded-[10px] text-[17px] font-medium transition-colors"
-          style={{
-            backgroundColor: touched ? T.ink : T.rule,
-            color: "#FBFAF5",
-            minHeight: 52,
-            cursor: touched ? "pointer" : "not-allowed",
-          }}
-        >
-          Continue
-        </button>
       </div>
     </section>
   );
