@@ -432,14 +432,6 @@ function Landing({ onStart }: { onStart: () => void }) {
           Twelve questions. Two open ones. Your answers stay private.
         </p>
       </div>
-
-      <div
-        className="mt-16 pt-8 text-[15px] leading-[1.6]"
-        style={{ color: T.muted, borderTop: `1px solid ${T.rule}`, maxWidth: 560 }}
-      >
-        For people who planned the financial side of retirement well, but haven't quite felt it yet
-        in practice.
-      </div>
     </section>
   );
 }
