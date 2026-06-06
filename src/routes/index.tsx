@@ -788,13 +788,11 @@ function Landing({ onStart }: { onStart: () => void }) {
       <h1 className="font-serif text-[40px] leading-[1.08] sm:text-[60px] sm:leading-[1.02] tracking-tight text-[var(--color-ink)]">
         You have enough.
         <br />
-        <em className="italic text-[var(--color-accent)]">
-          So why can't you bring yourself to touch it?
-        </em>
+        <em className="italic text-[var(--color-accent)]">So why don’t you feel safe?</em>
       </h1>
       <p className="mt-8 text-[18px] sm:text-[19px] leading-[1.7] text-[var(--color-ink-soft)] max-w-xl mx-auto">
-        A four-minute self-assessment for people who planned the financial side of retirement well
-        but have not quite felt it yet in practice.
+        A four-minute self-assessment to find the sticking points that may be keeping retirement
+        from feeling as safe, calm, and enjoyable as it should.
       </p>
       <p className="mt-4 text-[15px] text-[var(--color-muted-ink)]">
         Twelve questions. Two open ones. Your answers stay private.
