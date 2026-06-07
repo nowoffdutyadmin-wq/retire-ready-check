@@ -404,7 +404,9 @@ function Landing({ onStart }: { onStart: () => void }) {
         className="text-[40px] leading-[1.05] sm:text-[56px] sm:leading-[1.02] tracking-[-0.01em]"
         style={{ fontFamily: "'Instrument Serif', Georgia, serif", color: T.ink }}
       >
-        You have enough. So why don't you feel safe?
+        You have <em className="italic">enough</em>.
+        <br />
+        So why don’t you feel <em className="italic">safe</em>?
       </h1>
       <p
         className="mt-6 text-[18px] sm:text-[20px] leading-[1.55]"
@@ -428,9 +430,6 @@ function Landing({ onStart }: { onStart: () => void }) {
         >
           Start the assessment
         </button>
-        <p className="mt-4 text-[14px]" style={{ color: T.muted }}>
-          Twelve questions. Two open ones. Your answers stay private.
-        </p>
       </div>
     </section>
   );
