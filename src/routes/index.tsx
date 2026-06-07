@@ -430,6 +430,9 @@ function Landing({ onStart }: { onStart: () => void }) {
         >
           Start the assessment
         </button>
+        <p className="mt-4 text-[14px]" style={{ color: T.muted }}>
+          Your answers stay private.
+        </p>
       </div>
     </section>
   );
