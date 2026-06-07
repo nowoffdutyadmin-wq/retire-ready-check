@@ -108,24 +108,24 @@ type Archetype =
   | "ready_adjusting";
 
 const ARCHETYPE_TITLE: Record<Archetype, string> = {
-  saving_mode: "The Saving Mode Retiree",
-  restless_protector: "The Restless Protector",
+  saving_mode: "The Anxious Protector",
+  restless_protector: "The Restless Operator",
   grounded_explorer: "The Grounded Explorer",
-  almost_off_duty: "The Almost-Off-Duty Retiree",
-  ready_adjusting: "The Ready-but-Still-Adjusting Retiree",
+  almost_off_duty: "The Almost-Ready",
+  ready_adjusting: "The Quiet Settler",
 };
 
 const ARCHETYPE_LINE: Record<Archetype, string> = {
   saving_mode:
-    "Your answers suggest that part of you knows you have enough, but another part may still treat spending like a threat.",
+    "The money is there. Your nervous system hasn't accepted that yet.",
   restless_protector:
-    "Your answers suggest your body may still be carrying tension, even when life looks calmer on paper.",
+    "You left the job. The tension in your body didn't get the memo.",
   grounded_explorer:
-    "Your answers suggest this chapter may be asking for a new rhythm, purpose, and sense of direction.",
+    "You've figured out something most people spend years circling.",
   almost_off_duty:
-    "Your answers suggest you are close, but a few sticking points may still be keeping your mind on duty.",
+    "You're closer than your score suggests. A few things are still running underneath.",
   ready_adjusting:
-    "Your answers suggest you are doing well overall, with a few areas still worth paying attention to.",
+    "Most of this chapter is working. One or two corners are still settling.",
 };
 
 function computeResult(scores: Record<string, number>) {
@@ -930,7 +930,7 @@ function Results({
           {ARCHETYPE_LINE[archetype]}
         </p>
         <p className="mt-4 text-[18px] leading-[1.6]" style={{ color: T.inkSoft }}>
-          If you're ready to do something about your score, start with the video below.
+          The video below explains what's driving your score, and what shifts it.
         </p>
       </div>
 
@@ -1048,7 +1048,7 @@ function Results({
         </div>
 
         <p className="mt-4 text-[14px]" style={{ color: T.muted }}>
-          If you'd rather just get started, the button is below.
+          Or skip ahead. The button is below.
         </p>
       </div>
 
@@ -1067,8 +1067,9 @@ function Results({
           Start the Off-Duty Reset
         </h3>
         <p className="mt-4 text-[16px] leading-[1.6]" style={{ color: T.inkSoft }}>
-          Get the guided morning and evening practices, the simple reset routine, and the next
-          steps for helping retirement feel safer, calmer, and easier to enjoy.
+          Five short videos, each one addressing something specific sitting behind your score. A
+          guided wind-down audio for the physical tension most people don't realise they're still
+          carrying. Everything ships immediately.
         </p>
 
         <div
@@ -1120,7 +1121,7 @@ function Results({
               30-day money-back guarantee.
             </div>
             <div className="text-[14px] mt-1 leading-[1.5]" style={{ color: T.inkSoft }}>
-              Try it. If it does not feel useful, email us within 30 days and we'll refund you.
+              If it doesn't help, email us within 30 days. Full refund, no questions.
             </div>
           </div>
         </div>
