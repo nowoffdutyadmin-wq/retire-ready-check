@@ -9,6 +9,16 @@
     "binding": "ASSETS",
     "directory": ".output/public",
   },
+  "routes": [
+    {
+      "pattern": "nowoffduty.com",
+      "custom_domain": true,
+    },
+    {
+      "pattern": "survey.nowoffduty.com",
+      "custom_domain": true,
+    },
+  ],
   "rules": [
     {
       "type": "ESModule",
