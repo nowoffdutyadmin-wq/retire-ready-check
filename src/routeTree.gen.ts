@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as RefundRouteImport } from './routes/refund'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -23,6 +24,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SurveyRoute = SurveyRouteImport.update({
+  id: '/survey',
+  path: '/survey',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RefundRoute = RefundRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/refund': typeof RefundRoute
+  '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/refund': typeof RefundRoute
+  '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/refund': typeof RefundRoute
+  '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/quiz'
     | '/refund'
+    | '/survey'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/quiz'
     | '/refund'
+    | '/survey'
     | '/terms'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/quiz'
     | '/refund'
+    | '/survey'
     | '/terms'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
   RefundRoute: typeof RefundRoute
+  SurveyRoute: typeof SurveyRoute
   TermsRoute: typeof TermsRoute
 }
 
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/survey': {
+      id: '/survey'
+      path: '/survey'
+      fullPath: '/survey'
+      preLoaderRoute: typeof SurveyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/refund': {
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
   RefundRoute: RefundRoute,
+  SurveyRoute: SurveyRoute,
   TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport

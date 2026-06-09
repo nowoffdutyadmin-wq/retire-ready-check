@@ -49,7 +49,7 @@ function Home() {
             system side of retirement: the part spreadsheets cannot settle on their own.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/quiz">Take the four-minute quiz</ButtonLink>
+            <ButtonLink href="/survey">Take the four-minute survey</ButtonLink>
             <ButtonLink href="/about" secondary>
               Learn about Chris
             </ButtonLink>
@@ -140,7 +140,7 @@ function Home() {
             should.
           </p>
           <div className="mt-6">
-            <ButtonLink href="/quiz">Start the assessment</ButtonLink>
+            <ButtonLink href="/survey">Start the assessment</ButtonLink>
           </div>
         </div>
       </Section>

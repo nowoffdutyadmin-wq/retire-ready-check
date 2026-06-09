@@ -39,7 +39,7 @@ function Articles() {
             a nervous system problem.
           </p>
           <div className="mt-6">
-            <ButtonLink href="/quiz">Take the quiz first</ButtonLink>
+            <ButtonLink href="/survey">Take the survey first</ButtonLink>
           </div>
         </div>
       </Section>
