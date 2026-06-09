@@ -81,23 +81,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement.",
+          "Now Off Duty helps people understand the emotional and nervous system side of retirement.",
       },
-      { name: "author", content: "Lovable" },
+      { name: "author", content: "Now Off Duty" },
       { property: "og:title", content: "Now Off Duty" },
       {
         property: "og:description",
         content:
-          "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement.",
+          "Practical coaching and education for the part of retirement spreadsheets cannot settle.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Now Off Duty" },
       {
         name: "twitter:description",
         content:
-          "Retirement Reality Check is a quiz that assesses emotional and psychological readiness for retirement.",
+          "Practical coaching and education for the emotional and nervous system side of retirement.",
       },
       {
         property: "og:image",
