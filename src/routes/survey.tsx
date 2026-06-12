@@ -6,24 +6,24 @@ import { DisclaimerBox, SiteShell } from "../components/site-shell";
 export const Route = createFileRoute("/survey")({
   head: () => ({
     meta: [
-      { title: "The Retirement Reality Check — Now Off Duty" },
+      { title: "The Retirement Transition Assessment — Now Off Duty" },
       {
         name: "description",
         content:
-          "A four-minute self-assessment to find the sticking points that may be keeping retirement from feeling as safe, calm, and enjoyable as it should.",
+          "A four-minute self-assessment to see which parts of the retirement transition may need more clarity beyond the numbers.",
       },
-      { property: "og:title", content: "The Retirement Reality Check — Now Off Duty" },
+      { property: "og:title", content: "The Retirement Transition Assessment — Now Off Duty" },
       {
         property: "og:description",
         content:
-          "You have enough. So why don't you feel safe? A four-minute self-assessment.",
+          "You have enough. So why don't you feel safe? Take the four-minute Retirement Transition Assessment.",
       },
     ],
   }),
-  component: QuizPage,
+  component: AssessmentPage,
 });
 
-function QuizPage() {
+function AssessmentPage() {
   return (
     <SiteShell>
       <OffDutyAssessment />
@@ -58,9 +58,9 @@ type ScoredQ = {
 const SCORED: ScoredQ[] = [
   { id: "q1", text: "I find it hard to spend on myself, even on things I can clearly afford." },
   { id: "q2", text: "I check my accounts more often than I really need to." },
-  { id: "q3", text: "Health worries make it harder for me to fully rest at night." },
+  { id: "q3", text: "It is harder than I expected to wind down at the end of the day." },
   { id: "q4", text: "I sometimes feel guilty about relaxing." },
-  { id: "q5", text: "My body feels settled and at ease most days.", positive: true },
+  { id: "q5", text: "Most days, I feel settled and at ease.", positive: true },
   { id: "q6", text: "If I'm honest, most of my identity was tied up in my career." },
   { id: "q7", text: "There are days when retirement feels more like unemployment than freedom." },
   // q8 partner status (not scored)
@@ -117,7 +117,7 @@ type Archetype =
   | "ready_adjusting";
 
 const ARCHETYPE_TITLE: Record<Archetype, string> = {
-  saving_mode: "The Anxious Protector",
+  saving_mode: "The Careful Protector",
   restless_protector: "The Restless Operator",
   grounded_explorer: "The Grounded Explorer",
   almost_off_duty: "The Almost-Ready",
@@ -126,9 +126,9 @@ const ARCHETYPE_TITLE: Record<Archetype, string> = {
 
 const ARCHETYPE_LINE: Record<Archetype, string> = {
   saving_mode:
-    "The money is there. Your nervous system hasn't accepted that yet.",
+    "The numbers may be there. The hesitation around spending is still real.",
   restless_protector:
-    "You left the job. The tension in your body didn't get the memo.",
+    "You left the job. Work-mode momentum is still moving through your days.",
   grounded_explorer:
     "You've figured out something most people spend years circling.",
   almost_off_duty:
@@ -194,7 +194,7 @@ function OffDutyAssessment() {
   const [open1, setOpen1] = useState("");
   const [open2, setOpen2] = useState("");
   const [email, setEmail] = useState("");
-  const [stress, setStress] = useState<number | null>(null);
+  const [settledness, setSettledness] = useState<number | null>(null);
   const historyRef = useRef<Screen[]>([]);
 
   const scoredOrder = useMemo(() => buildScoredOrder(partner), [partner]);
@@ -389,8 +389,8 @@ function OffDutyAssessment() {
           {screen.kind === "results" && (
             <Results
               result={result}
-              stress={stress}
-              onStress={setStress}
+              settledness={settledness}
+              onSettledness={setSettledness}
             />
           )}
         </motion.main>
@@ -407,7 +407,7 @@ function Landing({ onStart }: { onStart: () => void }) {
         className="text-[16px] tracking-[0.22em] mb-6"
         style={{ color: T.muted }}
       >
-        NOW OFF DUTY · THE RETIREMENT REALITY CHECK
+        NOW OFF DUTY · THE RETIREMENT TRANSITION ASSESSMENT
       </div>
       <h1
         className="text-[40px] leading-[1.05] sm:text-[56px] sm:leading-[1.02] tracking-[-0.01em]"
@@ -421,8 +421,8 @@ function Landing({ onStart }: { onStart: () => void }) {
         className="mt-6 text-[18px] sm:text-[20px] leading-[1.55]"
         style={{ color: T.inkSoft, maxWidth: 560 }}
       >
-        A four-minute self-assessment to find the sticking points that may be keeping retirement
-        from feeling as safe, calm, and enjoyable as it should.
+        A four-minute self-assessment to see which parts of the retirement transition may need more
+        clarity: spending, structure, identity, connection, or daily rhythm.
       </p>
 
       <div className="mt-10">
@@ -818,11 +818,11 @@ function EmailGate({
         }}
         className="mt-8 flex flex-col gap-3"
       >
-        <label className="text-[16px] font-medium" style={{ color: T.ink }} htmlFor="quiz-email">
+        <label className="text-[16px] font-medium" style={{ color: T.ink }} htmlFor="assessment-email">
           Email address
         </label>
         <input
-          id="quiz-email"
+          id="assessment-email"
           type="email"
           inputMode="email"
           autoComplete="email"
@@ -863,12 +863,12 @@ type ResultData = ReturnType<typeof computeResult>;
 
 function Results({
   result,
-  stress,
-  onStress,
+  settledness,
+  onSettledness,
 }: {
   result: ResultData;
-  stress: number | null;
-  onStress: (v: number) => void;
+  settledness: number | null;
+  onSettledness: (v: number) => void;
 }) {
   const { overall, bars, archetype } = result;
   const [scoreShown, setScoreShown] = useState(0);
@@ -929,9 +929,9 @@ function Results({
         className="mt-10 rounded-2xl p-6 sm:p-8"
         style={{ backgroundColor: T.paper, border: `1px solid ${T.rule}` }}
       >
-        <Bar label="Spending Safety" value={bars.spending} animate={barsAnimated} />
-        <Bar label="Rest and Sleep" value={bars.rest} animate={barsAnimated} />
-        <Bar label="Purpose and Ease" value={bars.purpose} animate={barsAnimated} />
+        <Bar label="Spending Ease" value={bars.spending} animate={barsAnimated} />
+        <Bar label="Daily Rhythm" value={bars.rest} animate={barsAnimated} />
+        <Bar label="Purpose and Direction" value={bars.purpose} animate={barsAnimated} />
       </div>
 
       {/* Two short sentences */}
@@ -944,7 +944,7 @@ function Results({
         </p>
       </div>
 
-      {/* Before-stress rating */}
+      {/* Before-video check-in */}
       <div
         className="mt-12 rounded-2xl p-6 sm:p-8"
         style={{ backgroundColor: T.sageSoft, border: `1px solid ${T.sage}` }}
@@ -956,16 +956,16 @@ function Results({
           Before you watch, check in for a moment.
         </h3>
         <p className="mt-3 text-[16px] leading-[1.55]" style={{ color: T.inkSoft }}>
-          From 0 to 10, how much stress, worry, or tension do you feel right now?
+          From 0 to 10, how settled do you feel about this next chapter right now?
         </p>
 
         <div className="mt-6 grid grid-cols-11 gap-1.5">
           {Array.from({ length: 11 }).map((_, i) => {
-            const selected = stress === i;
+            const selected = settledness === i;
             return (
               <button
                 key={i}
-                onClick={() => onStress(i)}
+                onClick={() => onSettledness(i)}
                 className="focus-ring rounded-md text-[16px] font-medium"
                 style={{
                   minHeight: 44,
@@ -973,7 +973,7 @@ function Results({
                   color: selected ? "#FBFAF5" : T.ink,
                   border: `1px solid ${selected ? T.sageDeep : T.rule}`,
                 }}
-                aria-label={`Stress ${i}`}
+                aria-label={`Settledness ${i}`}
               >
                 {i}
               </button>
@@ -981,8 +981,8 @@ function Results({
           })}
         </div>
         <div className="mt-2 flex justify-between text-[16px]" style={{ color: T.muted }}>
-          <span>None</span>
-          <span>Very high</span>
+          <span>Not settled</span>
+          <span>Very settled</span>
         </div>
         <p className="mt-4 text-[16px]" style={{ color: T.muted }}>
           Chris will ask you to check this number again after the guided section.
@@ -1078,8 +1078,7 @@ function Results({
         </h3>
         <p className="mt-4 text-[16px] leading-[1.6]" style={{ color: T.inkSoft }}>
           Five short videos, each one addressing something specific sitting behind your score. A
-          guided wind-down audio for the physical tension most people don't realise they're still
-          carrying. Everything ships immediately.
+          guided wind-down audio for ending the day well. Everything ships immediately.
         </p>
 
         <div
