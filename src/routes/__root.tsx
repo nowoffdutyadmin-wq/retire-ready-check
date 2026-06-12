@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Now Off Duty helps people understand the emotional and nervous system side of retirement.",
+          "Now Off Duty helps people prepare for the retirement transition beyond the financial plan.",
       },
       { name: "author", content: "Now Off Duty" },
       { property: "og:title", content: "Now Off Duty" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Practical coaching and education for the emotional and nervous system side of retirement.",
+          "Practical coaching and education for the retirement transition beyond the financial plan.",
       },
       {
         property: "og:image",

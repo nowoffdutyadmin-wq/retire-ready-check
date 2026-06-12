@@ -4,11 +4,10 @@ import { colors, PageIntro, Section, SiteShell } from "../components/site-shell"
 export const Route = createFileRoute("/disclaimer")({
   head: () => ({
     meta: [
-      { title: "Medical & Financial Disclaimer — Now Off Duty" },
+      { title: "Important Disclaimer — Now Off Duty" },
       {
         name: "description",
-        content:
-          "Medical and financial disclaimer for Now Off Duty coaching and education materials.",
+        content: "Important disclaimer for Now Off Duty coaching and education materials.",
       },
     ],
   }),
@@ -18,10 +17,11 @@ export const Route = createFileRoute("/disclaimer")({
 function Disclaimer() {
   return (
     <SiteShell>
-      <PageIntro eyebrow="MEDICAL & FINANCIAL DISCLAIMER" title="Coaching and education only.">
+      <PageIntro eyebrow="IMPORTANT DISCLAIMER" title="Coaching and education only.">
         <p>
-          Now Off Duty is designed to help you understand patterns around retirement, stress,
-          identity, rest, spending, and ease. It is not a clinical or financial service.
+          Now Off Duty is designed to help you reflect on retirement transition patterns around
+          identity, spending, structure, daily rhythm, and ease. It is not a clinical or financial
+          service.
         </p>
       </PageIntro>
 
@@ -32,9 +32,8 @@ function Disclaimer() {
             and not a substitute for mental health care.
           </p>
           <p>
-            If you have a mental health condition, trauma history, medical concern, severe anxiety,
-            depression, suicidal thoughts, or any urgent symptoms, speak with a licensed health
-            professional or emergency service in your area.
+            If you have a medical emergency, thoughts of self-harm, or any urgent concern, contact
+            a licensed professional or emergency service in your area.
           </p>
           <p>
             This site also does not provide financial advice. Nothing here should be treated as
@@ -42,9 +41,9 @@ function Disclaimer() {
             for your financial planner, accountant, attorney, or other qualified professional.
           </p>
           <p>
-            The quiz and program may help you reflect on your internal experience. They do not tell
-            you what to do with your money, health care, medication, relationships, or legal
-            affairs.
+            The assessment and program may help you reflect on your own experience. They do not
+            tell you what to do with your money, care decisions, medication, relationships, or
+            legal affairs.
           </p>
         </div>
       </Section>

@@ -25,7 +25,7 @@ export const colors = {
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/survey", label: "Survey" },
+  { href: "/survey", label: "Assessment" },
   { href: "/about", label: "About Chris" },
   { href: "/faq", label: "FAQ" },
   { href: "/articles", label: "Articles" },
@@ -36,7 +36,7 @@ const footerLinks = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms" },
   { href: "/refund", label: "Refund Policy" },
-  { href: "/disclaimer", label: "Medical & Financial Disclaimer" },
+  { href: "/disclaimer", label: "Important Disclaimer" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -83,11 +83,11 @@ export function SiteShell({ children }: { children: ReactNode }) {
               {site.brand}
             </div>
             <p className="mt-3 max-w-xl text-[17px] leading-[1.65]" style={{ color: colors.inkSoft }}>
-              Practical coaching and education for people who planned retirement carefully, then
-              discovered their body and mind were still catching up.
+              Practical coaching and education for people preparing for the transition into life
+              after full-time work.
             </p>
             <p className="mt-4 text-[16px] leading-[1.6]" style={{ color: colors.muted }}>
-              Medical & financial disclaimer: this is coaching and education, not therapy, not
+              Important disclaimer: this is coaching and education, not therapy, not
               medical treatment, not a substitute for mental health care, and not financial advice.
             </p>
           </div>
@@ -236,7 +236,7 @@ export function DisclaimerBox() {
       className="rounded-[8px] p-5 text-[17px] leading-[1.65]"
       style={{ backgroundColor: colors.sageSoft, border: `1px solid ${colors.sage}`, color: colors.inkSoft }}
     >
-      <strong style={{ color: colors.ink }}>Medical & financial disclaimer:</strong> Now Off Duty
+      <strong style={{ color: colors.ink }}>Important disclaimer:</strong> Now Off Duty
       provides coaching and education only. It is not therapy, not medical treatment, not a
       substitute for mental health care, and not financial advice.
     </div>

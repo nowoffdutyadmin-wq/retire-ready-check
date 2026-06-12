@@ -7,7 +7,7 @@ export const Route = createFileRoute("/articles")({
       { title: "Articles — Now Off Duty" },
       {
         name: "description",
-        content: "Articles about retirement, nervous system regulation, identity, ease, and rest.",
+        content: "Articles about retirement transition, identity, spending ease, purpose, and daily rhythm.",
       },
     ],
   }),
@@ -34,12 +34,12 @@ function Articles() {
             Coming in Phase 4
           </h2>
           <p className="mt-4 text-[18px] leading-[1.65]" style={{ color: colors.inkSoft }}>
-            Planned topics include spending anxiety, sleep after retirement, identity after work,
-            purpose without pressure, and how to tell the difference between a financial problem and
-            a nervous system problem.
+            Planned topics include spending hesitation, daily rhythm after work, identity after a
+            long career, purpose without pressure, and how to tell the difference between a
+            financial decision and a transition question.
           </p>
           <div className="mt-6">
-            <ButtonLink href="/survey">Take the survey first</ButtonLink>
+            <ButtonLink href="/survey">Take the assessment first</ButtonLink>
           </div>
         </div>
       </Section>

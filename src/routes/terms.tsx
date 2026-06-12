@@ -20,8 +20,8 @@ function Terms() {
     <SiteShell>
       <PageIntro eyebrow="TERMS OF SERVICE" title="What you are buying and how it works.">
         <p>
-          These terms apply to the Now Off Duty site, the Retirement Reality Check, and purchases
-          from {site.businessName}.
+          These terms apply to the Now Off Duty site, the Retirement Transition Assessment, and
+          purchases from {site.businessName}.
         </p>
       </PageIntro>
 
@@ -30,7 +30,9 @@ function Terms() {
           <TermBlock title="What the buyer is purchasing">
             The Off-Duty Reset is a digital coaching and education program. The current product
             description is five short videos, each addressing something specific behind your score,
-            plus a guided wind-down audio for physical tension.
+            plus a guided wind-down audio for ending the day well.
+            Future purchases may include a live Transition Program or a graduate community if those
+            offers are separately presented at checkout.
           </TermBlock>
           <TermBlock title="What it includes">
             It includes the digital materials described at checkout or on the sales section at the

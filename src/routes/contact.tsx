@@ -19,8 +19,8 @@ function Contact() {
     <SiteShell>
       <PageIntro eyebrow="CONTACT" title="Reach a real person.">
         <p>
-          Questions about the quiz, the program, billing, or whether this is the right fit can be
-          sent to the contact details below.
+          Questions about the assessment, the program, billing, or whether this is the right fit
+          can be sent to the contact details below.
         </p>
       </PageIntro>
 

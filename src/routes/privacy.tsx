@@ -31,14 +31,14 @@ function Privacy() {
       <Section narrow>
         <div className="grid gap-7 text-[18px] leading-[1.7]" style={{ color: colors.inkSoft }}>
           <PolicyBlock title="What data is collected">
-            We may collect your quiz answers, open-text responses, email address, result type,
-            score, stress rating, purchase details, and basic website analytics such as pages
-            visited, device type, and browser information.
+            We may collect your assessment answers, open-text responses, email address, result
+            type, score, purchase details, and basic website analytics such as pages visited,
+            device type, and browser information.
           </PolicyBlock>
           <PolicyBlock title="How it is used">
-            We use this information to show your quiz result, send your result or program access,
-            respond to support questions, improve the site, understand what people need help with,
-            and process purchases or refunds.
+            We use this information to show your assessment result, send your result or program
+            access, respond to support questions, improve the site, understand what people are
+            looking for, and process purchases or refunds.
           </PolicyBlock>
           <PolicyBlock title="Who it is shared with">
             We do not sell your personal information. We may share data with service providers that
@@ -51,9 +51,9 @@ function Privacy() {
             or deletion.
           </PolicyBlock>
           <PolicyBlock title="Sensitive information">
-            The quiz may ask about stress, tension, sleep, identity, purpose, and retirement
-            experience. Do not enter medical emergencies, crisis details, financial account
-            numbers, or anything you would not want stored digitally.
+            The assessment may ask about spending habits, daily rhythm, identity, purpose, work
+            history, and retirement experience. Do not enter medical emergencies, crisis details,
+            financial account numbers, or anything you would not want stored digitally.
           </PolicyBlock>
         </div>
       </Section>
