@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "What is it not?",
-    a: "It is not therapy, medical treatment, diagnosis, crisis support, financial advice, investment advice, or a substitute for mental health care or a financial professional.",
+    a: "It is not professional guidance for health, psychological, tax, legal, portfolio, or retirement-income decisions. It is education for the non-financial side of the transition.",
   },
   {
     q: "What happens after the assessment?",
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     q: "What is the refund policy?",
-    a: "If it does not help, email us within 30 days. Full refund, no questions.",
+    a: "If it does not help, contact us within 30 days using the purchase email address. Full refund, no questions.",
   },
 ];
 

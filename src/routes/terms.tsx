@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { colors, DisclaimerBox, PageIntro, Section, site, SiteShell } from "../components/site-shell";
+import {
+  colors,
+  DisclaimerBox,
+  PageIntro,
+  Section,
+  site,
+  SiteShell,
+} from "../components/site-shell";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -30,9 +37,9 @@ function Terms() {
           <TermBlock title="What the buyer is purchasing">
             The Off-Duty Reset is a digital coaching and education program. The current product
             description is five short videos, each addressing something specific behind your score,
-            plus a guided wind-down audio for ending the day well.
-            Future purchases may include a live Transition Program or a graduate community if those
-            offers are separately presented at checkout.
+            plus a guided wind-down audio for ending the day well. Future purchases may include a
+            live Transition Program or a graduate community if those offers are separately presented
+            at checkout.
           </TermBlock>
           <TermBlock title="What it includes">
             It includes the digital materials described at checkout or on the sales section at the

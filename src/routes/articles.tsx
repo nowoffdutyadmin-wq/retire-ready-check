@@ -7,7 +7,8 @@ export const Route = createFileRoute("/articles")({
       { title: "Articles — Now Off Duty" },
       {
         name: "description",
-        content: "Articles about retirement transition, identity, spending ease, purpose, and daily rhythm.",
+        content:
+          "Articles about retirement transition, identity, spending ease, purpose, and daily rhythm.",
       },
     ],
   }),
@@ -17,11 +18,10 @@ export const Route = createFileRoute("/articles")({
 function Articles() {
   return (
     <SiteShell>
-      <PageIntro eyebrow="ARTICLES" title="Retirement articles will live here.">
+      <PageIntro eyebrow="ARTICLES" title="Plain-language guides are being prepared.">
         <p>
-          This section is intentionally ready as a placeholder for Phase 4 content. It gives the
-          site a real information architecture now, without pretending articles have already been
-          written.
+          We are preparing practical articles on the retirement transition. For now, the assessment
+          is the best place to start.
         </p>
       </PageIntro>
 
@@ -31,7 +31,7 @@ function Articles() {
           style={{ backgroundColor: colors.paper, border: `1px solid ${colors.rule}` }}
         >
           <h2 className="font-serif text-[32px] leading-[1.15]" style={{ color: colors.ink }}>
-            Coming in Phase 4
+            Topics in progress
           </h2>
           <p className="mt-4 text-[18px] leading-[1.65]" style={{ color: colors.inkSoft }}>
             Planned topics include spending hesitation, daily rhythm after work, identity after a

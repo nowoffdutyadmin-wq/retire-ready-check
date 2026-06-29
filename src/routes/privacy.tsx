@@ -16,24 +16,32 @@ export const Route = createFileRoute("/privacy")({
 });
 
 function Privacy() {
+  const hasEmail = site.email.trim().length > 0;
+
   return (
     <SiteShell>
       <PageIntro eyebrow="PRIVACY POLICY" title="What we collect and why.">
         <p>
-          This policy is written in plain language. If you have questions, contact us at{" "}
-          <a className="underline" href={`mailto:${site.email}`}>
-            {site.email}
-          </a>
-          .
+          This policy is written in plain language. If you have questions, use the public contact
+          details listed on the Contact page{hasEmail ? " or email us directly." : "."}
+          {hasEmail && (
+            <>
+              {" "}
+              <a className="underline" href={`mailto:${site.email}`}>
+                {site.email}
+              </a>
+              .
+            </>
+          )}
         </p>
       </PageIntro>
 
       <Section narrow>
         <div className="grid gap-7 text-[18px] leading-[1.7]" style={{ color: colors.inkSoft }}>
           <PolicyBlock title="What data is collected">
-            We may collect your assessment answers, open-text responses, email address, result
-            type, score, purchase details, and basic website analytics such as pages visited,
-            device type, and browser information.
+            We may collect your assessment answers, open-text responses, email address, result type,
+            score, purchase details, and basic website analytics such as pages visited, device type,
+            and browser information.
           </PolicyBlock>
           <PolicyBlock title="How it is used">
             We use this information to show your assessment result, send your result or program

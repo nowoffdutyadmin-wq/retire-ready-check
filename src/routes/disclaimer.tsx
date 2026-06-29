@@ -32,8 +32,8 @@ function Disclaimer() {
             and not a substitute for mental health care.
           </p>
           <p>
-            If you have a medical emergency, thoughts of self-harm, or any urgent concern, contact
-            a licensed professional or emergency service in your area.
+            If you have a medical emergency, thoughts of self-harm, or any urgent concern, contact a
+            licensed professional or emergency service in your area.
           </p>
           <p>
             This site also does not provide financial advice. Nothing here should be treated as
@@ -41,9 +41,9 @@ function Disclaimer() {
             for your financial planner, accountant, attorney, or other qualified professional.
           </p>
           <p>
-            The assessment and program may help you reflect on your own experience. They do not
-            tell you what to do with your money, care decisions, medication, relationships, or
-            legal affairs.
+            The assessment and program may help you reflect on your own experience. They do not tell
+            you what to do with your money, care decisions, medication, relationships, or legal
+            affairs.
           </p>
         </div>
       </Section>

@@ -15,6 +15,14 @@
       "custom_domain": true,
     },
   ],
+  "vars": {
+    "SITE_URL": "https://nowoffduty.com",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrY295dnBpbG5ld3lrZGNmb2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTMzNzcsImV4cCI6MjA5ODI2OTM3N30.1ulxM4E-hvzTjoc3Sj--lyGuTtB6nwS1wRvT_imxKWU",
+    "SUPABASE_URL": "https://pkcoyvpilnewykdcfojs.supabase.co",
+    "VITE_SITE_URL": "https://nowoffduty.com",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrY295dnBpbG5ld3lrZGNmb2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTMzNzcsImV4cCI6MjA5ODI2OTM3N30.1ulxM4E-hvzTjoc3Sj--lyGuTtB6nwS1wRvT_imxKWU",
+    "VITE_SUPABASE_URL": "https://pkcoyvpilnewykdcfojs.supabase.co",
+  },
   "rules": [
     {
       "type": "ESModule",

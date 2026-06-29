@@ -98,16 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Practical coaching and education for the retirement transition beyond the financial plan.",
       },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/59a83b51-1b7f-42a3-a7c8-873879fd1eee/id-preview-64ae0f7d--7f7b7be5-9523-4b03-ac8c-928b7c68bd1f.lovable.app-1780108442051.png",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/59a83b51-1b7f-42a3-a7c8-873879fd1eee/id-preview-64ae0f7d--7f7b7be5-9523-4b03-ac8c-928b7c68bd1f.lovable.app-1780108442051.png",
-      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

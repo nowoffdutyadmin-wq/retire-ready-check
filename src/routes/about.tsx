@@ -25,7 +25,10 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <SiteShell>
-      <PageIntro eyebrow="ABOUT CHRIS" title="A practical guide for the part of retirement no one plans for.">
+      <PageIntro
+        eyebrow="ABOUT CHRIS"
+        title="A practical guide for the part of retirement no one plans for."
+      >
         <p>
           Chris Soll is the co-founder of Mindspo, a global meditation education brand built from
           lived experience. Before building Mindspo, he spent his twenties in corporate project
@@ -45,9 +48,9 @@ function About() {
           </p>
           <p className="mt-5">
             His background matters here because Now Off Duty is built for people who know how to
-            achieve, lead, solve, and carry responsibility. It does not assume the reader is fragile.
-            It assumes they may have spent decades being competent, and that retirement can ask for
-            a different kind of readiness than the one work rewarded.
+            achieve, lead, solve, and carry responsibility. It does not assume the reader is
+            fragile. It assumes they may have spent decades being competent, and that retirement can
+            ask for a different kind of readiness than the one work rewarded.
           </p>
         </div>
       </Section>
@@ -62,11 +65,11 @@ function About() {
             often the one holding things together while also wondering what would actually help.
           </p>
           <p className="mt-5">
-            Meditation became the practical doorway. Not as magic, and not as a substitute for
-            care, but as a way to build presence, steadiness, and a different relationship with the
-            mind. Within weeks, they had enough lived evidence to make the work impossible to
-            ignore. What started in a tiny studio apartment in Sydney became a decade of teaching,
-            retreats, courses, and community.
+            Meditation became the practical doorway. Not as magic, and not as a substitute for care,
+            but as a way to build presence, steadiness, and a different relationship with the mind.
+            Within weeks, they had enough lived evidence to make the work impossible to ignore. What
+            started in a tiny studio apartment in Sydney became a decade of teaching, retreats,
+            courses, and community.
           </p>
         </div>
       </Section>
@@ -80,8 +83,8 @@ function About() {
             performance or a personality project.
           </p>
           <p className="mt-5">
-            Now Off Duty brings that same lens to retirement. A person can have enough money, a
-            good plan, and a life they worked hard to create, while still wondering how to spend,
+            Now Off Duty brings that same lens to retirement. A person can have enough money, a good
+            plan, and a life they worked hard to create, while still wondering how to spend,
             structure the week, relate to their old role, or enjoy open time without turning it into
             another project.
           </p>
@@ -91,12 +94,9 @@ function About() {
       <Section title="Credentials and training">
         <div className="max-w-3xl text-[18px] leading-[1.7]" style={{ color: colors.inkSoft }}>
           <p>
-            The source material for this build identifies Chris as co-founder of Mindspo, co-host of
-            the Mindspo podcast, the operational and strategic force behind the brand, and the lead
-            for the Business Fundamentals track of the Mindspo Teacher Certification.
-          </p>
-          <p className="mt-5">
-            Chris's formal meditation teaching certifications and relevant training: xxx.
+            Chris is the co-founder of Mindspo, co-host of the Mindspo podcast, the operational and
+            strategic force behind the brand, and the lead for the Business Fundamentals track of
+            the Mindspo Teacher Certification.
           </p>
         </div>
       </Section>
@@ -124,9 +124,9 @@ function About() {
             <div className="mt-4">
               <BulletList
                 items={[
-                  "Therapy, diagnosis, medical treatment, or a substitute for mental health care.",
-                  "Financial advice, investment advice, or a replacement for your financial planner.",
-                  "A crisis service or emergency mental health resource.",
+                  "Professional health, psychological, tax, legal, or money guidance for your personal situation.",
+                  "Portfolio guidance, income strategy, or a replacement for your financial planner.",
+                  "Immediate professional help for urgent personal situations.",
                 ]}
               />
             </div>
@@ -157,8 +157,8 @@ function About() {
             <div className="mt-4">
               <BulletList
                 items={[
-                  "People seeking clinical treatment, diagnosis, or crisis care.",
-                  "People seeking financial planning, investment advice, or retirement income strategy.",
+                  "People seeking professional support for health, psychological, tax, legal, or urgent personal concerns.",
+                  "People seeking financial planning, portfolio guidance, or retirement income strategy.",
                   "People who want a miracle claim instead of steady practice.",
                 ]}
               />

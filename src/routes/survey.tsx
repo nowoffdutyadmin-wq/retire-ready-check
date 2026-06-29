@@ -16,7 +16,7 @@ export const Route = createFileRoute("/survey")({
       {
         property: "og:description",
         content:
-          "You have enough. So why don't you feel safe? Take the four-minute Retirement Transition Assessment.",
+          "You prepared the finances. Have you prepared for the transition? Take the four-minute Retirement Transition Assessment.",
       },
     ],
   }),
@@ -70,7 +70,10 @@ const SCORED: ScoredQ[] = [
     text: "My partner and I see eye to eye on how we want to live in retirement.",
     positive: true,
   },
-  { id: "q10", text: "I sometimes wonder, \"What's the point?\" now that I'm not working anymore." },
+  {
+    id: "q10",
+    text: "I sometimes wonder, \"What's the point?\" now that I'm not working anymore.",
+  },
   {
     id: "q11",
     text: "I miss the structure more than I expected — the rhythm, the routine, knowing what day it is.",
@@ -125,16 +128,12 @@ const ARCHETYPE_TITLE: Record<Archetype, string> = {
 };
 
 const ARCHETYPE_LINE: Record<Archetype, string> = {
-  saving_mode:
-    "The numbers may be there. The hesitation around spending is still real.",
-  restless_protector:
-    "You left the job. Work-mode momentum is still moving through your days.",
-  grounded_explorer:
-    "You've figured out something most people spend years circling.",
+  saving_mode: "The numbers may be there. The hesitation around spending is still real.",
+  restless_protector: "You left the job. Work-mode momentum is still moving through your days.",
+  grounded_explorer: "You've figured out something most people spend years circling.",
   almost_off_duty:
     "You're closer than your score suggests. A few things are still running underneath.",
-  ready_adjusting:
-    "Most of this chapter is working. One or two corners are still settling.",
+  ready_adjusting: "Most of this chapter is working. One or two corners are still settling.",
 };
 
 function computeResult(scores: Record<string, number>) {
@@ -144,9 +143,7 @@ function computeResult(scores: Record<string, number>) {
 
   // Overall: average of all scored answers (incl q9 if answered)
   const allIds = Object.keys(scores).filter((id) => SCORED_BY_ID.has(id));
-  const overallVals = allIds.map((id) =>
-    positivity(SCORED_BY_ID.get(id)!, scores[id]),
-  );
+  const overallVals = allIds.map((id) => positivity(SCORED_BY_ID.get(id)!, scores[id]));
   const overall = overallVals.length
     ? Math.round((overallVals.reduce((s, v) => s + v, 0) / overallVals.length) * 10)
     : 50;
@@ -203,7 +200,8 @@ function OffDutyAssessment() {
   const go = (next: Screen) => {
     historyRef.current.push(screen);
     setScreen(next);
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    if (typeof window !== "undefined")
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   };
   const back = () => {
     const prev = historyRef.current.pop();
@@ -211,7 +209,8 @@ function OffDutyAssessment() {
   };
 
   // Progress total: 7 + halfway + partner + (q9?) + 4 + stage + 2 open = 15 or 16
-  const totalSteps = 1 /*landing*/ + scoredOrder.length + 1 /*halfway*/ + 1 /*partner*/ + 1 /*stage*/ + 2 /*open*/;
+  const totalSteps =
+    1 /*landing*/ + scoredOrder.length + 1 /*halfway*/ + 1 /*partner*/ + 1 /*stage*/ + 2; /*open*/
   const currentStep = (() => {
     switch (screen.kind) {
       case "landing":
@@ -309,9 +308,7 @@ function OffDutyAssessment() {
             />
           )}
 
-          {screen.kind === "halfway" && (
-            <Halfway onNext={() => go({ kind: "partner" })} />
-          )}
+          {screen.kind === "halfway" && <Halfway onNext={() => go({ kind: "partner" })} />}
 
           {screen.kind === "partner" && (
             <PartnerQuestion
@@ -354,9 +351,7 @@ function OffDutyAssessment() {
             />
           )}
 
-          {screen.kind === "calculating" && (
-            <Calculating onDone={() => go({ kind: "email" })} />
-          )}
+          {screen.kind === "calculating" && <Calculating onDone={() => go({ kind: "email" })} />}
 
           {screen.kind === "email" && (
             <EmailGate
@@ -380,18 +375,16 @@ function OffDutyAssessment() {
                       }),
                     );
                   }
-                } catch {}
+                } catch {
+                  // Local storage can be unavailable in private browsing or locked-down browsers.
+                }
                 go({ kind: "results" });
               }}
             />
           )}
 
           {screen.kind === "results" && (
-            <Results
-              result={result}
-              settledness={settledness}
-              onSettledness={setSettledness}
-            />
+            <Results result={result} settledness={settledness} onSettledness={setSettledness} />
           )}
         </motion.main>
       </AnimatePresence>
@@ -403,19 +396,16 @@ function OffDutyAssessment() {
 function Landing({ onStart }: { onStart: () => void }) {
   return (
     <section className="pt-10 sm:pt-16">
-      <div
-        className="text-[16px] tracking-[0.22em] mb-6"
-        style={{ color: T.muted }}
-      >
+      <div className="text-[16px] tracking-[0.22em] mb-6" style={{ color: T.muted }}>
         NOW OFF DUTY · THE RETIREMENT TRANSITION ASSESSMENT
       </div>
       <h1
         className="text-[40px] leading-[1.05] sm:text-[56px] sm:leading-[1.02] tracking-[-0.01em]"
         style={{ fontFamily: "'Instrument Serif', Georgia, serif", color: T.ink }}
       >
-        You have <em className="italic">enough</em>.
+        You prepared the <em className="italic">finances</em>.
         <br />
-        So why don’t you feel <em className="italic">safe</em>?
+        Have you prepared for the <em className="italic">transition</em>?
       </h1>
       <p
         className="mt-6 text-[18px] sm:text-[20px] leading-[1.55]"
@@ -544,13 +534,10 @@ function Halfway({ onNext }: { onNext: () => void }) {
       >
         You're halfway through.
       </h2>
-      <p
-        className="mt-6 text-[18px] leading-[1.6]"
-        style={{ color: T.inkSoft, maxWidth: 560 }}
-      >
+      <p className="mt-6 text-[18px] leading-[1.6]" style={{ color: T.inkSoft, maxWidth: 560 }}>
         Most people spend years planning the financial side of retirement. Almost nobody plans for
-        what retirement actually feels like once it arrives. Your answers so far are already
-        telling us something. Keep going.
+        what retirement actually feels like once it arrives. Your answers so far are already telling
+        us something. Keep going.
       </p>
       <button
         onClick={onNext}
@@ -818,7 +805,11 @@ function EmailGate({
         }}
         className="mt-8 flex flex-col gap-3"
       >
-        <label className="text-[16px] font-medium" style={{ color: T.ink }} htmlFor="assessment-email">
+        <label
+          className="text-[16px] font-medium"
+          style={{ color: T.ink }}
+          htmlFor="assessment-email"
+        >
           Email address
         </label>
         <input
@@ -998,8 +989,8 @@ function Results({
           If you're ready for change, watch this video.
         </h3>
         <p className="mt-3 text-[16px] leading-[1.55]" style={{ color: T.inkSoft }}>
-          Chris will explain what your score means, then guide you through a short experience so
-          you can feel the difference for yourself.
+          Chris will explain what your score means, then guide you through a short experience so you
+          can feel the difference for yourself.
         </p>
 
         <div
@@ -1134,7 +1125,8 @@ function Results({
               30-day money-back guarantee.
             </div>
             <div className="text-[16px] mt-1 leading-[1.5]" style={{ color: T.inkSoft }}>
-              If it doesn't help, email us within 30 days. Full refund, no questions.
+              If it doesn't help, contact us within 30 days using the purchase email address. Full
+              refund, no questions.
             </div>
           </div>
         </div>

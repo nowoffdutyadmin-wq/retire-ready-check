@@ -35,7 +35,10 @@ function Home() {
     <SiteShell>
       <section className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
-          <div className="mb-5 text-[16px] font-semibold tracking-[0.12em]" style={{ color: colors.sageDeep }}>
+          <div
+            className="mb-5 text-[16px] font-semibold tracking-[0.12em]"
+            style={{ color: colors.sageDeep }}
+          >
             RETIREMENT TRANSITION ASSESSMENT
           </div>
           <h1
@@ -44,7 +47,10 @@ function Home() {
           >
             You prepared the finances. Have you prepared for the transition?
           </h1>
-          <p className="mt-6 max-w-2xl text-[20px] leading-[1.65]" style={{ color: colors.inkSoft }}>
+          <p
+            className="mt-6 max-w-2xl text-[20px] leading-[1.65]"
+            style={{ color: colors.inkSoft }}
+          >
             For 40 years, you built toward this chapter. Now Off Duty helps capable people prepare
             for the part spreadsheets do not cover: who you are when the structure changes, how you
             spend your time, and how to be present in the life you built.
@@ -83,8 +89,8 @@ function Home() {
       <Section title="This is not another retirement calculator.">
         <InfoGrid>
           <InfoCard title="Financially prepared can still feel unfinished.">
-            A portfolio can be in good shape while spending, open time, and the shift away from
-            work still feel harder to enjoy than expected.
+            A portfolio can be in good shape while spending, open time, and the shift away from work
+            still feel harder to enjoy than expected.
           </InfoCard>
           <InfoCard title="The work is practical.">
             The assessment points to specific transition patterns: spending ease, daily rhythm,
@@ -108,7 +114,7 @@ function Home() {
                 items={[
                   "People within five years of retirement or already in the early years of it.",
                   "People who handled the financial planning and want the next chapter to feel clear, present, and enjoyable.",
-                  "People who want grounded coaching and education, not hype or diagnosis.",
+                  "People who want grounded coaching and education, not hype or labels.",
                 ]}
               />
             </div>
@@ -120,9 +126,9 @@ function Home() {
             <div className="mt-4">
               <BulletList
                 items={[
-                  "People looking for therapy, clinical treatment, or crisis support.",
-                  "People looking for financial advice, portfolio guidance, or investment recommendations.",
-                  "People who need urgent support or emergency help.",
+                  "People looking for personal professional guidance on health, money, tax, or legal decisions.",
+                  "People looking for portfolio guidance, income strategy, or investment recommendations.",
+                  "People who need urgent professional support.",
                 ]}
               />
             </div>
