@@ -404,7 +404,7 @@ function Onboarding({ member, onSave }: { member: Member; onSave: (fullName: str
           Confirm your name and timezone before opening your dashboard.
         </p>
         <form
-          className="mt-7 grid gap-4"
+          className="mt-7 grid min-w-0 gap-4"
           onSubmit={async (event) => {
             event.preventDefault();
             setSaving(true);
@@ -414,12 +414,12 @@ function Onboarding({ member, onSave }: { member: Member; onSave: (fullName: str
         >
           <label className="grid gap-2 text-[16px] font-medium">
             Name
-            <Input value={fullName} onChange={(event) => setFullName(event.target.value)} />
+            <Input className="min-h-[44px] min-w-0 text-[16px]" value={fullName} onChange={(event) => setFullName(event.target.value)} />
           </label>
           <label className="grid gap-2 text-[16px] font-medium">
             Timezone
             <select
-              className="min-h-[44px] rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
+              className="min-h-[44px] w-full min-w-0 max-w-full truncate rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
               value={timezone}
               onChange={(event) => setTimezone(event.target.value)}
             >
@@ -442,6 +442,7 @@ function Onboarding({ member, onSave }: { member: Member; onSave: (fullName: str
           <label className="grid gap-2 text-[16px] font-medium">
             Password
             <Input
+              className="min-h-[44px] min-w-0 text-[16px]"
               type="password"
               minLength={8}
               value={password}

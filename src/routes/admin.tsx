@@ -110,7 +110,7 @@ function Admin() {
           </div>
         )}
 
-        <section className="mt-8 grid gap-6 xl:grid-cols-3">
+        <section className="mt-8 grid min-w-0 gap-6 xl:grid-cols-3">
           <Panel title="Create cohort">
             <CohortForm
               onSubmit={(form) =>
@@ -210,9 +210,9 @@ function Admin() {
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-[8px] border bg-card p-5">
-      <h2 className="font-serif text-[32px]">{title}</h2>
-      <div className="mt-5">{children}</div>
+    <div className="min-w-0 overflow-hidden rounded-[8px] border bg-card p-5">
+      <h2 className="font-serif text-[32px] leading-tight">{title}</h2>
+      <div className="mt-5 min-w-0">{children}</div>
     </div>
   );
 }
@@ -221,10 +221,10 @@ function CohortForm({ onSubmit }: { onSubmit: (data: { name: string; startDate: 
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState("");
   return (
-    <form className="grid gap-3" onSubmit={(event) => { event.preventDefault(); onSubmit({ name, startDate }); }}>
-      <Input placeholder="Cohort name" value={name} onChange={(event) => setName(event.target.value)} />
-      <Input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
-      <Button className="min-h-[44px]" type="submit"><CalendarPlus aria-hidden="true" /> Create</Button>
+    <form className="grid min-w-0 gap-4" onSubmit={(event) => { event.preventDefault(); onSubmit({ name, startDate }); }}>
+      <Input className="min-h-[44px] min-w-0 text-[16px]" placeholder="Cohort name" value={name} onChange={(event) => setName(event.target.value)} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+      <Button className="min-h-[44px] w-full text-[16px]" type="submit"><CalendarPlus aria-hidden="true" /> Create</Button>
     </form>
   );
 }
@@ -249,20 +249,20 @@ function MemberForm({
 
   return (
     <form
-      className="grid gap-3"
+      className="grid min-w-0 gap-4"
       onSubmit={(event) => {
         event.preventDefault();
         if (!cohortId) return;
         onSubmit({ cohortId, fullName, email, timezone });
       }}
     >
-      <p className="text-[15px] text-muted-foreground">
+      <p className="min-w-0 truncate text-[15px] text-muted-foreground">
         {cohortName ? `Adding to: ${cohortName}` : "Create or select a cohort before adding members."}
       </p>
-      <Input placeholder="Full name" value={fullName} onChange={(event) => setFullName(event.target.value)} />
-      <Input placeholder="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" placeholder="Full name" value={fullName} onChange={(event) => setFullName(event.target.value)} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" placeholder="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
       <select
-        className="min-h-[44px] rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
+        className="min-h-[44px] w-full min-w-0 max-w-full truncate rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
         value={timezone}
         onChange={(event) => setTimezone(event.target.value)}
       >
@@ -281,10 +281,10 @@ function MemberForm({
           ))}
         </optgroup>
       </select>
-      <p className="text-[14px] text-muted-foreground">
-        Reminders use this timezone for the member&apos;s 8pm reminder window and 3am grace period.
+      <p className="min-w-0 text-[14px] leading-snug text-muted-foreground">
+        Used for 8pm reminders and the 3am grace period.
       </p>
-      <Button className="min-h-[44px]" type="submit" disabled={!cohortId}>
+      <Button className="min-h-[44px] w-full text-[16px]" type="submit" disabled={!cohortId}>
         <Plus aria-hidden="true" /> {cohortId ? "Add member" : "Create/select cohort first"}
       </Button>
     </form>
@@ -298,12 +298,12 @@ function ContentForm({ cohortId, onSubmit }: { cohortId: string; onSubmit: (data
   const [durationSeconds, setDurationSeconds] = useState(600);
   const weekNumber = Math.ceil(dayNumber / 7);
   return (
-    <form className="grid gap-3" onSubmit={(event) => { event.preventDefault(); onSubmit({ cohortId, weekNumber, dayNumber, title, audioUrl, durationSeconds }); }}>
-      <Input min={1} max={28} type="number" value={dayNumber} onChange={(event) => setDayNumber(Number(event.target.value))} />
-      <Input placeholder="Session title" value={title} onChange={(event) => setTitle(event.target.value)} />
-      <Input placeholder="Audio URL" value={audioUrl} onChange={(event) => setAudioUrl(event.target.value)} />
-      <Input min={1} type="number" value={durationSeconds} onChange={(event) => setDurationSeconds(Number(event.target.value))} />
-      <Button className="min-h-[44px]" type="submit" disabled={!cohortId}>Save day {dayNumber}</Button>
+    <form className="grid min-w-0 gap-4" onSubmit={(event) => { event.preventDefault(); onSubmit({ cohortId, weekNumber, dayNumber, title, audioUrl, durationSeconds }); }}>
+      <Input className="min-h-[44px] min-w-0 text-[16px]" min={1} max={28} type="number" value={dayNumber} onChange={(event) => setDayNumber(Number(event.target.value))} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" placeholder="Session title" value={title} onChange={(event) => setTitle(event.target.value)} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" placeholder="Audio URL" value={audioUrl} onChange={(event) => setAudioUrl(event.target.value)} />
+      <Input className="min-h-[44px] min-w-0 text-[16px]" min={1} type="number" value={durationSeconds} onChange={(event) => setDurationSeconds(Number(event.target.value))} />
+      <Button className="min-h-[44px] w-full text-[16px]" type="submit" disabled={!cohortId}>Save day {dayNumber}</Button>
     </form>
   );
 }

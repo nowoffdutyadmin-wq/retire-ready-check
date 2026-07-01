@@ -93,16 +93,24 @@ export function timezoneDisplayName(timezone: string) {
   return `${friendlyNames[timezone] ?? fallback} (${timezone}, ${offsetLabel(timezone)})`;
 }
 
+export function timezoneSelectLabel(timezone: string) {
+  const fallback = timezone
+    .split("/")
+    .slice(-1)[0]
+    ?.replace(/_/g, " ") ?? timezone;
+  return `${friendlyNames[timezone] ?? fallback} (${offsetLabel(timezone)})`;
+}
+
 export function allTimezoneOptions() {
   const supported = intlWithSupportedValues.supportedValuesOf?.("timeZone") ?? [];
   const unique = new Set([...preferredTimezones, ...supported]);
   const preferred = preferredTimezones
     .filter((timezone) => unique.has(timezone))
-    .map((timezone) => ({ value: timezone, label: timezoneDisplayName(timezone) }));
+    .map((timezone) => ({ value: timezone, label: timezoneSelectLabel(timezone) }));
   const other = [...unique]
     .filter((timezone) => !preferredTimezones.includes(timezone))
     .sort()
-    .map((timezone) => ({ value: timezone, label: timezoneDisplayName(timezone) }));
+    .map((timezone) => ({ value: timezone, label: timezoneSelectLabel(timezone) }));
 
   return { preferred, other };
 }
