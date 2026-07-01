@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getPortalPathForSession } from "@/lib/meditation/auth-flow";
 import { hasSupabaseConfig, siteUrl, supabase } from "@/lib/supabase/client";
 
 export const Route = createFileRoute("/login")({
@@ -16,6 +17,24 @@ function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  async function routeSignedInUser() {
+    const target = await getPortalPathForSession();
+    if (target === "/admin") {
+      await navigate({ to: "/admin", replace: true });
+      return;
+    }
+    if (target === "/dashboard") {
+      await navigate({ to: "/dashboard", replace: true });
+    }
+  }
+
+  useEffect(() => {
+    if (!hasSupabaseConfig()) return;
+    routeSignedInUser().catch(() => {
+      // Stay on login if the current browser session cannot be resolved.
+    });
+  }, []);
+
   async function signInWithPassword(event: React.FormEvent) {
     event.preventDefault();
     setMessage("");
@@ -24,14 +43,21 @@ function Login() {
       setMessage(error.message);
       return;
     }
-    await navigate({ to: "/dashboard" });
+    await routeSignedInUser();
   }
 
   async function sendMagicLink() {
     setMessage("");
+    if (!email.trim()) {
+      setMessage("Enter the email Chris added for you first.");
+      return;
+    }
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${siteUrl}/dashboard` },
+      options: {
+        emailRedirectTo: `${siteUrl}/auth/callback`,
+        shouldCreateUser: false,
+      },
     });
     setMessage(error ? error.message : "Check your email for the login link.");
   }
@@ -39,7 +65,7 @@ function Login() {
   async function resetPassword() {
     setMessage("");
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${siteUrl}/dashboard`,
+      redirectTo: `${siteUrl}/auth/callback`,
     });
     setMessage(error ? error.message : "Password reset email sent.");
   }
@@ -52,7 +78,7 @@ function Login() {
         </a>
         <h1 className="mt-10 font-serif text-[50px] leading-none">Member login</h1>
         <p className="mt-4 text-[18px] text-muted-foreground">
-          Sign in to your cohort dashboard and today&apos;s practice.
+          Sign in with the email Chris added for your cohort. This page does not create new accounts.
         </p>
         {!hasSupabaseConfig() && (
           <div className="mt-6 rounded-[8px] border border-destructive bg-destructive/10 p-4 text-[16px]">

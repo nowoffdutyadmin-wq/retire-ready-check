@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CalendarPlus, Mail, Plus, Users } from "lucide-react";
+import { CalendarPlus, LogOut, Mail, Plus, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import {
@@ -77,10 +77,20 @@ function Admin() {
           <div>
             <a href="/" className="font-serif text-[30px]">Now Off Duty</a>
             <h1 className="mt-4 font-serif text-[52px] leading-none">Cohort admin</h1>
+            <p className="mt-3 max-w-2xl text-[18px] text-muted-foreground">
+              Add members manually, load content, pair cohorts, and monitor live practice status.
+            </p>
           </div>
-          <a className="min-h-[44px] rounded-md border px-4 py-2 text-[16px]" href="/dashboard">
-            Member dashboard
-          </a>
+          <Button
+            className="min-h-[44px]"
+            variant="outline"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              await navigate({ to: "/login" });
+            }}
+          >
+            <LogOut aria-hidden="true" /> Sign out
+          </Button>
         </header>
 
         {!hasSupabaseConfig() && (

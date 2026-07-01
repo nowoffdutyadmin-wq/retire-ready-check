@@ -34,6 +34,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState<DashboardState | null>(null);
   const [message, setMessage] = useState("");
+  const [missingProfileEmail, setMissingProfileEmail] = useState("");
 
   async function loadDashboard() {
     if (!hasSupabaseConfig()) {
@@ -48,12 +49,24 @@ function Dashboard() {
       return;
     }
 
+    setMissingProfileEmail("");
     const { data: member, error: memberError } = await supabase
       .from("members")
       .select("*")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
     if (memberError) throw memberError;
+    if (!member) {
+      setMissingProfileEmail(user.email ?? "this email");
+      setState(null);
+      setLoading(false);
+      return;
+    }
+
+    if (member.role === "admin") {
+      await navigate({ to: "/admin", replace: true });
+      return;
+    }
 
     if (!member.cohort_id) {
       setState({
@@ -170,28 +183,22 @@ function Dashboard() {
 
   if (loading) return <PortalFrame><p>Loading your dashboard...</p></PortalFrame>;
   if (!hasSupabaseConfig()) return <PortalFrame><p>Supabase is not configured yet.</p></PortalFrame>;
+  if (missingProfileEmail) return <MissingMemberProfile email={missingProfileEmail} />;
   if (!state) return <PortalFrame><p>{message || "Dashboard unavailable."}</p></PortalFrame>;
-  if (!state.member.onboarded) return <Onboarding member={state.member} onSave={saveOnboarding} />;
-  if (!state.member.cohort_id || state.member.role === "admin") {
+  if (!state.member.cohort_id) {
     return (
       <PortalFrame>
         <section className="mx-auto max-w-3xl rounded-[8px] border bg-card p-6">
-          <h1 className="font-serif text-[48px] leading-none">Admin account ready.</h1>
+          <h1 className="font-serif text-[48px] leading-none">Your member profile is being set up.</h1>
           <p className="mt-4 text-[18px] text-muted-foreground">
-            This dashboard is for cohort members once they have a cohort, partner, and unlocked
-            audio. Use the admin dashboard to create cohorts, add members, pair them, and load
-            daily sessions.
+            Your account exists, but it has not been assigned to a cohort yet. Chris needs to add
+            you to a cohort before today&apos;s practice appears here.
           </p>
-          <a
-            className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-md bg-primary px-5 text-[16px] font-medium text-primary-foreground"
-            href="/admin"
-          >
-            Open admin dashboard
-          </a>
         </section>
       </PortalFrame>
     );
   }
+  if (!state.member.onboarded) return <Onboarding member={state.member} onSave={saveOnboarding} />;
   if (state.buddies.length === 0) {
     return (
       <PortalFrame>
@@ -351,7 +358,6 @@ function PortalFrame({ children }: { children: React.ReactNode }) {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <a href="/" className="font-serif text-[30px]">Now Off Duty</a>
           <div className="flex gap-3">
-            <a className="min-h-[44px] rounded-md border px-4 py-2 text-[16px]" href="/admin">Admin</a>
             <button
               className="min-h-[44px] rounded-md border px-4 py-2 text-[16px]"
               onClick={() => supabase.auth.signOut()}
@@ -364,6 +370,21 @@ function PortalFrame({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </main>
+  );
+}
+
+function MissingMemberProfile({ email }: { email: string }) {
+  return (
+    <PortalFrame>
+      <section className="mx-auto max-w-3xl rounded-[8px] border bg-card p-6">
+        <h1 className="font-serif text-[48px] leading-none">Chris still needs to add this member.</h1>
+        <p className="mt-4 text-[18px] text-muted-foreground">
+          You are signed in as {email}, but this email does not have a member profile in the
+          meditation cohort yet. Accounts are created by the program host only, so ask Chris to add
+          this email from the admin dashboard before using the member portal.
+        </p>
+      </section>
+    </PortalFrame>
   );
 }
 

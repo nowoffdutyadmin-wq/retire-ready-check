@@ -66,6 +66,22 @@ function timezoneOffsetMinutes(timezone: string) {
   return sign * (Number(match[2]) * 60 + Number(match[3] ?? 0));
 }
 
+async function findAuthUserByEmail(supabase: ReturnType<typeof getSupabaseAdmin>, email: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const perPage = 100;
+
+  for (let page = 1; page <= 10; page += 1) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (error) throw error;
+
+    const match = data.users.find((user) => user.email?.toLowerCase() === normalizedEmail);
+    if (match) return match;
+    if (data.users.length < perPage) return null;
+  }
+
+  return null;
+}
+
 export const getMeditationAdminData = createServerFn({ method: "POST" })
   .inputValidator(emptyInput)
   .handler(async ({ data }) => {
@@ -123,16 +139,21 @@ export const addMeditationMember = createServerFn({ method: "POST" })
   .inputValidator(memberInput)
   .handler(async ({ data }) => {
     const supabase = await requireAdmin(data.accessToken);
-    const { data: authUser, error: inviteError } = await supabase.auth.admin.inviteUserByEmail(
-      data.email,
-      {
-        redirectTo: `${getSiteUrl()}/dashboard`,
-        data: { full_name: data.fullName, timezone: data.timezone, cohort_id: data.cohortId },
-      },
-    );
-    if (inviteError) throw inviteError;
+    let authUser = await findAuthUserByEmail(supabase, data.email);
 
-    const userId = authUser.user?.id;
+    if (!authUser) {
+      const { data: inviteResult, error: inviteError } = await supabase.auth.admin.inviteUserByEmail(
+        data.email,
+        {
+          redirectTo: `${getSiteUrl()}/auth/callback`,
+          data: { full_name: data.fullName, timezone: data.timezone, cohort_id: data.cohortId },
+        },
+      );
+      if (inviteError) throw inviteError;
+      authUser = inviteResult.user;
+    }
+
+    const userId = authUser?.id;
     if (!userId) throw new Error("Supabase did not return an invited user id.");
 
     const { data: member, error } = await supabase
