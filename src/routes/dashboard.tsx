@@ -13,6 +13,7 @@ import {
   localCompletionDate,
   timezoneLabel,
 } from "@/lib/meditation/time";
+import { allTimezoneOptions, defaultTimezone } from "@/lib/meditation/timezones";
 import { hasSupabaseConfig, supabase } from "@/lib/supabase/client";
 
 export const Route = createFileRoute("/dashboard")({
@@ -390,9 +391,10 @@ function MissingMemberProfile({ email }: { email: string }) {
 
 function Onboarding({ member, onSave }: { member: Member; onSave: (fullName: string, timezone: string, password: string) => Promise<void> }) {
   const [fullName, setFullName] = useState(member.full_name);
-  const [timezone, setTimezone] = useState(member.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [timezone, setTimezone] = useState(member.timezone || defaultTimezone);
   const [password, setPassword] = useState("");
   const [saving, setSaving] = useState(false);
+  const timezoneOptions = useMemo(() => allTimezoneOptions(), []);
 
   return (
     <PortalFrame>
@@ -416,7 +418,26 @@ function Onboarding({ member, onSave }: { member: Member; onSave: (fullName: str
           </label>
           <label className="grid gap-2 text-[16px] font-medium">
             Timezone
-            <Input value={timezone} onChange={(event) => setTimezone(event.target.value)} />
+            <select
+              className="min-h-[44px] rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
+              value={timezone}
+              onChange={(event) => setTimezone(event.target.value)}
+            >
+              <optgroup label="Common cohort timezones">
+                {timezoneOptions.preferred.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="All IANA timezones">
+                {timezoneOptions.other.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
           </label>
           <label className="grid gap-2 text-[16px] font-medium">
             Password

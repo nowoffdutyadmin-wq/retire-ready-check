@@ -11,6 +11,7 @@ import {
   upsertDailyMeditationContent,
 } from "@/lib/api/meditation.functions";
 import { isPastLocalMidday } from "@/lib/meditation/time";
+import { allTimezoneOptions, defaultTimezone, getBrowserTimezone } from "@/lib/meditation/timezones";
 import { hasSupabaseConfig, supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,10 +61,10 @@ function Admin() {
     [data, activeCohortId],
   );
 
-  async function action<T>(run: () => Promise<T>, success: string) {
+  async function action<T>(run: () => Promise<T>, success: string | ((result: T) => string)) {
     try {
-      await run();
-      setMessage(success);
+      const result = await run();
+      setMessage(typeof success === "function" ? success(result) : success);
       await load();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Action failed.");
@@ -124,6 +125,7 @@ function Admin() {
           <Panel title="Add member">
             <MemberForm
               cohortId={activeCohortId}
+              cohortName={activeCohort?.name}
               onSubmit={(form) =>
                 action(
                   () => addMeditationMember({ data: { accessToken, ...form } }),
@@ -185,7 +187,8 @@ function Admin() {
                 onClick={() =>
                   action(
                     () => sendMeditationReminders({ data: { accessToken, cohortId: activeCohort.id } }),
-                    "Reminder queue updated.",
+                    (result) =>
+                      `Queued ${result.queued} reminder${result.queued === 1 ? "" : "s"}. ${result.skippedBeforeWindow} member${result.skippedBeforeWindow === 1 ? "" : "s"} are not at 8pm local yet, ${result.skippedStarted} are in pairs already started, and ${result.skippedDuplicate} already had a reminder queued for this local day.`,
                   )
                 }
               >
@@ -226,16 +229,64 @@ function CohortForm({ onSubmit }: { onSubmit: (data: { name: string; startDate: 
   );
 }
 
-function MemberForm({ cohortId, onSubmit }: { cohortId: string; onSubmit: (data: { cohortId: string; fullName: string; email: string; timezone: string }) => void }) {
+function MemberForm({
+  cohortId,
+  cohortName,
+  onSubmit,
+}: {
+  cohortId: string;
+  cohortName?: string;
+  onSubmit: (data: { cohortId: string; fullName: string; email: string; timezone: string }) => void;
+}) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [timezone, setTimezone] = useState("Australia/Sydney");
+  const [timezone, setTimezone] = useState(defaultTimezone);
+  const timezoneOptions = useMemo(() => allTimezoneOptions(), []);
+
+  useEffect(() => {
+    setTimezone(getBrowserTimezone());
+  }, []);
+
   return (
-    <form className="grid gap-3" onSubmit={(event) => { event.preventDefault(); onSubmit({ cohortId, fullName, email, timezone }); }}>
+    <form
+      className="grid gap-3"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!cohortId) return;
+        onSubmit({ cohortId, fullName, email, timezone });
+      }}
+    >
+      <p className="text-[15px] text-muted-foreground">
+        {cohortName ? `Adding to: ${cohortName}` : "Create or select a cohort before adding members."}
+      </p>
       <Input placeholder="Full name" value={fullName} onChange={(event) => setFullName(event.target.value)} />
       <Input placeholder="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-      <Input placeholder="IANA timezone" value={timezone} onChange={(event) => setTimezone(event.target.value)} />
-      <Button className="min-h-[44px]" type="submit" disabled={!cohortId}><Plus aria-hidden="true" /> Add member</Button>
+      <select
+        className="min-h-[44px] rounded-md border border-input bg-background px-3 text-[16px] shadow-sm"
+        value={timezone}
+        onChange={(event) => setTimezone(event.target.value)}
+      >
+        <optgroup label="Common cohort timezones">
+          {timezoneOptions.preferred.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </optgroup>
+        <optgroup label="All IANA timezones">
+          {timezoneOptions.other.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </optgroup>
+      </select>
+      <p className="text-[14px] text-muted-foreground">
+        Reminders use this timezone for the member&apos;s 8pm reminder window and 3am grace period.
+      </p>
+      <Button className="min-h-[44px]" type="submit" disabled={!cohortId}>
+        <Plus aria-hidden="true" /> {cohortId ? "Add member" : "Create/select cohort first"}
+      </Button>
     </form>
   );
 }
