@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { exchangeAuthCodeFromUrl, getPortalPathForSession } from "@/lib/meditation/auth-flow";
+import { friendlyMeditationError } from "@/lib/meditation/error-messages";
 
 export const Route = createFileRoute("/auth/callback")({
   head: () => ({ meta: [{ title: "Signing in - Now Off Duty" }] }),
@@ -34,7 +35,12 @@ function AuthCallback() {
     }
 
     finishSignIn().catch((error) => {
-      setMessage(error instanceof Error ? error.message : "Sign-in failed.");
+      setMessage(
+        friendlyMeditationError(
+          error,
+          "Sign-in failed. Please request a fresh link from the login page.",
+        ),
+      );
     });
 
     return () => {

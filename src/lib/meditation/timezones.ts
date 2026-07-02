@@ -87,17 +87,12 @@ export function getBrowserTimezone() {
 }
 
 export function timezoneDisplayName(timezone: string) {
-  const fallback = timezone
-    .replace(/_/g, " ")
-    .replace(/\//g, " - ");
+  const fallback = timezone.replace(/_/g, " ").replace(/\//g, " - ");
   return `${friendlyNames[timezone] ?? fallback} (${timezone}, ${offsetLabel(timezone)})`;
 }
 
 export function timezoneSelectLabel(timezone: string) {
-  const fallback = timezone
-    .split("/")
-    .slice(-1)[0]
-    ?.replace(/_/g, " ") ?? timezone;
+  const fallback = timezone.split("/").slice(-1)[0]?.replace(/_/g, " ") ?? timezone;
   return `${friendlyNames[timezone] ?? fallback} (${offsetLabel(timezone)})`;
 }
 

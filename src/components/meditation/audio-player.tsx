@@ -15,13 +15,20 @@ export function AudioPlayer({ src, durationSeconds, completed, onComplete }: Aud
   const completionFired = useRef(completed);
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [message, setMessage] = useState("");
 
   async function togglePlayback() {
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.paused) {
-      await audio.play();
-      setPlaying(true);
+      try {
+        await audio.play();
+        setPlaying(true);
+        setMessage("");
+      } catch {
+        setPlaying(false);
+        setMessage("The audio could not play. Ask Chris to check the audio URL for this session.");
+      }
     } else {
       audio.pause();
       setPlaying(false);
@@ -52,6 +59,12 @@ export function AudioPlayer({ src, durationSeconds, completed, onComplete }: Aud
         preload="metadata"
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => setPlaying(false)}
+        onError={() => {
+          setPlaying(false);
+          setMessage(
+            "The audio could not load. Ask Chris to check the audio URL for this session.",
+          );
+        }}
       />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <button
@@ -77,6 +90,11 @@ export function AudioPlayer({ src, durationSeconds, completed, onComplete }: Aud
       </div>
       {completed && (
         <p className="text-[16px] font-medium text-primary">Your practice is complete for today.</p>
+      )}
+      {message && (
+        <p className="text-[16px] text-muted-foreground" role="alert">
+          {message}
+        </p>
       )}
     </div>
   );

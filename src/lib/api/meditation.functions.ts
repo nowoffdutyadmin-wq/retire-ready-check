@@ -8,24 +8,28 @@ const authInput = z.object({ accessToken: z.string().min(10) });
 const emptyInput = authInput;
 const cohortInput = z.object({
   accessToken: z.string().min(10),
-  name: z.string().min(2),
-  startDate: z.string().min(10),
+  name: z.string().trim().min(2, "Please enter a cohort name."),
+  startDate: z.string().min(10, "Please choose a cohort start date."),
 });
 const memberInput = z.object({
   accessToken: z.string().min(10),
   cohortId: z.string().uuid(),
-  fullName: z.string().min(2),
-  email: z.string().email(),
+  fullName: z.string().trim().min(2, "Please enter the member's full name."),
+  email: z.string().trim().email("Please enter a valid email address."),
   timezone: z.string().refine(isSupportedTimezone, "Choose a valid IANA timezone."),
 });
 const contentInput = z.object({
   accessToken: z.string().min(10),
   cohortId: z.string().uuid(),
   weekNumber: z.number().int().min(1).max(4),
-  dayNumber: z.number().int().min(1).max(28),
-  title: z.string().min(2),
-  audioUrl: z.string().url(),
-  durationSeconds: z.number().int().positive(),
+  dayNumber: z
+    .number()
+    .int()
+    .min(1, "Please choose a day number from 1 to 28.")
+    .max(28, "Please choose a day number from 1 to 28."),
+  title: z.string().trim().min(2, "Please enter a session title."),
+  audioUrl: z.string().trim().url("Please enter a full audio URL."),
+  durationSeconds: z.number().int().positive("Please enter the audio duration in seconds."),
 });
 const cohortIdInput = z.object({ accessToken: z.string().min(10), cohortId: z.string().uuid() });
 
@@ -134,7 +138,11 @@ export const getMeditationAdminData = createServerFn({ method: "POST" })
         supabase.from("daily_content").select("*").order("day_number", { ascending: true }),
         supabase.from("practice_logs").select("*").order("completed_at", { ascending: false }),
         supabase.from("pair_streaks").select("*"),
-        supabase.from("notification_events").select("*").order("created_at", { ascending: false }).limit(50),
+        supabase
+          .from("notification_events")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(50),
       ]);
 
     const error = [
@@ -181,13 +189,11 @@ export const addMeditationMember = createServerFn({ method: "POST" })
     let authUser = await findAuthUserByEmail(supabase, data.email);
 
     if (!authUser) {
-      const { data: inviteResult, error: inviteError } = await supabase.auth.admin.inviteUserByEmail(
-        data.email,
-        {
+      const { data: inviteResult, error: inviteError } =
+        await supabase.auth.admin.inviteUserByEmail(data.email, {
           redirectTo: `${getSiteUrl()}/auth/callback`,
           data: { full_name: data.fullName, timezone: data.timezone, cohort_id: data.cohortId },
-        },
-      );
+        });
       if (inviteError) throw inviteError;
       authUser = inviteResult.user;
     }
@@ -274,12 +280,14 @@ export const autoPairMeditationCohort = createServerFn({ method: "POST" })
       .eq("buddy_pairs.cohort_id", data.cohortId);
     if (assignedError) throw assignedError;
 
-    const assignedIds = new Set((assigned ?? []).map((row: { member_id: string }) => row.member_id));
+    const assignedIds = new Set(
+      (assigned ?? []).map((row: { member_id: string }) => row.member_id),
+    );
     const unmatched = (members ?? [])
       .filter((member) => !assignedIds.has(member.id))
       .sort((a, b) => timezoneOffsetMinutes(a.timezone) - timezoneOffsetMinutes(b.timezone));
 
-    const groups: typeof unmatched[] = [];
+    const groups: (typeof unmatched)[] = [];
     for (let index = 0; index < unmatched.length; index += 2) {
       if (index === unmatched.length - 3) {
         groups.push(unmatched.slice(index, index + 3));
@@ -359,7 +367,8 @@ export const sendMeditationReminders = createServerFn({ method: "POST" })
       .eq("cohort_id", data.cohortId)
       .eq("role", "member");
     if (membersError) throw membersError;
-    if (!members?.length) return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
+    if (!members?.length)
+      return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
 
     const memberIds = members.map((member) => member.id);
     const { data: pairRows, error: pairRowsError } = await supabase
@@ -369,7 +378,8 @@ export const sendMeditationReminders = createServerFn({ method: "POST" })
     if (pairRowsError) throw pairRowsError;
 
     const pairIds = [...new Set((pairRows ?? []).map((row: { pair_id: string }) => row.pair_id))];
-    if (!pairIds.length) return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
+    if (!pairIds.length)
+      return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
 
     const { data: progressRows, error: progressError } = await supabase
       .from("pair_content_progress")
@@ -378,7 +388,10 @@ export const sendMeditationReminders = createServerFn({ method: "POST" })
       .is("joint_completed_at", null);
     if (progressError) throw progressError;
 
-    const activeContentByPair = new Map<string, { content_id: string; title: string; day_number: number }>();
+    const activeContentByPair = new Map<
+      string,
+      { content_id: string; title: string; day_number: number }
+    >();
     for (const row of (progressRows ?? []) as Array<{
       pair_id: string;
       content_id: string;
@@ -395,8 +408,11 @@ export const sendMeditationReminders = createServerFn({ method: "POST" })
       }
     }
 
-    const activeContentIds = [...new Set([...activeContentByPair.values()].map((row) => row.content_id))];
-    if (!activeContentIds.length) return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
+    const activeContentIds = [
+      ...new Set([...activeContentByPair.values()].map((row) => row.content_id)),
+    ];
+    if (!activeContentIds.length)
+      return { queued: 0, skippedBeforeWindow: 0, skippedStarted: 0, skippedDuplicate: 0 };
 
     const { data: logs, error: logsError } = await supabase
       .from("practice_logs")
@@ -417,13 +433,18 @@ export const sendMeditationReminders = createServerFn({ method: "POST" })
     const membersById = new Map(members.map((member) => [member.id, member]));
     const memberIdsByPair = new Map<string, string[]>();
     for (const row of (pairRows ?? []) as Array<{ pair_id: string; member_id: string }>) {
-      memberIdsByPair.set(row.pair_id, [...(memberIdsByPair.get(row.pair_id) ?? []), row.member_id]);
+      memberIdsByPair.set(row.pair_id, [
+        ...(memberIdsByPair.get(row.pair_id) ?? []),
+        row.member_id,
+      ]);
     }
 
     const existingReminderKeys = new Set(
       (existingReminders ?? []).map((event: { member_id: string; created_at: string }) => {
         const member = membersById.get(event.member_id);
-        return member ? `${event.member_id}:${localReminderDate(member.timezone, new Date(event.created_at))}` : "";
+        return member
+          ? `${event.member_id}:${localReminderDate(member.timezone, new Date(event.created_at))}`
+          : "";
       }),
     );
 
