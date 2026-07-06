@@ -86,7 +86,7 @@ function Home() {
         </div>
       </section>
 
-      <Section title="This is not another retirement calculator.">
+      <Section title="The assessment reads the side of retirement most planning skips entirely: how spending feels, how structure changes, and how identity shifts when the role does.">
         <InfoGrid>
           <InfoCard title="Financially prepared can still feel unfinished.">
             A portfolio can be in good shape while spending, open time, and the shift away from work

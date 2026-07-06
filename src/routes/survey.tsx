@@ -123,17 +123,20 @@ const ARCHETYPE_TITLE: Record<Archetype, string> = {
   saving_mode: "The Careful Protector",
   restless_protector: "The Restless Operator",
   grounded_explorer: "The Grounded Explorer",
-  almost_off_duty: "The Almost-Ready",
-  ready_adjusting: "The Quiet Settler",
+  almost_off_duty: "The Thorough Builder",
+  ready_adjusting: "The Steady Arriver",
 };
 
 const ARCHETYPE_LINE: Record<Archetype, string> = {
-  saving_mode: "The numbers may be there. The hesitation around spending is still real.",
-  restless_protector: "You left the job. Work-mode momentum is still moving through your days.",
+  saving_mode:
+    "The finances are solid and the hesitation around spending them has not caught up yet. That gap has a name, and it can be closed.",
+  restless_protector:
+    "The career is behind you and the momentum it built is still moving through your days in ways that are harder to name than they are to feel.",
   grounded_explorer: "You've figured out something most people spend years circling.",
   almost_off_duty:
-    "You're closer than your score suggests. A few things are still running underneath.",
-  ready_adjusting: "Most of this chapter is working. One or two corners are still settling.",
+    "Your score reflects a transition that is mostly settled, with one or two patterns worth looking at before they become the texture of the whole chapter.",
+  ready_adjusting:
+    "This chapter is largely working and a small number of patterns are still finding their shape. The assessment identified which ones.",
 };
 
 function computeResult(scores: Record<string, number>) {
@@ -786,13 +789,13 @@ function EmailGate({
   return (
     <section className="pt-10 sm:pt-16">
       <div className="text-[16px] tracking-[0.22em] mb-5" style={{ color: T.sageDeep }}>
-        READY
+        ASSESSMENT COMPLETE
       </div>
       <h2
         className="text-[36px] leading-[1.08] sm:text-[44px]"
         style={{ fontFamily: "'Instrument Serif', Georgia, serif", color: T.ink }}
       >
-        Your results are ready.
+        Your Off-Duty Score is ready.
       </h2>
       <p className="mt-5 text-[18px] leading-[1.55]" style={{ color: T.inkSoft, maxWidth: 520 }}>
         Enter your email to see your score and get your personalized breakdown.
@@ -842,7 +845,7 @@ function EmailGate({
           Show me my results
         </button>
         <p className="text-[16px] mt-1" style={{ color: T.muted }}>
-          Your breakdown goes to this inbox.
+          Your score and pattern breakdown will arrive there.
         </p>
       </form>
     </section>
@@ -986,7 +989,8 @@ function Results({
           className="text-[26px] sm:text-[32px] leading-[1.18]"
           style={{ fontFamily: "'Instrument Serif', Georgia, serif", color: T.ink }}
         >
-          If you're ready for change, watch this video.
+          Chris recorded a short video explaining what your score means and walking you through the
+          first practice.
         </h3>
         <p className="mt-3 text-[16px] leading-[1.55]" style={{ color: T.inkSoft }}>
           Chris will explain what your score means, then guide you through a short experience so you
@@ -1098,7 +1102,7 @@ function Results({
             // Hook up checkout here.
           }}
         >
-          Get the Off-Duty Reset
+          Start the Off-Duty Reset
         </button>
 
         {/* Guarantee */}

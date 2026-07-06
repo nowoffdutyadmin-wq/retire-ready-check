@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     q: "What does it cost?",
-    a: "The Off-Duty Reset is currently $97 as a one-time purchase. A live Transition Program is planned for the first cohort at $497-$597, with a couples option expected around $997. A $49/month graduate community may be offered after the live program.",
+    a: "The founding cohort is $1,199 for the four-week program. The Practice Club is $49/month for cohort graduates who want to keep the practice going after the program ends.",
   },
   {
     q: "What is the community?",

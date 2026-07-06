@@ -25,7 +25,7 @@ export const colors = {
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/survey", label: "Assessment" },
+  { href: "/register", label: "Free Webinar" },
   { href: "/about", label: "About Chris" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },

@@ -48,9 +48,9 @@ function About() {
           </p>
           <p className="mt-5">
             His background matters here because Now Off Duty is built for people who know how to
-            achieve, lead, solve, and carry responsibility. It does not assume the reader is
-            fragile. It assumes they may have spent decades being competent, and that retirement can
-            ask for a different kind of readiness than the one work rewarded.
+            achieve, lead, solve, and carry responsibility. The program is built for people who
+            spent decades being competent, and who want the same clear-eyed approach applied to the
+            part of retirement that competence alone does not resolve.
           </p>
         </div>
       </Section>
@@ -101,68 +101,21 @@ function About() {
         </div>
       </Section>
 
-      <Section title="What this is, and what it is not">
-        <div className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              This is
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "Coaching and education for the retirement transition.",
-                  "A practical way to understand patterns like spending hesitation, work-mode momentum, identity change, and lack of ease.",
-                  "A grounded program for capable adults who want to feel more settled in the chapter they worked hard to reach.",
-                ]}
-              />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              This is not
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "Professional health, psychological, tax, legal, or money guidance for your personal situation.",
-                  "Portfolio guidance, income strategy, or a replacement for your financial planner.",
-                  "Immediate professional help for urgent personal situations.",
-                ]}
-              />
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      <Section title="Who the program is designed for">
-        <div className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              Designed for
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "People who are within five years of retirement or already in the early years of it.",
-                  "People who planned the financial side and still feel cautious, restless, over-responsible, or unsure how the next chapter should work.",
-                  "People who want practical tools without being talked down to.",
-                ]}
-              />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              Not designed for
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "People seeking professional support for health, psychological, tax, legal, or urgent personal concerns.",
-                  "People seeking financial planning, portfolio guidance, or retirement income strategy.",
-                  "People who want a miracle claim instead of steady practice.",
-                ]}
-              />
-            </div>
+      <Section title="Who the program is designed to serve most">
+        <div className="max-w-3xl text-[18px] leading-[1.7]" style={{ color: colors.inkSoft }}>
+          <p>
+            Now Off Duty is for capable people within five years of retirement, or in the early
+            years of it, who handled the financial planning and still want a grounded way to meet
+            the shift in structure, identity, spending, and daily rhythm.
+          </p>
+          <div className="mt-5">
+            <BulletList
+              items={[
+                "People who want practical tools without being talked down to.",
+                "People who feel the next chapter should be clearer and easier to inhabit.",
+                "People who want Chris's direct, grounded guidance in a small-group setting.",
+              ]}
+            />
           </div>
         </div>
       </Section>
