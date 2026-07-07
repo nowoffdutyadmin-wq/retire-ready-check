@@ -1,0 +1,392 @@
+:root {
+  --nod-bg: #f7f3ed;
+  --nod-card: #ffffff;
+  --nod-ink: #1c1917;
+  --nod-body: #44403c;
+  --nod-muted: #5c6b6a;
+  --nod-sage: #5b8f85;
+  --nod-sage-soft: #e8eef0;
+  --nod-rule: #d4e2e0;
+  --nod-cta: #c2440e;
+  --nod-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --nod-serif: "Playfair Display", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--nod-bg);
+}
+
+body {
+  margin: 0;
+  background: var(--nod-bg);
+  color: var(--nod-ink);
+  font-family: var(--nod-sans);
+}
+
+a {
+  color: inherit;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 26px 20px 28px;
+}
+
+.page--center {
+  display: grid;
+  align-content: center;
+  padding: 48px 24px 28px;
+}
+
+.wrap {
+  width: min(100%, 640px);
+  margin: 0 auto;
+}
+
+.wrap--wide {
+  width: min(100%, 760px);
+}
+
+.wrap--narrow {
+  width: min(100%, 480px);
+  text-align: center;
+}
+
+.brand {
+  margin: 0 0 22px;
+  color: var(--nod-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--nod-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.eyebrow--sage {
+  color: var(--nod-sage);
+}
+
+.headline {
+  margin: 0;
+  color: var(--nod-ink);
+  font-family: var(--nod-serif);
+  font-size: clamp(34px, 8vw, 44px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.headline--offer {
+  font-size: clamp(32px, 8vw, 42px);
+}
+
+.subhead {
+  margin: 16px 0 0;
+  color: var(--nod-muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.section {
+  margin-top: 34px;
+}
+
+.card {
+  background: var(--nod-card);
+  border: 1px solid var(--nod-rule);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card--compact {
+  padding: 20px;
+}
+
+.card--guarantee {
+  border: 0;
+  border-left: 3px solid var(--nod-sage);
+}
+
+.host {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.photo {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(145deg, #e8eef0, #d4e2e0);
+  color: var(--nod-muted);
+  font-weight: 600;
+}
+
+.photo--circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  font-size: 18px;
+}
+
+.photo--rect {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 8px;
+  font-size: 20px;
+}
+
+.host-name {
+  margin: 0;
+  color: var(--nod-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.host-title {
+  margin: 4px 0 0;
+  color: var(--nod-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.event-date {
+  margin: 0;
+  color: var(--nod-ink);
+  font-family: var(--nod-serif);
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.event-time {
+  margin: 8px 0 0;
+  color: var(--nod-ink);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.muted-small {
+  margin: 8px 0 0;
+  color: var(--nod-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--nod-rule);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--nod-ink);
+  font: 16px var(--nod-sans);
+  padding: 0 14px;
+}
+
+.button,
+.cta {
+  width: 100%;
+  min-height: 56px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--nod-cta);
+  color: #ffffff;
+  cursor: pointer;
+  font: 500 17px/1.2 var(--nod-sans);
+  text-align: center;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+  text-decoration: none;
+}
+
+.under-button {
+  margin: 10px 0 0;
+  color: var(--nod-muted);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.check-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-list li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  color: var(--nod-ink);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.check {
+  color: var(--nod-sage);
+}
+
+.body-copy {
+  margin: 0;
+  color: var(--nod-body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.chris-name {
+  margin: 18px 0 0;
+  color: var(--nod-ink);
+  font-family: var(--nod-serif);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.chris-title {
+  margin: 4px 0 0;
+  color: var(--nod-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.chris-bio {
+  margin: 16px 0 0;
+  color: var(--nod-body);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.footer {
+  margin-top: 42px;
+  color: var(--nod-muted);
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.footer a {
+  text-decoration: none;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 28px 0;
+  background: var(--nod-rule);
+}
+
+.note {
+  margin: 0;
+  color: var(--nod-body);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.signature {
+  margin: 12px 0 0;
+  color: var(--nod-ink);
+  font-size: 16px;
+}
+
+.included-list {
+  display: grid;
+  gap: 12px;
+}
+
+.included {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  border: 1px solid var(--nod-rule);
+  border-radius: 10px;
+  background: var(--nod-card);
+  padding: 18px;
+}
+
+.included-icon {
+  color: var(--nod-sage);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.included-title {
+  margin: 0;
+  color: var(--nod-ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.included-body {
+  margin: 7px 0 0;
+  color: var(--nod-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.price {
+  margin: 0;
+  color: var(--nod-cta);
+  font-family: var(--nod-serif);
+  font-size: 38px;
+  line-height: 1.05;
+}
+
+.section-heading {
+  margin: 0;
+  color: var(--nod-ink);
+  font-family: var(--nod-serif);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.before-call {
+  margin-top: 28px;
+  border-radius: 10px;
+  background: var(--nod-sage-soft);
+  padding: 20px;
+  text-align: left;
+}
+
+.before-call ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--nod-body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.hidden {
+  display: none;
+}

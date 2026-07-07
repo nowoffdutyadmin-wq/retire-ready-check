@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Free Online Training - Now Off Duty</title>
+    <link rel="stylesheet" href="../styles/webinar-funnel.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="wrap">
+        <p class="brand">Now Off Duty</p>
+
+        <div class="host">
+          <!-- DYNAMIC: replace this placeholder with Chris Soll's approved headshot before going live -->
+          <div class="photo photo--circle" role="img" aria-label="Chris Soll photo placeholder">
+            CS
+          </div>
+          <div>
+            <p class="host-name">Chris Soll</p>
+            <p class="host-title">Practice Teacher &amp; Retirement Transition Coach</p>
+          </div>
+        </div>
+
+        <h1 class="headline">You prepared it all. Here is the part almost nobody prepares for.</h1>
+        <p class="subhead">
+          A free 60-minute online training where you'll discover the one missing piece and feel the
+          difference yourself before the hour is up.
+        </p>
+
+        <section class="section">
+          <div class="card card--compact">
+            <p class="eyebrow eyebrow--sage">Free Online Training</p>
+            <!-- DYNAMIC: replace with confirmed webinar date before going live -->
+            <p class="event-date">Date to be announced</p>
+            <!-- DYNAMIC: replace with confirmed webinar time before going live -->
+            <p class="event-time">Time to be announced</p>
+            <p class="muted-small">
+              <a href="https://www.timeanddate.com/worldclock/" target="_blank" rel="noreferrer">
+                Check your timezone →
+              </a>
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <form class="form" id="registration-form">
+            <input
+              class="field"
+              name="firstName"
+              autocomplete="given-name"
+              placeholder="Your first name"
+            />
+            <input
+              class="field"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              required
+              placeholder="your@email.com"
+            />
+            <button class="button" type="submit">Save my free spot →</button>
+            <p class="under-button">
+              Free. No credit card. Replay available for 7 days to registered attendees.
+            </p>
+          </form>
+
+          <div class="card hidden" id="registration-confirmation">
+            <h2 class="chris-name" style="margin-top: 0">You're registered.</h2>
+            <p class="subhead" style="font-size: 16px">
+              Check your inbox for your Zoom link and everything you need for the session.
+            </p>
+            <p class="muted-small">Add it to your calendar so you don't miss it.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">In 60 Minutes You'll Learn</p>
+          <ul class="check-list">
+            <li>
+              <span class="check" aria-hidden="true">✓</span
+              ><span>Why the calm you expected hasn't arrived, and what's actually behind it</span>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true">✓</span
+              ><span>The one thing that's actually in the way, and what to do about it</span>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true">✓</span
+              ><span
+                >A simple practice you can use in the session itself. Most people notice a shift
+                before the hour is up.</span
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <div class="card">
+            <!-- DYNAMIC: replace this placeholder with Chris Soll's approved photo before going live -->
+            <div class="photo photo--rect" role="img" aria-label="Chris Soll photo placeholder">
+              Chris photo
+            </div>
+            <h2 class="chris-name">Chris Soll</h2>
+            <p class="chris-title">Practice Teacher · Co-founder, Mindspo</p>
+            <p class="chris-bio">
+              I've spent ten years helping people understand what's happening on their inside, and
+              teaching them one practice that changes it. This session is built around something
+              I've watched work more times than I can count. I'm looking forward to sharing it with
+              you.
+            </p>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms</a> · Unsubscribe<br />
+          © Now Off Duty 2026
+        </footer>
+      </div>
+    </main>
+
+    <script>
+      document
+        .getElementById("registration-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          // TODO: replace with actual email platform API endpoint and required list/tag payload.
+          // DYNAMIC: replace with Zoom/webinar automation that sends the attendee link after registration.
+          document.getElementById("registration-form").classList.add("hidden");
+          document.getElementById("registration-confirmation").classList.remove("hidden");
+          window.setTimeout(function () {
+            window.location.href = "/confirmation";
+          }, 900);
+        });
+    </script>
+  </body>
+</html>
