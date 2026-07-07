@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     q: "What does it cost?",
-    a: "The founding cohort is $1,199 for the four-week program. The Practice Club is $49/month for cohort graduates who want to keep the practice going after the program ends.",
+    a: "The founding cohort is $1,200 for the four-week program. The Practice Club is $50/month for cohort graduates who want to keep the practice going after the program ends.",
   },
   {
     q: "What is the community?",
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     q: "What is the refund policy?",
-    a: "If it does not help, contact us within 30 days using the purchase email address. Full refund, no questions.",
+    a: "If you attend all four live sessions, complete the daily practice, and notice no difference by week four, tell us. We'll make it right. No complicated process.",
   },
 ];
 

@@ -146,7 +146,7 @@ function ChrisCard({ compact = false }: { compact?: boolean }) {
       <p style={{ margin: "16px 0 0", color: C.body, fontSize: 15, lineHeight: 1.65 }}>
         {compact
           ? "Chris Soll is the co-founder of Mindspo and the guide behind Now Off Duty. He works with people who have built full lives and are ready for this chapter to feel steadier, calmer, and more like theirs."
-          : "I've spent ten years helping people understand what's happening on their inside — and teaching them one practice that changes it. This session is built around something I've watched work more times than I can count. I'm looking forward to sharing it with you."}
+          : "I've spent ten years helping people understand what's happening on their inside, and teaching them one practice that changes it. This session is built around something I've watched work more times than I can count. I'm looking forward to sharing it with you."}
       </p>
     </Card>
   );
@@ -258,13 +258,10 @@ export function WebinarRegistrationPage() {
           </div>
         </div>
 
-        <Headline>
-          What your financial advisor never covered — and why retirement still doesn't feel the way
-          you planned.
-        </Headline>
+        <Headline>You prepared it all. Here is the part almost nobody prepares for.</Headline>
         <Subhead>
-          A free 60-minute online training where you'll discover the one missing piece — and feel
-          the difference yourself before the hour is up.
+          A free 60-minute online training where you'll discover the one missing piece and feel the
+          difference yourself before the hour is up.
         </Subhead>
 
         <section style={{ marginTop: 34 }}>
@@ -338,9 +335,9 @@ export function WebinarRegistrationPage() {
           <Label>In 60 Minutes You'll Learn</Label>
           <CheckList
             items={[
-              "Why the calm you expected hasn't arrived — and why that's not your fault",
-              "The one thing that's actually in the way — and what to do about it",
-              "A simple practice you can try in the session itself — most people feel a shift before we finish",
+              "Why the calm you expected hasn't arrived, and what's actually behind it",
+              "The one thing that's actually in the way, and what to do about it",
+              "A simple practice you can use in the session itself. Most people notice a shift before the hour is up.",
             ]}
           />
         </section>
@@ -399,10 +396,11 @@ export function OfferPage() {
             <p style={bodyStyle()}>
               Over four weeks, Chris works with a small group of people who've recognised the same
               thing: that the retirement they planned doesn't feel the way they expected, and that
-              the standard advice hasn't helped. The program teaches two specific practices — one
-              that helps you come off duty, one that quiets the mind — and gives you a structure and
-              an accountability partner to make sure they stick. Most people notice a difference
-              within the first week. By week four, the practice is simply part of their day.
+              the standard advice has fallen short of the actual transition. The program teaches two
+              specific practices: one that helps you come off duty, one that quiets the mind. It
+              also gives you a structure and an accountability partner to make sure they stick. Most
+              people notice a difference within the first week. By week four, the practice is simply
+              part of their day.
             </p>
           </Card>
         </section>
@@ -414,12 +412,12 @@ export function OfferPage() {
               Teaching, guided practice, and open Q&amp;A. Four sessions over four weeks.
             </Included>
             <Included title="Daily guided audio practice">
-              10, 20, or 30 minutes — you choose what fits your day. Available any time, on any
+              10, 20, or 30 minutes. You choose what fits your day. Available any time, on any
               device.
             </Included>
             <Included title="A mid-week check-in from Chris">
-              A short voice note each week addressing what the group is noticing. Personal, not
-              automated.
+              A short voice note each week from Chris, addressed to what the group is actually
+              experiencing.
             </Included>
             <Included title="An accountability partner and the daily unlock system">
               You'll be paired with someone at a similar stage. Both of you confirm your practice
@@ -428,12 +426,12 @@ export function OfferPage() {
             </Included>
             <Included title="Physical rewards through the cohort">
               A handwritten note from Chris in week one. Sealed insight cards for weeks two, three,
-              and four. And for the pair with the highest streak at the end: a practice cushion, and
-              something even better.
+              and four. And for the pair with the highest streak at the end: a practice cushion,
+              chosen and sent by Chris.
             </Included>
             <Included title="Access to the Practice Club at cohort end">
-              Weekly live sessions and a community of people continuing the practice. $49/month —
-              and cohort graduates always get first access.
+              Weekly live sessions and a community of people continuing the practice. $50/month,
+              with first access reserved for cohort graduates.
             </Included>
           </div>
         </section>
@@ -450,7 +448,7 @@ export function OfferPage() {
                 lineHeight: 1.05,
               }}
             >
-              $1,199
+              $1,200
             </p>
             <p style={{ margin: "8px 0 0", color: C.muted, fontSize: 14, lineHeight: 1.5 }}>
               Founding cohort pricing. Four weeks. Full access. Everything listed above.
@@ -461,8 +459,8 @@ export function OfferPage() {
         <section style={{ marginTop: 34 }}>
           <Card style={{ border: 0, borderLeft: "3px solid " + C.sage }}>
             <p style={{ margin: 0, color: C.body, fontSize: 16, lineHeight: 1.65 }}>
-              If you attend all four live sessions and complete the daily practice and notice no
-              difference, tell us. We'll make it right. No complicated process.
+              If you attend all four live sessions, complete the daily practice, and notice no
+              difference by week four, tell us. We'll make it right. No complicated process.
             </p>
           </Card>
         </section>
@@ -480,7 +478,7 @@ export function OfferPage() {
             Find out if this is right for you.
           </h2>
           <p style={{ margin: "12px 0 0", color: C.muted, fontSize: 16, lineHeight: 1.6 }}>
-            The next step is a 30-minute call. It's a conversation — not a pitch. We'll figure out
+            The next step is a 30-minute call. It's a conversation, not a pitch. We'll figure out
             together whether this program makes sense for where you are.
           </p>
           <p style={{ margin: "18px 0 0" }}>
@@ -511,14 +509,14 @@ export function CallConfirmedPage() {
         <BrandMark />
         <Headline>You're booked.</Headline>
         <Subhead>
-          Check your inbox — you'll get a confirmation with everything you need for the call.
+          Check your inbox for a confirmation with everything you need for the call.
         </Subhead>
         <div style={dividerStyle()} />
         <p
           style={{ margin: 0, color: C.body, fontSize: 16, fontStyle: "italic", lineHeight: 1.65 }}
         >
-          "I'm looking forward to the conversation. Come with whatever's on your mind — there's no
-          agenda from my side other than figuring out if this is actually right for you."
+          "Come with whatever's on your mind. The only agenda is figuring out together whether this
+          is actually right for you."
         </p>
         <p style={{ margin: "12px 0 0", color: C.ink, fontSize: 16 }}>— Chris</p>
         <div
@@ -543,7 +541,7 @@ export function CallConfirmedPage() {
             }}
           >
             <li>You'll receive a confirmation email with your Zoom link shortly.</li>
-            <li>The call is 30 minutes. Come as you are — no preparation needed.</li>
+            <li>The call is 30 minutes. Come as you are. No preparation needed.</li>
             <li>If you need to reschedule, use the link in your confirmation email.</li>
           </ul>
         </div>
