@@ -1,11 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   BulletList,
-  ButtonLink,
   colors,
   DisclaimerBox,
-  InfoCard,
-  InfoGrid,
   Section,
   SiteShell,
 } from "../components/site-shell";
@@ -13,146 +11,160 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Now Off Duty — Retirement Transition Assessment" },
+      { title: "Now Off Duty — Free Session with Chris Soll" },
       {
         name: "description",
         content:
-          "A practical retirement transition site and self-assessment for people who have prepared the financial side and want to prepare for the rest of the chapter.",
+          "A free 35-minute session for people who prepared the financial side of retirement and want the rest of the chapter to feel the way they planned.",
       },
-      { property: "og:title", content: "Now Off Duty — Retirement Transition Assessment" },
+      { property: "og:title", content: "Now Off Duty — Free Session with Chris Soll" },
       {
         property: "og:description",
         content:
-          "Take the Retirement Transition Assessment and see what this next chapter may ask of you beyond the numbers.",
+          "You prepared the finances. Here is the part almost nobody prepares for.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Home,
 });
 
+function ChrisBio() {
+  return (
+    <div
+      className="rounded-[8px] p-6"
+      style={{ backgroundColor: colors.paper, border: `1px solid ${colors.rule}` }}
+    >
+      <div className="flex items-center gap-4">
+        <div
+          className="grid h-20 w-20 shrink-0 place-items-center rounded-full text-[18px] font-semibold"
+          style={{ backgroundColor: colors.sageSoft, color: colors.sageDeep }}
+          role="img"
+          aria-label="Chris Soll photo"
+        >
+          CS
+        </div>
+        <div>
+          <div className="text-[18px] font-semibold" style={{ color: colors.ink }}>
+            Chris Soll
+          </div>
+          <div className="mt-1 text-[16px]" style={{ color: colors.muted }}>
+            Practice Teacher · Co-founder, Mindspo
+          </div>
+        </div>
+      </div>
+      <p className="mt-5 text-[17px] leading-[1.65]" style={{ color: colors.inkSoft }}>
+        I've spent ten years helping people understand what's happening on their inside — and
+        teaching them one practice that changes it. This session is built around something I've
+        watched work more times than I can count. I'm looking forward to sharing it with you.
+      </p>
+    </div>
+  );
+}
+
 function Home() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const value = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value.length > 255) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    // TODO: connect email platform webhook (ConvertKit/ActiveCampaign) here,
+    // tagging the subscriber with "free-video-optin". Redirect works regardless.
+    try {
+      const stored = JSON.parse(localStorage.getItem("nod_optins") ?? "[]");
+      stored.push({ email: value, tag: "free-video-optin", at: new Date().toISOString() });
+      localStorage.setItem("nod_optins", JSON.stringify(stored));
+    } catch {
+      // storage unavailable — redirect must still work
+    }
+    navigate({ to: "/confirmed" });
+  }
+
   return (
     <SiteShell>
-      <section className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div>
-          <div
-            className="mb-5 text-[16px] font-semibold tracking-[0.12em]"
-            style={{ color: colors.sageDeep }}
-          >
-            RETIREMENT TRANSITION ASSESSMENT
-          </div>
-          <h1
-            className="font-serif text-[48px] leading-[1.04] sm:text-[72px]"
-            style={{ color: colors.ink }}
-          >
-            You prepared the finances. Have you prepared for the transition?
-          </h1>
-          <p
-            className="mt-6 max-w-2xl text-[20px] leading-[1.65]"
-            style={{ color: colors.inkSoft }}
-          >
-            For 40 years, you built toward this chapter. Now Off Duty helps capable people prepare
-            for the part spreadsheets do not cover: who you are when the structure changes, how you
-            spend your time, and how to be present in the life you built.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/survey">Take the four-minute assessment</ButtonLink>
-            <ButtonLink href="/about" secondary>
-              Learn about Chris
-            </ButtonLink>
-          </div>
-          <p className="mt-4 text-[17px]" style={{ color: colors.muted }}>
-            Your answers stay private.
-          </p>
-        </div>
-
+      <section className="mx-auto max-w-3xl px-5 pb-10 pt-12 sm:pt-16">
         <div
-          className="rounded-[8px] p-6"
-          style={{ backgroundColor: colors.paper, border: `1px solid ${colors.rule}` }}
+          className="mb-4 text-[16px] font-semibold tracking-[0.12em]"
+          style={{ color: colors.sageDeep }}
         >
-          <h2 className="font-serif text-[34px] leading-[1.12]" style={{ color: colors.ink }}>
-            What the assessment shows you
-          </h2>
-          <div className="mt-5">
-            <BulletList
-              items={[
-                "Whether spending still brings hesitation, even when the numbers are solid.",
-                "Whether work-mode momentum is still shaping your days.",
-                "Whether identity, purpose, structure, or connection need a clearer plan.",
-                "Which next step fits your score instead of giving you generic advice.",
-              ]}
-            />
-          </div>
+          CHRIS SOLL · PRACTICE TEACHER &amp; RETIREMENT TRANSITION COACH
         </div>
+        <h1
+          className="font-serif text-[44px] leading-[1.06] sm:text-[62px]"
+          style={{ color: colors.ink }}
+        >
+          You prepared the finances. Here is the part almost nobody prepares for.
+        </h1>
+        <p className="mt-6 max-w-3xl text-[18px] leading-[1.7]" style={{ color: colors.inkSoft }}>
+          A free 35-minute session. Watch it once. Most people notice something shift before it
+          ends.
+        </p>
+
+        <form onSubmit={onSubmit} className="mt-8 grid gap-3" noValidate>
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError("");
+            }}
+            className="min-h-[56px] w-full rounded-[10px] px-4 text-[18px]"
+            style={{
+              backgroundColor: colors.paper,
+              border: `1px solid ${colors.rule}`,
+              color: colors.ink,
+            }}
+            aria-label="Email address"
+          />
+          {error && (
+            <p className="text-[15px]" style={{ color: colors.cta }}>
+              {error}
+            </p>
+          )}
+          <button
+            type="submit"
+            className="inline-flex min-h-[56px] items-center justify-center rounded-[10px] px-7 text-[18px] font-semibold"
+            style={{ backgroundColor: colors.cta, color: colors.paper, border: `1px solid ${colors.cta}` }}
+          >
+            Send me the free session →
+          </button>
+          <p className="text-[14px]" style={{ color: colors.muted }}>
+            Free. No credit card. Unsubscribe any time.
+          </p>
+        </form>
       </section>
 
-      <Section title="The assessment reads the side of retirement most planning skips entirely: how spending feels, how structure changes, and how identity shifts when the role does.">
-        <InfoGrid>
-          <InfoCard title="Financially prepared can still feel unfinished.">
-            A portfolio can be in good shape while spending, open time, and the shift away from work
-            still feel harder to enjoy than expected.
-          </InfoCard>
-          <InfoCard title="The work is practical.">
-            The assessment points to specific transition patterns: spending ease, daily rhythm,
-            purpose, identity, connection, and open time.
-          </InfoCard>
-          <InfoCard title="Chris keeps it grounded.">
-            Chris Soll brings the Mindspo background in meditation education, retreats, and
-            practical transformation into a retirement-specific format.
-          </InfoCard>
-        </InfoGrid>
-      </Section>
-
-      <Section title="Who this is for">
-        <div className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              Designed for
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "People within five years of retirement or already in the early years of it.",
-                  "People who handled the financial planning and want the next chapter to feel clear, present, and enjoyable.",
-                  "People who want grounded coaching and education, not hype or labels.",
-                ]}
-              />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-serif text-[30px]" style={{ color: colors.ink }}>
-              Not designed for
-            </h3>
-            <div className="mt-4">
-              <BulletList
-                items={[
-                  "People looking for personal professional guidance on health, money, tax, or legal decisions.",
-                  "People looking for portfolio guidance, income strategy, or investment recommendations.",
-                  "People who need urgent professional support.",
-                ]}
-              />
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      <Section title="Start with the Retirement Transition Assessment">
+      <Section narrow>
         <div
-          className="rounded-[8px] p-6 sm:p-8"
-          style={{ backgroundColor: colors.paper, border: `1px solid ${colors.rule}` }}
+          className="mb-4 text-[14px] font-semibold tracking-[0.12em]"
+          style={{ color: colors.sageDeep }}
         >
-          <p className="max-w-3xl text-[20px] leading-[1.65]" style={{ color: colors.inkSoft }}>
-            The assessment takes about four minutes. It gives you a score, a result type, and a
-            clearer view of the transition patterns that may shape this next chapter: spending,
-            structure, identity, connection, and daily rhythm.
-          </p>
-          <div className="mt-6">
-            <ButtonLink href="/survey">Start the assessment</ButtonLink>
-          </div>
+          WHAT THE SESSION COVERS
         </div>
+        <BulletList
+          items={[
+            "Why the calm you expected hasn't arrived, and what's actually behind it",
+            "The one thing that's in the way, and what to do about it",
+            "A practice you can use in the session itself. Most people notice a shift before the hour is up.",
+          ]}
+        />
       </Section>
 
-      <Section>
+      <Section narrow>
+        <ChrisBio />
+      </Section>
+
+      <Section narrow>
         <DisclaimerBox />
       </Section>
     </SiteShell>
