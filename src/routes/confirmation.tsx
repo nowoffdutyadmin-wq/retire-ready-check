@@ -1,15 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { WebinarConfirmationPage } from "../components/webinar-funnel";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/confirmation")({
-  head: () => ({
-    meta: [
-      { title: "You're Registered — Now Off Duty" },
-      {
-        name: "description",
-        content: "Registration confirmation for The Calm Retirement webinar.",
-      },
-    ],
-  }),
-  component: WebinarConfirmationPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/", statusCode: 301 });
+  },
 });

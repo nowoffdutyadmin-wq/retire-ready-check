@@ -1,0 +1,29 @@
+{
+  "webinar": {
+    "title": "Free 35-Minute Session",
+    "format": "Free session",
+    "durationMinutes": 35,
+    "date": "",
+    "time": "",
+    "timezone": "",
+    "replayAvailable": null
+  },
+  "cohort": {
+    "programName": "The Calm Retirement Program",
+    "price": 499,
+    "currency": "USD",
+    "capacity": 8,
+    "durationWeeks": 4,
+    "sessionLengthMinutes": 90,
+    "dailyPracticeOptions": []
+  },
+  "integrations": {
+    "emailWebhookUrl": "",
+    "stripePaymentUrl": "",
+    "supportEmail": ""
+  },
+  "assets": {
+    "chrisHeadshotUrl": "",
+    "worksheetPreviewUrl": ""
+  }
+}

@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Now Off Duty helps people prepare for the retirement transition beyond the financial plan.",
+          "Now Off Duty offers a free 35-minute session about the part of retirement almost nobody prepares for.",
       },
       { name: "author", content: "Now Off Duty" },
       { property: "og:title", content: "Now Off Duty" },
       {
         property: "og:description",
         content:
-          "Practical coaching and education for the part of retirement spreadsheets cannot settle.",
+          "A free 35-minute session from Chris Soll about the transition beyond the financial plan.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Practical coaching and education for the retirement transition beyond the financial plan.",
+          "A free 35-minute session from Chris Soll about the transition beyond the financial plan.",
       },
     ],
     links: [

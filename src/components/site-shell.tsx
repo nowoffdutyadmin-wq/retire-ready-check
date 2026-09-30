@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
+import { webinarFunnelConfig } from "../lib/webinar-funnel-config";
 
 export const site = {
   brand: "Now Off Duty",
   businessName: "Now Off Duty LLC",
-  email: "",
+  email: webinarFunnelConfig.integrations.supportEmail,
   phone: "",
   responseHours: "Public contact details will be added before launch.",
 };
@@ -25,7 +26,6 @@ export const colors = {
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/register", label: "Free Webinar" },
   { href: "/about", label: "About Chris" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },

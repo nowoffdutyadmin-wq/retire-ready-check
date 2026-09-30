@@ -10,7 +10,10 @@
     "cf:deploy": "npm run build && npx wrangler deploy",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "validate:funnel": "node scripts/validate-webinar-funnel.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
