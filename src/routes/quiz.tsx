@@ -2,6 +2,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/quiz")({
   beforeLoad: () => {
-    throw redirect({ to: "/" });
+    throw redirect({ to: "/", statusCode: 301 });
   },
 });

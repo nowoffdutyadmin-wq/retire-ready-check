@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: OptInPage,
+  component: Home,
 });
 
 function ChrisBio() {
