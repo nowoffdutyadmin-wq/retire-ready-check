@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -17,11 +18,13 @@ import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OfferRouteImport } from './routes/offer'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CopyChiefRouteImport } from './routes/copy-chief'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConfirmedRouteImport } from './routes/confirmed'
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as CallConfirmedRouteImport } from './routes/call-confirmed'
 import { Route as ArticlesRouteImport } from './routes/articles'
@@ -30,6 +33,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -70,6 +78,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -93,6 +106,11 @@ const CopyChiefRoute = CopyChiefRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmedRoute = ConfirmedRouteImport.update({
+  id: '/confirmed',
+  path: '/confirmed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfirmationRoute = ConfirmationRouteImport.update({
@@ -138,11 +156,13 @@ export interface FileRoutesByFullPath {
   '/articles': typeof ArticlesRoute
   '/call-confirmed': typeof CallConfirmedRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmed': typeof ConfirmedRoute
   '/contact': typeof ContactRoute
   '/copy-chief': typeof CopyChiefRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/offer': typeof OfferRoute
   '/privacy': typeof PrivacyRoute
@@ -151,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesByTo {
@@ -160,11 +181,13 @@ export interface FileRoutesByTo {
   '/articles': typeof ArticlesRoute
   '/call-confirmed': typeof CallConfirmedRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmed': typeof ConfirmedRoute
   '/contact': typeof ContactRoute
   '/copy-chief': typeof CopyChiefRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/offer': typeof OfferRoute
   '/privacy': typeof PrivacyRoute
@@ -173,6 +196,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesById {
@@ -183,11 +207,13 @@ export interface FileRoutesById {
   '/articles': typeof ArticlesRoute
   '/call-confirmed': typeof CallConfirmedRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmed': typeof ConfirmedRoute
   '/contact': typeof ContactRoute
   '/copy-chief': typeof CopyChiefRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/offer': typeof OfferRoute
   '/privacy': typeof PrivacyRoute
@@ -196,6 +222,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRouteTypes {
@@ -207,11 +234,13 @@ export interface FileRouteTypes {
     | '/articles'
     | '/call-confirmed'
     | '/confirmation'
+    | '/confirmed'
     | '/contact'
     | '/copy-chief'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
+    | '/join'
     | '/login'
     | '/offer'
     | '/privacy'
@@ -220,6 +249,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/welcome'
     | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -229,11 +259,13 @@ export interface FileRouteTypes {
     | '/articles'
     | '/call-confirmed'
     | '/confirmation'
+    | '/confirmed'
     | '/contact'
     | '/copy-chief'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
+    | '/join'
     | '/login'
     | '/offer'
     | '/privacy'
@@ -242,6 +274,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/welcome'
     | '/auth/callback'
   id:
     | '__root__'
@@ -251,11 +284,13 @@ export interface FileRouteTypes {
     | '/articles'
     | '/call-confirmed'
     | '/confirmation'
+    | '/confirmed'
     | '/contact'
     | '/copy-chief'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
+    | '/join'
     | '/login'
     | '/offer'
     | '/privacy'
@@ -264,6 +299,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/welcome'
     | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
@@ -274,11 +310,13 @@ export interface RootRouteChildren {
   ArticlesRoute: typeof ArticlesRoute
   CallConfirmedRoute: typeof CallConfirmedRoute
   ConfirmationRoute: typeof ConfirmationRoute
+  ConfirmedRoute: typeof ConfirmedRoute
   ContactRoute: typeof ContactRoute
   CopyChiefRoute: typeof CopyChiefRoute
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
+  JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
   OfferRoute: typeof OfferRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -287,11 +325,19 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   SurveyRoute: typeof SurveyRoute
   TermsRoute: typeof TermsRoute
+  WelcomeRoute: typeof WelcomeRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -348,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -381,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmed': {
+      id: '/confirmed'
+      path: '/confirmed'
+      fullPath: '/confirmed'
+      preLoaderRoute: typeof ConfirmedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confirmation': {
@@ -442,11 +502,13 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRoute: ArticlesRoute,
   CallConfirmedRoute: CallConfirmedRoute,
   ConfirmationRoute: ConfirmationRoute,
+  ConfirmedRoute: ConfirmedRoute,
   ContactRoute: ContactRoute,
   CopyChiefRoute: CopyChiefRoute,
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
+  JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
   OfferRoute: OfferRoute,
   PrivacyRoute: PrivacyRoute,
@@ -455,6 +517,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   SurveyRoute: SurveyRoute,
   TermsRoute: TermsRoute,
+  WelcomeRoute: WelcomeRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport

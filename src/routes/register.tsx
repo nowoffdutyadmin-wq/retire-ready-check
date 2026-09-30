@@ -1,15 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { WebinarRegistrationPage } from "../components/webinar-funnel";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/register")({
-  head: () => ({
-    meta: [
-      { title: "The Calm Retirement — Now Off Duty" },
-      {
-        name: "description",
-        content: "A free 60-minute online training for the retirement transition.",
-      },
-    ],
-  }),
-  component: WebinarRegistrationPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/" });
+  },
 });
