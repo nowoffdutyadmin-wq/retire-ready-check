@@ -1,5 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 
+export type {
+  CopyChiefIngestResult,
+  CopyChiefKnowledgeStatus,
+  CopyChiefSyncResult,
+} from "../copy-chief/knowledge";
+
 import { selectCopyChiefCards } from "../copy-chief/cards";
 import {
   buildCopyChiefSystemPrompt,
