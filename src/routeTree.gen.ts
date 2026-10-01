@@ -9,128 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WelcomeRouteImport } from './routes/welcome'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SurveyRouteImport } from './routes/survey'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as RefundRouteImport } from './routes/refund'
-import { Route as QuizRouteImport } from './routes/quiz'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as OfferRouteImport } from './routes/offer'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as JoinRouteImport } from './routes/join'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as DisclaimerRouteImport } from './routes/disclaimer'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CopyChiefRouteImport } from './routes/copy-chief'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ConfirmedRouteImport } from './routes/confirmed'
-import { Route as ConfirmationRouteImport } from './routes/confirmation'
-import { Route as CallConfirmedRouteImport } from './routes/call-confirmed'
-import { Route as ArticlesRouteImport } from './routes/articles'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ArticlesRouteImport } from './routes/articles'
+import { Route as CallConfirmedRouteImport } from './routes/call-confirmed'
+import { Route as ConfirmationRouteImport } from './routes/confirmation'
+import { Route as ConfirmedRouteImport } from './routes/confirmed'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CopyChiefRouteImport } from './routes/copy-chief'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as JoinRouteImport } from './routes/join'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OfferRouteImport } from './routes/offer'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as RefundRouteImport } from './routes/refund'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as SurveyRouteImport } from './routes/survey'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 
-const WelcomeRoute = WelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SurveyRoute = SurveyRouteImport.update({
-  id: '/survey',
-  path: '/survey',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RefundRoute = RefundRouteImport.update({
-  id: '/refund',
-  path: '/refund',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuizRoute = QuizRouteImport.update({
-  id: '/quiz',
-  path: '/quiz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OfferRoute = OfferRouteImport.update({
-  id: '/offer',
-  path: '/offer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JoinRoute = JoinRouteImport.update({
-  id: '/join',
-  path: '/join',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DisclaimerRoute = DisclaimerRouteImport.update({
-  id: '/disclaimer',
-  path: '/disclaimer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CopyChiefRoute = CopyChiefRouteImport.update({
-  id: '/copy-chief',
-  path: '/copy-chief',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmedRoute = ConfirmedRouteImport.update({
-  id: '/confirmed',
-  path: '/confirmed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmationRoute = ConfirmationRouteImport.update({
-  id: '/confirmation',
-  path: '/confirmation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CallConfirmedRoute = CallConfirmedRouteImport.update({
-  id: '/call-confirmed',
-  path: '/call-confirmed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArticlesRoute = ArticlesRouteImport.update({
-  id: '/articles',
-  path: '/articles',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -138,9 +43,104 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CallConfirmedRoute = CallConfirmedRouteImport.update({
+  id: '/call-confirmed',
+  path: '/call-confirmed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationRoute = ConfirmationRouteImport.update({
+  id: '/confirmation',
+  path: '/confirmation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmedRoute = ConfirmedRouteImport.update({
+  id: '/confirmed',
+  path: '/confirmed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CopyChiefRoute = CopyChiefRouteImport.update({
+  id: '/copy-chief',
+  path: '/copy-chief',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfferRoute = OfferRouteImport.update({
+  id: '/offer',
+  path: '/offer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundRoute = RefundRouteImport.update({
+  id: '/refund',
+  path: '/refund',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SurveyRoute = SurveyRouteImport.update({
+  id: '/survey',
+  path: '/survey',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -331,144 +331,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/welcome': {
-      id: '/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof WelcomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/survey': {
-      id: '/survey'
-      path: '/survey'
-      fullPath: '/survey'
-      preLoaderRoute: typeof SurveyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/refund': {
-      id: '/refund'
-      path: '/refund'
-      fullPath: '/refund'
-      preLoaderRoute: typeof RefundRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quiz': {
-      id: '/quiz'
-      path: '/quiz'
-      fullPath: '/quiz'
-      preLoaderRoute: typeof QuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/offer': {
-      id: '/offer'
-      path: '/offer'
-      fullPath: '/offer'
-      preLoaderRoute: typeof OfferRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/join': {
-      id: '/join'
-      path: '/join'
-      fullPath: '/join'
-      preLoaderRoute: typeof JoinRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/disclaimer': {
-      id: '/disclaimer'
-      path: '/disclaimer'
-      fullPath: '/disclaimer'
-      preLoaderRoute: typeof DisclaimerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/copy-chief': {
-      id: '/copy-chief'
-      path: '/copy-chief'
-      fullPath: '/copy-chief'
-      preLoaderRoute: typeof CopyChiefRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirmed': {
-      id: '/confirmed'
-      path: '/confirmed'
-      fullPath: '/confirmed'
-      preLoaderRoute: typeof ConfirmedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirmation': {
-      id: '/confirmation'
-      path: '/confirmation'
-      fullPath: '/confirmation'
-      preLoaderRoute: typeof ConfirmationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/call-confirmed': {
-      id: '/call-confirmed'
-      path: '/call-confirmed'
-      fullPath: '/call-confirmed'
-      preLoaderRoute: typeof CallConfirmedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/articles': {
-      id: '/articles'
-      path: '/articles'
-      fullPath: '/articles'
-      preLoaderRoute: typeof ArticlesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -478,11 +345,144 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/call-confirmed': {
+      id: '/call-confirmed'
+      path: '/call-confirmed'
+      fullPath: '/call-confirmed'
+      preLoaderRoute: typeof CallConfirmedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmation': {
+      id: '/confirmation'
+      path: '/confirmation'
+      fullPath: '/confirmation'
+      preLoaderRoute: typeof ConfirmationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmed': {
+      id: '/confirmed'
+      path: '/confirmed'
+      fullPath: '/confirmed'
+      preLoaderRoute: typeof ConfirmedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/copy-chief': {
+      id: '/copy-chief'
+      path: '/copy-chief'
+      fullPath: '/copy-chief'
+      preLoaderRoute: typeof CopyChiefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offer': {
+      id: '/offer'
+      path: '/offer'
+      fullPath: '/offer'
+      preLoaderRoute: typeof OfferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund': {
+      id: '/refund'
+      path: '/refund'
+      fullPath: '/refund'
+      preLoaderRoute: typeof RefundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/survey': {
+      id: '/survey'
+      path: '/survey'
+      fullPath: '/survey'
+      preLoaderRoute: typeof SurveyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
