@@ -1,6 +1,10 @@
 {
+  "announcement": {
+    "primary": "First cohort forming now",
+    "secondary": "Small group"
+  },
   "webinar": {
-    "title": "Free 35-Minute Session",
+    "title": "Free Retire Regulated Training",
     "format": "Free session",
     "durationMinutes": 35,
     "date": "",
@@ -9,13 +13,13 @@
     "replayAvailable": null
   },
   "cohort": {
-    "programName": "The Calm Retirement Program",
-    "price": 499,
+    "programName": "Retire Regulated",
+    "price": 600,
     "currency": "USD",
-    "capacity": 8,
+    "capacity": 12,
     "durationWeeks": 4,
-    "sessionLengthMinutes": 90,
-    "dailyPracticeOptions": []
+    "sessionLengthMinutes": null,
+    "dailyPracticeOptions": ["Morning practice", "Evening practice"]
   },
   "integrations": {
     "emailWebhookUrl": "",

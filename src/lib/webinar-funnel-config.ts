@@ -1,6 +1,10 @@
 import rawConfig from "../../config/webinar-funnel.json";
 
 export type WebinarFunnelConfig = {
+  announcement: {
+    primary: string;
+    secondary: string;
+  };
   webinar: {
     title: string;
     format: string;

@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as TrainingRouteImport } from './routes/training'
+import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -36,6 +38,16 @@ import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainingRoute = TrainingRouteImport.update({
+  id: '/training',
+  path: '/training',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThankYouRoute = ThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -171,6 +183,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/training': typeof TrainingRoute
   '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
@@ -196,6 +210,8 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/training': typeof TrainingRoute
   '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
@@ -222,6 +238,8 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/survey': typeof SurveyRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/training': typeof TrainingRoute
   '/welcome': typeof WelcomeRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
@@ -249,6 +267,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/thank-you'
+    | '/training'
     | '/welcome'
     | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
@@ -274,6 +294,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/thank-you'
+    | '/training'
     | '/welcome'
     | '/auth/callback'
   id:
@@ -299,6 +321,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/survey'
     | '/terms'
+    | '/thank-you'
+    | '/training'
     | '/welcome'
     | '/auth/callback'
   fileRoutesById: FileRoutesById
@@ -325,6 +349,8 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   SurveyRoute: typeof SurveyRoute
   TermsRoute: typeof TermsRoute
+  ThankYouRoute: typeof ThankYouRoute
+  TrainingRoute: typeof TrainingRoute
   WelcomeRoute: typeof WelcomeRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
@@ -336,6 +362,20 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/training': {
+      id: '/training'
+      path: '/training'
+      fullPath: '/training'
+      preLoaderRoute: typeof TrainingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thank-you': {
+      id: '/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof ThankYouRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -517,6 +557,8 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   SurveyRoute: SurveyRoute,
   TermsRoute: TermsRoute,
+  ThankYouRoute: ThankYouRoute,
+  TrainingRoute: TrainingRoute,
   WelcomeRoute: WelcomeRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
